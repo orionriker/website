@@ -1,0 +1,22 @@
+# This is just a example compose.yaml file
+# PLEASE DO NOT USE THIS IN PRODUCTION WITHOUT PROPER CONFIGURATION AND TESTING!
+
+services:
+    bunapp-orionriker:
+        image: bunapp-orionriker:latest
+        container_name: bunapp-orionriker
+        restart: always
+        cpus: "4.0"           # WARNING CHANGE ACCORDING TO YOUR SYSTEM SPECS
+        mem_limit: 1g         # WARNING CHANGE ACCORDING TO YOUR SYSTEM SPECS
+        mem_reservation: 512m # WARNING CHANGE ACCORDING TO YOUR SYSTEM SPECS
+        pids_limit: 64        # WARNING CHANGE ACCORDING TO YOUR SYSTEM SPECS
+        read_only: true
+        tmpfs:
+            - /tmp
+            - /run
+            - /var/run
+        security_opt:
+            - apparmor:docker-default
+            - no-new-privileges:true
+        volumes:
+            - ./public:/app/public

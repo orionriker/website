@@ -1,0 +1,538 @@
+---
+import Layout from '@layouts/Layout.astro'
+//import ProjectCard from '@components/ProjectCard.astro'
+
+import { Icon } from 'astro-icon/components'
+import { Image } from 'astro:assets'
+
+import ImageTechStack from '@images/tech-stack.svg'
+---
+
+<Layout
+    title="Orion C. Riker"
+    description="Orion C. Riker's portfolio"
+    page="home"
+>
+    <section
+        class="page-container h-[calc(100vh-60px)] flex flex-col justify-center"
+        id="hero"
+    >
+        <div
+            class="flex flex-col xl:flex-row justify-center gap-5 xl:justify-between xl:items-center"
+        >
+            <div class="flex flex-row flex-wrap items-start gap-2 sm:gap-4">
+                <h1
+                    class="text-5xl sm:text-6xl lg:text-3xl xl:text-8xl font-extrabold tracking-tighter text-balance"
+                >
+                    Orion C. Riker.
+                </h1>
+                <h1
+                    class="text-4xl sm:text-6xl lg:text-3xl xl:text-8xl font-extrabold tracking-tighter text-balance"
+                >
+                    Full Stack Developer
+                </h1>
+            </div>
+            <div class="flex flex-col items-start gap-5 w-full xl:w-162.5">
+                <p class="text-balance sm:text-wrap text-2xl font-bold mt-1">
+                    I <span
+                        class="transition-colors duration-300 font-mono text-indigo-600 hover:text-indigo-500"
+                        >{'{develop}'}</span
+                    > software that is aesthetically pleasing and emotionally resonant.
+                    I also design user interfaces that are intuitive and user-friendly.
+                </p>
+                <div class="flex gap-2">
+                    <a
+                        aria-label="Email"
+                        href="mailto:orionriker@proton.me"
+                        class="hero-chip-container group"
+                    >
+                        <span class="hero-chip p-3! chip"
+                            ><Icon name="mdi:email" size={20} /></span
+                        >
+                    </a>
+                    <a
+                        aria-label="Github"
+                        href="https://github.com/orionriker"
+                        target="_blank"
+                        class="hero-chip-container group"
+                    >
+                        <span class="hero-chip p-3! chip"
+                            ><Icon name="mdi:github" size={20} /></span
+                        >
+                    </a>
+                    <a
+                        aria-label="StackOverflow"
+                        href="https://stackoverflow.com/users/27994192/orionriker"
+                        target="_blank"
+                        class="hero-chip-container group"
+                    >
+                        <span class="hero-chip p-3! chip"
+                            ><Icon name="mdi:stackoverflow" size={20} /></span
+                        >
+                    </a>
+                    <a
+                        aria-label="LinkedIn"
+                        href="https://www.linkedin.com/in/orionriker/"
+                        target="_blank"
+                        class="hero-chip-container group"
+                    >
+                        <span class="hero-chip p-3! chip"
+                            ><Icon name="cib:linkedin" size={20} /></span
+                        >
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="page-container py-16" id="about">
+        <h2 class="page-home-section-heading">
+            <Icon name="mdi:account-box" size="40" />
+            About Me
+        </h2>
+        <div
+            class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 text-lg"
+        >
+            <div class="card md:col-span-2 shadow">
+                <div class="card-content z-10 mt-0!">
+                    <p class="font-medium mb-4">
+                        I'm a {
+                            Math.floor(
+                                (Date.now() - 1246406400000) /
+                                    (1000 * 60 * 60 * 24 * 365.25)
+                            )
+                        }-year-old full-stack developer based in Bengaluru with
+                        6 years of experience. I've worked across the entire web
+                        stack—building REST APIs in Python and PHP, crafting
+                        responsive frontends with React and TypeScript, managing
+                        MySQL databases. I've also deployed production-ready
+                        applications using Docker (like this portfolio) with
+                        good security standards. I'm always exploring emerging
+                        technologies and staying current with industry trends. I
+                        love going out of my comfort zone and experiment with
+                        new tools and frameworks to sharpen my skills.
+                    </p>
+                    <p class="font-medium">
+                        When I need a break, I enjoy unwinding with movies or
+                        play video games such as Counter-Strike 2 and Minecraft.
+                    </p>
+                </div>
+            </div>
+            <div class="card shadow h-fit">
+                <div class="card-content z-10 mt-0!">
+                    <p class="font-medium mb-4">
+                        I use Arch Linux as my daily driver. I also admire and
+                        love Open Source software. I believe in the power of
+                        open-source software to drive innovation and improve
+                        lives.
+                    </p>
+                </div>
+            </div>
+            <div class="card shadow">
+                <div class="card-content z-10 mt-0!">
+                    <p class="font-medium">
+                        You can contact me via <a
+                            href="https://linkedin.com/in/orionriker"
+                            target="_blank"
+                            class="underline decoration-accent decoration-2 underline-offset-2"
+                            >LinkedIn</a
+                        >, or you can email me
+                        <a
+                            href="mailto:orionriker@proton.me"
+                            class="underline decoration-accent decoration-2 underline-offset-2"
+                            >orionriker@proton.me</a
+                        >, or use any of the social media buttons.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="page-container py-16" id="skills">
+        <h2 class="page-home-section-heading">
+            <Icon name="mdi:xml" size="40" />
+            Skills & Expertise
+        </h2>
+        <div class="image-wrapper loading">
+            <Image
+                src={ImageTechStack}
+                alt="Tech Stack"
+                loading={'lazy'}
+                width={1496}
+                height={736}
+                onload="this.parentElement.classList.remove('loading')"
+            />
+        </div>
+        <div class="mt-20 text-left">
+            <div
+                class="text-left grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+            >
+                <div class="mb-8">
+                    <h3 class="text-xl font-bold mb-4 flex items-center gap-2">
+                        <Icon
+                            name="mdi:web"
+                            size="32"
+                            class="text-base-400"
+                        />Web Languages
+                    </h3>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div
+                            class="border border-base-700 p-4 rounded-lg h-fit"
+                        >
+                            <h4 class="font-semibold">TypeScript</h4>
+                        </div>
+                        <div
+                            class="border border-base-700 p-4 rounded-lg h-fit"
+                        >
+                            <h4 class="font-semibold">JavaScript</h4>
+                        </div>
+                        <div
+                            class="border border-base-700 p-4 rounded-lg h-fit"
+                        >
+                            <h4 class="font-semibold">Bun</h4>
+                        </div>
+                        <div
+                            class="border border-base-700 p-4 rounded-lg h-fit"
+                        >
+                            <h4 class="font-semibold">Sass</h4>
+                        </div>
+                        <div
+                            class="border border-base-700 p-4 rounded-lg h-fit"
+                        >
+                            <h4 class="font-semibold">PHP</h4>
+                        </div>
+                        <div
+                            class="border border-base-700 p-4 rounded-lg h-fit"
+                        >
+                            <h4 class="font-semibold">Node.js</h4>
+                        </div>
+                        <div
+                            class="border border-base-700 p-4 rounded-lg h-fit"
+                        >
+                            <h4 class="font-semibold">React.js</h4>
+                        </div>
+                        <div
+                            class="border border-base-700 p-4 rounded-lg h-fit"
+                        >
+                            <h4 class="font-semibold">Angular.js</h4>
+                            <p>Learning</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-8">
+                    <h3 class="text-xl font-bold mb-4 flex items-center gap-2">
+                        <Icon
+                            name="mdi:sitemap"
+                            size="32"
+                            class="text-base-400"
+                        /> Object-oriented Languages
+                    </h3>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div
+                            class="border border-base-700 p-4 rounded-lg h-fit"
+                        >
+                            <h4 class="font-semibold">C</h4>
+                        </div>
+                        <div
+                            class="border border-base-700 p-4 rounded-lg h-fit"
+                        >
+                            <h4 class="font-semibold">C++</h4>
+                        </div>
+                        <div
+                            class="border border-base-700 p-4 rounded-lg h-fit"
+                        >
+                            <h4 class="font-semibold">C#</h4>
+                        </div>
+                        <div
+                            class="border border-base-700 p-4 rounded-lg h-fit"
+                        >
+                            <h4 class="font-semibold">Java</h4>
+                            <p>Learning</p>
+                        </div>
+                        <div
+                            class="border border-base-700 p-4 rounded-lg h-fit"
+                        >
+                            <h4 class="font-semibold">Python</h4>
+                        </div>
+                        <div
+                            class="border border-base-700 p-4 rounded-lg h-fit"
+                        >
+                            <h4 class="font-semibold">Ruby</h4>
+                            <p>Learning</p>
+                        </div>
+                        <div
+                            class="border border-base-700 p-4 rounded-lg h-fit"
+                        >
+                            <h4 class="font-semibold">GLSL</h4>
+                        </div>
+                        <div
+                            class="border border-base-700 p-4 rounded-lg h-fit"
+                        >
+                            <h4 class="font-semibold">PowerShell</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-8">
+                    <h3 class="text-xl font-bold mb-4 flex items-center gap-2">
+                        <Icon
+                            name="mdi:script-text"
+                            size="32"
+                            class="text-base-400"
+                        />Scripting Languages
+                    </h3>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div
+                            class="border border-base-700 p-4 rounded-lg h-fit"
+                        >
+                            <h4 class="font-semibold">Batch</h4>
+                        </div>
+                        <div
+                            class="border border-base-700 p-4 rounded-lg h-fit"
+                        >
+                            <h4 class="font-semibold">Bash</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-8">
+                    <h3 class="text-xl font-bold mb-4 flex items-center gap-2">
+                        <Icon
+                            name="mdi:transit-connection-variant"
+                            size="32"
+                            class="text-base-400"
+                        />Visual Scripting Languages
+                    </h3>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div
+                            class="border border-base-700 p-4 rounded-lg h-fit"
+                        >
+                            <h4 class="font-semibold">Scratch</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-8">
+                    <h3 class="text-xl font-bold mb-4 flex items-center gap-2">
+                        <Icon
+                            name="mdi:matrix"
+                            size="32"
+                            class="text-base-400"
+                        />Low-Level Languages
+                    </h3>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div
+                            class="border border-base-700 p-4 rounded-lg h-fit"
+                        >
+                            <h4 class="font-semibold">Assembly</h4>
+                            <p>Learning</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-8">
+                    <h3 class="text-xl font-bold mb-4 flex items-center gap-2">
+                        <Icon
+                            name="mdi:chart-donut"
+                            size="32"
+                            class="text-base-400"
+                        />Data-Handling Languages
+                    </h3>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div
+                            class="border border-base-700 p-4 rounded-lg h-fit"
+                        >
+                            <h4 class="font-semibold">SQL</h4>
+                        </div>
+                        <div
+                            class="border border-base-700 p-4 rounded-lg h-fit"
+                        >
+                            <h4 class="font-semibold">R</h4>
+                            <p>Learning</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-20 text-left">
+            <div
+                class="text-left grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+            >
+                <div class="mb-8">
+                    <h3 class="text-xl font-bold mb-4 flex items-center gap-2">
+                        <Icon
+                            name="mdi:code-block-braces"
+                            size="32"
+                            class="text-base-400"
+                        />Code Editors
+                    </h3>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div
+                            class="border border-base-700 p-4 rounded-lg h-fit"
+                        >
+                            <h4 class="font-semibold">Visual Studio Code</h4>
+                        </div>
+                        <div
+                            class="border border-base-700 p-4 rounded-lg h-fit"
+                        >
+                            <h4 class="font-semibold">Visual Studio</h4>
+                        </div>
+                        <div
+                            class="border border-base-700 p-4 rounded-lg h-fit"
+                        >
+                            <h4 class="font-semibold">Vim</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-8">
+                    <h3 class="text-xl font-bold mb-4 flex items-center gap-2">
+                        <Icon
+                            name="mdi:source-branch"
+                            size="32"
+                            class="text-base-400"
+                        />CI/CD
+                    </h3>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div
+                            class="border border-base-700 p-4 rounded-lg h-fit"
+                        >
+                            <h4 class="font-semibold">Docker</h4>
+                        </div>
+                        <div
+                            class="border border-base-700 p-4 rounded-lg h-fit"
+                        >
+                            <h4 class="font-semibold">Kubernetes</h4>
+                            <p>Learning</p>
+                        </div>
+                        <div
+                            class="border border-base-700 p-4 rounded-lg h-fit"
+                        >
+                            <h4 class="font-semibold">Git</h4>
+                        </div>
+                        <div
+                            class="border border-base-700 p-4 rounded-lg h-fit"
+                        >
+                            <h4 class="font-semibold">GitHub</h4>
+                        </div>
+                        <div
+                            class="border border-base-700 p-4 rounded-lg h-fit"
+                        >
+                            <h4 class="font-semibold">Gitlab</h4>
+                        </div>
+                        <div
+                            class="border border-base-700 p-4 rounded-lg h-fit"
+                        >
+                            <h4 class="font-semibold">Jenkins</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-8">
+                    <h3 class="text-xl font-bold mb-4 flex items-center gap-2">
+                        <Icon
+                            name="mdi:web"
+                            size="32"
+                            class="text-base-400"
+                        />Web Frameworks
+                    </h3>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div
+                            class="border border-base-700 p-4 rounded-lg h-fit"
+                        >
+                            <h4 class="font-semibold">Astro</h4>
+                        </div>
+                        <div
+                            class="border border-base-700 p-4 rounded-lg h-fit"
+                        >
+                            <h4 class="font-semibold">Laravel</h4>
+                        </div>
+                        <div
+                            class="border border-base-700 p-4 rounded-lg h-fit"
+                        >
+                            <h4 class="font-semibold">Express</h4>
+                        </div>
+                        <div
+                            class="border border-base-700 p-4 rounded-lg h-fit"
+                        >
+                            <h4 class="font-semibold">TailwindCSS</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-8">
+                    <h3 class="text-xl font-bold mb-4 flex items-center gap-2">
+                        <Icon
+                            name="mdi:database"
+                            size="32"
+                            class="text-base-400"
+                        />Databases
+                    </h3>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div
+                            class="border border-base-700 p-4 rounded-lg h-fit"
+                        >
+                            <h4 class="font-semibold">MySQL</h4>
+                        </div>
+                        <div
+                            class="border border-base-700 p-4 rounded-lg h-fit"
+                        >
+                            <h4 class="font-semibold">PostgresSQL</h4>
+                        </div>
+                        <div
+                            class="border border-base-700 p-4 rounded-lg h-fit"
+                        >
+                            <h4 class="font-semibold">Redis</h4>
+                        </div>
+                        <div
+                            class="border border-base-700 p-4 rounded-lg h-fit"
+                        >
+                            <h4 class="font-semibold">MongoDB</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-8">
+                    <h3 class="text-xl font-bold mb-4 flex items-center gap-2">
+                        <Icon
+                            name="mdi:gamepad-variant"
+                            size="32"
+                            class="text-base-400"
+                        />Games Engines
+                    </h3>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div
+                            class="border border-base-700 p-4 rounded-lg h-fit"
+                        >
+                            <h4 class="font-semibold">Unreal Engine</h4>
+                            <p>Learning</p>
+                        </div>
+                        <div
+                            class="border border-base-700 p-4 rounded-lg h-fit"
+                        >
+                            <h4 class="font-semibold">Unity</h4>
+                        </div>
+                        <div
+                            class="border border-base-700 p-4 rounded-lg h-fit"
+                        >
+                            <h4 class="font-semibold">Godot</h4>
+                            <p>Learning</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-8">
+                    <h3 class="text-xl font-bold mb-4 flex items-center gap-2">
+                        <Icon
+                            name="mdi:check-decagram"
+                            size="32"
+                            class="text-base-400"
+                        />Observablity & Monitoring
+                    </h3>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div
+                            class="border border-base-700 p-4 rounded-lg h-fit"
+                        >
+                            <h4 class="font-semibold">Grafana</h4>
+                        </div>
+                        <div
+                            class="border border-base-700 p-4 rounded-lg h-fit"
+                        >
+                            <h4 class="font-semibold">Prometheus</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</Layout>

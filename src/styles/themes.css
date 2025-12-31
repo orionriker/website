@@ -1,0 +1,65 @@
+@theme {
+    --color-base-50: oklch(17.8% 0.004 84.57);
+    --color-base-100: oklch(21.49% 0.005 67.56);
+    --color-base-200: oklch(30.33% 0.007 67.57);
+    --color-base-300: oklch(37.93% 0.009 53.27);
+    --color-base-400: oklch(45.73% 0.011 62.4);
+    --color-base-500: oklch(54.3% 0.012 58.08);
+    --color-base-600: oklch(62.16% 0.014 63.8);
+    --color-base-700: oklch(69.9% 0.016 61.25);
+    --color-base-800: oklch(77.65% 0.018 61.9);
+    --color-base-900: oklch(86.23% 0.012 59.57);
+    --color-base-950: oklch(90.04% 0.008 61.49);
+
+    --color-accent-50: oklch(0.956 0.022 250.2);
+    --color-accent-100: oklch(0.922 0.039 249.43);
+    --color-accent-200: oklch(0.833 0.088 244.44);
+    --color-accent-300: oklch(0.753 0.142 238.75);
+    --color-accent-400: oklch(0.666 0.143 237.02);
+    --color-accent-500: oklch(0.591 0.127 237.01);
+    --color-accent-600: oklch(0.497 0.107 236.92);
+    --color-accent-700: oklch(0.409 0.089 237.52);
+    --color-accent-800: oklch(0.316 0.069 237.35);
+    --color-accent-900: oklch(0.231 0.049 236.92);
+    --color-accent-950: oklch(0.176 0.038 235.69);
+
+    --color-secondary-50: #e8e8e8;
+    --color-secondary-100: #ddddde;
+    --color-secondary-200: #c6c6c8;
+    --color-secondary-300: #afafb1;
+    --color-secondary-400: #9a9a9d;
+    --color-secondary-500: #838386;
+    --color-secondary-600: #6c6c6f;
+    --color-secondary-700: #58585b;
+    --color-secondary-800: #414143;
+    --color-secondary-900: #2b2b2c;
+    --color-secondary-950: #202021;
+
+    --color-text-primary: oklch(0.2101 0.0318 264.66);
+    --color-text-secondary: oklch(0.3729 0.0306 259.73);
+    --color-text-tertiary: oklch(0.551 0.0234 264.36);
+    
+    --breakpoint-xs: 30rem;
+    --breakpoint-2xl: 100rem;
+    --breakpoint-3xl: 120rem;
+}
+
+@layer base {
+    [data-theme='dark'] {
+        --color-base-50: #f1f1f1;
+        --color-base-100: #e2e2e2;
+        --color-base-200: #c9c9c9;
+        --color-base-300: #aeaeae;
+        --color-base-400: #939393;
+        --color-base-500: #7c7c7c;
+        --color-base-600: #636363;
+        --color-base-700: #4b4b4b;
+        --color-base-800: #373737;
+        --color-base-900: #222222;
+        --color-base-950: #181818;
+
+        --color-text-primary: oklch(0.9846 0.0017 247.84);
+        --color-text-secondary: oklch(0.8717 0.0093 258.34);
+        --color-text-tertiary: oklch(0.7137 0.0192 261.32);
+    }
+}

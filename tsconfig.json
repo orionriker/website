@@ -1,0 +1,26 @@
+{
+    "extends": "astro/tsconfigs/strict",
+    "include": [".astro/types.d.ts", "**/*"],
+    "exclude": ["dist"],
+    "compilerOptions": {
+        "target": "es2022",
+        "baseUrl": ".",
+        "jsx": "react-jsx",
+        "jsxImportSource": "preact",
+        "types": ["bun-types"],
+        "paths": {
+            "react": ["./node_modules/preact/compat/"],
+            "react/jsx-runtime": ["./node_modules/preact/jsx-runtime"],
+            "react-dom": ["./node_modules/preact/compat/"],
+            "react-dom/*": ["./node_modules/preact/compat/*"],
+            "@public/*": ["public/*"],
+            "@components/*": ["src/components/*"],
+            "@images/*": ["src/images/*"],
+            "@layouts/*": ["src/layouts/*"],
+            "@lib/*": ["src/lib/*"],
+            "@pages/*": ["src/pages/*"],
+            "@styles/*": ["src/styles/*"],
+            "@mdi/*": ["node_modules/@mdi/svg/svg/*"]
+        }
+    }
+}

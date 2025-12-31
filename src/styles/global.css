@@ -1,0 +1,150 @@
+@import 'tailwindcss';
+@plugin '@tailwindcss/typography';
+
+@import './themes.css';
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        color-scheme: dark;
+    }
+}
+
+:root {
+    color: var(--color-dark-text);
+
+    color-scheme: light dark;
+
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+html {
+    @apply bg-base-950;
+}
+
+body {
+    @apply text-text-primary;
+
+    font-family: 'Mona Sans', sans-serif;
+    font-optical-sizing: auto;
+}
+
+/*
+ * ------- Main styles -------------------------------------------------------------------------------
+ */
+
+/*
+ * Navbar
+ */
+.navbar {
+    @apply bg-base-950 flex w-full items-center;
+}
+.navbar-start {
+    @apply flex items-center justify-start gap-4;
+}
+.navbar-center {
+    @apply flex items-center justify-center gap-4;
+}
+.navbar-end {
+    @apply flex items-center justify-end gap-4;
+}
+
+/*
+ * Cards
+ */
+.card {
+    @apply bg-base-900 border-base-800 flex flex-col rounded-2xl border p-6;
+}
+.card-title {
+    @apply mb-5 text-2xl font-bold tracking-tight text-balance;
+}
+.card-content {
+    @apply mt-5;
+}
+
+/*
+ * Chips
+ */
+.chip {
+    @apply bg-base-800 inline-flex items-center justify-center rounded-full px-4 py-2 text-sm font-medium tracking-wide;
+}
+
+/*
+ * ------- Miscellaneous styles ----------------------------------------------------------------------
+ */
+
+.page-heading {
+    @apply mb-16 flex flex-row items-center justify-start gap-3 text-6xl font-extrabold tracking-tighter text-balance;
+}
+.page-home-section-heading {
+    @apply mb-16 flex flex-row items-center justify-start gap-3 text-3xl font-bold tracking-tight text-balance;
+}
+.page-container {
+    @apply container mx-auto px-5;
+}
+
+.hero-chip-container {
+    @apply bg-base-800 rounded-full p-px transition duration-300 ease-in-out hover:bg-linear-to-r hover:from-violet-500 hover:via-blue-500 hover:to-green-500;
+}
+.hero-chip-container .hero-chip {
+    @apply bg-base-950! transition duration-300 ease-in-out group-hover:bg-linear-to-r! group-hover:from-violet-500/15 group-hover:via-blue-500/15 group-hover:to-green-500/15;
+}
+
+.project-card {
+    @apply rounded-4xl! border-none! p-0! shadow;
+}
+.project-figure {
+    @apply flex h-full min-h-45! items-center justify-center rounded-xl px-4 sm:min-h-87.5! lg:min-h-137.5! xl:min-h-112.5!;
+}
+.project-figure .project-image {
+    @apply w-105 transition-transform duration-300 ease-in-out group-hover:scale-105 group-hover:transform lg:w-142.5! xl:w-105!;
+}
+.project-chip {
+    @apply border-text-primary border bg-transparent!;
+}
+
+@media (prefers-color-scheme: light) {
+    ::-webkit-scrollbar {
+        @apply bg-base-500!;
+    }
+    ::-webkit-scrollbar-track {
+        @apply bg-base-500!;
+    }
+    ::-webkit-scrollbar-thumb {
+        @apply bg-base-400!;
+    }
+}
+
+/*
+ * Tech Stack loading placeholder
+ */
+.image-wrapper {
+  position: relative;
+  overflow: hidden;
+}
+
+.image-wrapper.loading {
+  background:
+    linear-gradient(
+      100deg,
+      #1e1e1e 40%,
+      #2a2a2a 50%,
+      #1e1e1e 60%
+    );
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite;
+}
+
+.image-wrapper img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+@keyframes shimmer {
+  to {
+    background-position: -200% 0;
+  }
+}

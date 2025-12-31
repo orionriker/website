@@ -1,0 +1,49 @@
+---
+// FOR: future implementaion.
+
+import { Image } from 'astro:assets'
+import { Icon } from 'astro-icon/components'
+
+interface Props {
+    name: string
+    image: any
+    image_alt?: string
+    tags: string[]
+    wip?: boolean
+}
+
+const { name, image, image_alt, tags, wip } = Astro.props
+---
+
+<div class="card project-card group">
+    <figure class="project-figure">
+        <Image
+            src={image}
+            alt={image_alt || name + ' Logo'}
+            width={380}
+            height={0}
+            loading={'lazy'}
+            class="project-image"
+        />
+    </figure>
+    <div class="p-10 z-10">
+        <h2 class="card-title font-bold">{name}</h2>
+        <div class="flex flex-row justify-between items-center mt-2">
+            <div class="flex gap-2">
+                {
+                    tags.map((tag) => (
+                        <span class="chip project-chip">{tag}</span>
+                    ))
+                }
+            </div>
+            {
+                wip && (
+                    <span class="text-yellow-600 dark:text-yellow-400 text-sm flex flex-row justify-center items-center gap-2">
+                        <Icon name="mdi:information-circle-outline" size="20" />
+                        Work In Progress
+                    </span>
+                )
+            }
+        </div>
+    </div>
+</div>

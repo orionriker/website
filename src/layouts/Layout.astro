@@ -1,0 +1,298 @@
+---
+import { ClientRouter } from 'astro:transitions'
+import '@styles/global.css'
+
+import Navbar from '@components/Navbar'
+
+import { Icon } from 'astro-icon/components'
+
+interface Props {
+    title: string
+    description?: string
+    page: string
+    NoFooter?: boolean
+    NoNavbar?: boolean
+    AltFooter?: boolean
+}
+
+const { title, description, page, NoFooter, NoNavbar, AltFooter } = Astro.props
+---
+
+<!doctype html>
+<html data-theme="auto" class="bg-base-950" lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="description" content={description} />
+        <meta name="viewport" content="width=device-width" />
+        <meta name="color-scheme" content="dark light" />
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.gstatic.com/s/monasans/v4/o-0bIpQmx24alC5A4PNB6Ryti20_6n1iPHjc5a7duw.woff2"
+            rel="preload"
+            as="font"
+            crossorigin
+        />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Mona+Sans:ital,wght@0,200..900;1,200..900&display=swap"
+            rel="stylesheet"
+        />
+        <title>{title}</title>
+        <ClientRouter />
+        <script is:inline async>
+            ;((window.applyTheme = function e() {
+                try {
+                    let t = document.documentElement,
+                        a = localStorage.getItem('theme')
+                    if ('dark' === a || 'light' === a) {
+                        t.setAttribute('data-theme', a)
+                        return
+                    }
+                    let r =
+                        'auto' === a ||
+                        'auto' === t.getAttribute('data-theme') ||
+                        null === a
+                    if (r) {
+                        let h =
+                            window.matchMedia &&
+                            window.matchMedia('(prefers-color-scheme: dark)')
+                                .matches
+                        t.setAttribute('data-theme', h ? 'dark' : 'light')
+                    }
+                } catch (m) {
+                    console.error('applyTheme error', m)
+                }
+            }),
+                window.applyTheme(),
+                document.addEventListener(
+                    'astro:after-swap',
+                    window.applyTheme
+                ),
+                document.addEventListener('astro:page-load', window.applyTheme))
+        </script>
+    </head>
+    <body class="min-h-screen">
+        {!NoNavbar && <Navbar client:load />}
+
+        <div
+            class={AltFooter && !NoFooter
+                ? 'min-h-[calc(100vh-72px)]'
+                : 'min-h-[calc(100vh-245px)]'}
+        >
+            <slot />
+        </div>
+
+        {
+            (!NoFooter && (
+                <div class="page-container">
+                    <footer class="footer py-8 px-8 sm:py-10 sm:px-10 mb-5 rounded-4xl shadow bg-base-900 bottom-0 mt-auto shrink-0">
+                        <div class="text-center pb-10">
+                            <a class="normal-case text-4xl font-bold" href="/">
+                                Orion C. Riker
+                            </a>
+                            <ul class="flex justify-center gap-5 px-1 py-5 text-sm font-semibold">
+                                <li>
+                                    <a
+                                        class="transition-colors duration-300 hover:text-base-400"
+                                        href="/"
+                                    >
+                                        Home
+                                    </a>
+                                </li>
+                                <li>
+                                    <a
+                                        class="transition-colors duration-300 hover:text-base-400"
+                                        href="/projects"
+                                    >
+                                        Projects
+                                    </a>
+                                </li>
+                                <li>
+                                    <a
+                                        class="transition-colors duration-300 hover:text-base-400"
+                                        href="/#about"
+                                    >
+                                        About
+                                    </a>
+                                </li>
+                            </ul>
+                            <div class="flex justify-center gap-2">
+                                <a
+                                    aria-label="Email"
+                                    href="mailto:orionriker@proton.me"
+                                    class="hero-chip-container group"
+                                >
+                                    <span class="hero-chip p-3! chip">
+                                        <Icon name="mdi:email" size={20} />
+                                    </span>
+                                </a>
+                                <a
+                                    aria-label="Github"
+                                    href="https://github.com/orionriker"
+                                    target="_blank"
+                                    class="hero-chip-container group"
+                                >
+                                    <span class="hero-chip p-3! chip">
+                                        <Icon name="mdi:github" size={20} />
+                                    </span>
+                                </a>
+                                <a
+                                    aria-label="StackOverflow"
+                                    href="https://stackoverflow.com/users/27994192/orionriker"
+                                    target="_blank"
+                                    class="hero-chip-container group"
+                                >
+                                    <span class="hero-chip p-3! chip">
+                                        <Icon
+                                            name="mdi:stackoverflow"
+                                            size={20}
+                                        />
+                                    </span>
+                                </a>
+                                <a
+                                    aria-label="Twitter/X"
+                                    href="https://twitter.com/orionriker"
+                                    target="_blank"
+                                    class="hero-chip-container group"
+                                >
+                                    <span class="hero-chip p-3! chip">
+                                        <Icon name="cib:twitter" size={20} />
+                                    </span>
+                                </a>
+                                <a
+                                    aria-label="Reddit"
+                                    href="https://reddit.com/u/rikerorion"
+                                    target="_blank"
+                                    class="hero-chip-container group"
+                                >
+                                    <span class="hero-chip p-3! chip">
+                                        <Icon name="cib:reddit" size={20} />
+                                    </span>
+                                </a>
+                                <a
+                                    aria-label="LinkedIn"
+                                    href="https://www.linkedin.com/in/orionriker/"
+                                    target="_blank"
+                                    class="hero-chip-container group"
+                                >
+                                    <span class="hero-chip p-3! chip">
+                                        <Icon name="cib:linkedin" size={20} />
+                                    </span>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="font-mono flex flex-col gap-4 lg:flex-row lg:justify-between">
+                            <p class="text-center">
+                                © {new Date().getFullYear()} Orion C. Riker. All
+                                rights reserved.
+                            </p>
+                            <p class="text-center">
+                                Built using{' '}
+                                <a
+                                    href="https://astro.build/"
+                                    class="text-base-400"
+                                >
+                                    Astro
+                                </a>
+                                +
+                                <a
+                                    href="https://preactjs.com/"
+                                    class="text-base-400"
+                                >
+                                    Preact
+                                </a>
+                                +
+                                <a
+                                    href="https://tailwindcss.com/"
+                                    class="text-base-400"
+                                >
+                                    TailwindCSS
+                                </a>
+                                +
+                                <a
+                                    href="https://motion.dev/"
+                                    class="text-base-400"
+                                >
+                                    Framer Motion
+                                </a>
+                            </p>
+                        </div>
+                    </footer>
+
+                    <div class="text-center text-gray-400 mb-5">
+                        <p>
+                            Licensed under GNU General Public License v3.0
+                            <a
+                                class="text-accent-500 ml-4 inline gap-2"
+                                href="https://github.com/orionriker/website"
+                            >
+                                Source
+                                <Icon name="mdi:open-in-new" class="inline" />
+                            </a>
+                        </p>
+                    </div>
+                </div>
+            )) ||
+                (!NoFooter && !AltFooter ? null : (
+                    <footer class="footer py-5 px-4 shadow bg-base-950 bottom-0 mt-auto shrink-0">
+                        <div class="text-center text-gray-500">
+                            <p>
+                                © {new Date().getFullYear()} Orion C. Riker. All
+                                rights reserved.
+                            </p>
+                        </div>
+                    </footer>
+                ))
+        }
+    </body><script is:inline defer>
+        ;((window.initThemeControls = function t() {
+            try {
+                let e = document.documentElement,
+                    a = document.getElementById('theme-light-btn'),
+                    i = document.getElementById('theme-dark-btn')
+                function n(t) {
+                    try {
+                        ;('dark' === t || 'light' === t
+                            ? (localStorage.setItem('theme', t),
+                              e.setAttribute('data-theme', t))
+                            : (localStorage.removeItem('theme'),
+                              e.removeAttribute('data-theme')),
+                            r(t))
+                    } catch (a) {
+                        console.error('setTheme error', a)
+                    }
+                }
+                function r(t) {
+                    ;([a, i].forEach((t) => {
+                        t?.classList.remove('bg-accent-800', 'text-white')
+                    }),
+                        'light' === t &&
+                            a?.classList.add('bg-accent-800', 'text-white'),
+                        'dark' === t &&
+                            i?.classList.add('bg-accent-800', 'text-white'))
+                }
+                ;(a &&
+                    !a.dataset.themeInit &&
+                    (a.addEventListener('click', () => n('light')),
+                    (a.dataset.themeInit = '1')),
+                    i &&
+                        !i.dataset.themeInit &&
+                        (i.addEventListener('click', () => n('dark')),
+                        (i.dataset.themeInit = '1')))
+                let h = e.getAttribute('data-theme')
+                ;('dark' === h || 'light' === h) && r(h)
+            } catch (s) {
+                console.error('initThemeControls', s)
+            }
+        }),
+            window.initThemeControls(),
+            document.addEventListener('astro:after-swap', () => {
+                setTimeout(() => window.initThemeControls(), 0)
+            }),
+            window.addEventListener('storage', (t) => {
+                'theme' === t.key &&
+                    setTimeout(() => window.initThemeControls(), 0)
+            }))
+    </script>
+</html>
