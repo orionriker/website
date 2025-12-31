@@ -57,10 +57,10 @@ run_step "Creating remote directory" \
 run_step "Transferring compose.yaml" \
   rsync -az -e "ssh -p $SSH_PORT" compose.yaml $SSH_USER@$SSH_HOST:$REMOTE_PATH/$PACKAGE_NAME || deployment_failed
 
-# Deploy on remote
+# Deploy on remote host
 run_step "Loading image and deploying on ${CYAN}$SSH_HOST${NC}" \
   ssh -p $SSH_PORT "$SSH_USER@$SSH_HOST" \
-  "cd $REMOTE_PATH/$PACKAGE_NAME && sudo docker load -i $PACKAGE_NAME-$PACKAGE_VERSION.tar > /dev/null 2>&1 && sudo docker compose up -d > /dev/null 2>&1 && echo y | sudo docker image prune > /dev/null 2>&1" || deployment_failed
+  "cd $REMOTE_PATH/$PACKAGE_NAME && sudo docker compose up -d --pull always > /dev/null 2>&1 && echo y | sudo docker image prune > /dev/null 2>&1" || deployment_failed
 
 clean_up
 
