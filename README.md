@@ -86,7 +86,7 @@ This is my personal portfolio website built with Astro. It showcases my projects
 
 ## 📜 License
 
-Orion C. Riker's Portfolio Website is licensed under the GNU General Public v3 License. See [LICENSE.md](LICENSE.md) for details.
+Orion C. Riker's Portfolio Website is licensed under the GNU General Public v3 License. See [LICENSE.md](LICENSE) for details.
 
 ---
 
