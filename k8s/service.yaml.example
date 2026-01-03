@@ -1,0 +1,15 @@
+# This is just a example file
+# PLEASE DO NOT USE THIS IN PRODUCTION WITHOUT PROPER CONFIGURATION AND TESTING!
+
+apiVersion: v1
+kind: Service
+metadata:
+    name: bunapp-orionriker
+spec:
+    selector:
+        app: bunapp-orionriker
+    type: LoadBalancer
+    ports:
+        - name: http
+          port: 4321
+          targetPort: 4321

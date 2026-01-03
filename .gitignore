@@ -9,6 +9,8 @@
 .astro/
 dist/
 
+k8s/*.yaml
+
 node_modules/
 
 compose.yaml

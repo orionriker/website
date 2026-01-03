@@ -1,0 +1,44 @@
+# This is just a example file
+# PLEASE DO NOT USE THIS IN PRODUCTION WITHOUT PROPER CONFIGURATION AND TESTING!
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+    name: bunapp-orionriker-public-pvc
+spec:
+    accessModes:
+        - ReadWriteMany
+    storageClassName: longhorn # Change to your storage driver
+    resources:
+        requests:
+            storage: 1Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: bunapp-orionriker
+    labels:
+        app: bunapp-orionriker
+spec:
+    replicas: 2
+    selector:
+        matchLabels:
+            app: bunapp-orionriker
+    template:
+        metadata:
+            labels:
+                app: bunapp-orionriker
+        spec:
+            containers:
+                - name: bunapp-orionriker
+                  image: bunapp-orionriker:latest # Change to your registry
+                  imagePullPolicy: Always
+                  ports:
+                      - containerPort: 4321
+                  volumeMounts:
+                      - name: public-volume
+                        mountPath: /app/public
+            volumes:
+                - name: public-volume
+                  persistentVolumeClaim:
+                      claimName: bunapp-orionriker-public-pvc

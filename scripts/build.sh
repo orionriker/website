@@ -6,7 +6,7 @@ source $SCRIPT_DIR/helper.sh
 
 # check required tools
 command -v docker >/dev/null || { echo "Error: Docker is required"; build_failed; }
-command -v jq >/dev/null || { echo "Error: jq is required"; build_failed; }
+command -v jq >/dev/null || { echo "Error: jq package is required"; build_failed; }
 
 TYPE_CHECK=false
 DOCKER=false
@@ -20,6 +20,19 @@ if [[ -f .env.build ]]; then
 else
   echo "Error: .env.build not found" >&2
   build_failed
+fi
+
+# Expand leading $HOME or ~ in COSIGN_PRIVATE (no eval)
+if [[ -n "${COSIGN_PRIVATE:-}" ]]; then
+  # If COSIGN_PRIVATE literally starts with $HOME, replace it with real $HOME
+  if [[ "${COSIGN_PRIVATE}" == \$HOME* ]]; then
+    COSIGN_PRIVATE="${HOME}${COSIGN_PRIVATE#\$HOME}"
+  fi
+
+  # If it starts with ~, replace it with $HOME
+  if [[ "${COSIGN_PRIVATE}" == ~* ]]; then
+    COSIGN_PRIVATE="${HOME}${COSIGN_PRIVATE#~}"
+  fi
 fi
 
 while getopts ":cda:h" opt; do
@@ -46,11 +59,21 @@ shift $((OPTIND -1))
 # required variables
 [ -z "$PACKAGE_NAME" ] && echo "Error: package name cannot be empty\! Please set in your package.json" && build_failed
 [ -z "$PACKAGE_VERSION" ] && echo "Error: package version cannot be empty\! Please set in your package.json" && build_failed
-[ -z "$IMAGE_ARCH" ] && echo "Error: IMAGE_ARCH name cannot be empty\! Please set in your .env.build or pass as an argument using -a <arch>" && build_failed
+[ -z "$IMAGE_ARCH" ] && echo "Error: IMAGE_ARCH cannot be empty\! Please set in your .env.build or pass as an argument using -a <arch>" && build_failed
 [ -z "$IMAGE_REGISTRY" ] && echo "Error: IMAGE_REGISTRY cannot be empty\! Please set in your .env.build" && build_failed
-[ -z "$COSIGN_PASSWORD" ] && echo "Error: COSIGN_PASSWORD name cannot be empty\! Please set in your .env.build" && build_failed
+[ -z "$COSIGN_PASSWORD" ] && echo "Error: COSIGN_PASSWORD cannot be empty\! Please set in your .env.build" && build_failed
 [ -z "$COSIGN_PRIVATE" ] && echo "Error: COSIGN_PRIVATE cannot be empty\! Please set in your .env.build" && build_failed
 
+IFS='.' read -r SEMVER_MAJOR SEMVER_MINOR SEMVER_PATCH <<< "$PACKAGE_VERSION"
+
+if [[ -z "$SEMVER_MAJOR" || -z "$SEMVER_MINOR" || -z "$SEMVER_PATCH" ]]; then
+  echo "Error: PACKAGE_VERSION must be semantic (MAJOR.MINOR.PATCH)"
+  build_failed
+fi
+
+SEMVER_TAG="$SEMVER_MAJOR.$SEMVER_MINOR.$SEMVER_PATCH"
+SEMVER_MINOR_TAG="$SEMVER_MAJOR.$SEMVER_MINOR"
+SEMVER_MAJOR_TAG="$SEMVER_MAJOR"
 
 # split on commas into array for IMAGE_ARCH
 IFS=',' read -r -a IMAGE_ARCH_LIST <<< "$IMAGE_ARCH"
@@ -82,7 +105,8 @@ if [[ "$DOCKER" == "true" ]]; then
 
   for arch in "${IMAGE_ARCH_LIST[@]}"; do
     safe_arch=$(echo "$arch" | sed 's,/,-,g') # e.g. linux/amd64 -> linux-amd64
-    arch_tag="${IMAGE}:latest-${safe_arch}"
+    arch_tag_version="${IMAGE}:${SEMVER_TAG}-${safe_arch}"
+    arch_tag_latest="${IMAGE}:latest-${safe_arch}"
 
     # Required labels
     LABEL_ARGS=(
@@ -103,7 +127,8 @@ if [[ "$DOCKER" == "true" ]]; then
     run_step "Building docker image for ${CYAN}$arch${NC}" \
       docker buildx build \
         . \
-        --tag "$IMAGE:latest-${safe_arch}" \
+        --tag "$arch_tag_version" \
+        --tag "$arch_tag_latest" \
         --platform "$arch" \
         "${LABEL_ARGS[@]}" \
         --file Dockerfile \
@@ -114,55 +139,100 @@ if [[ "$DOCKER" == "true" ]]; then
         --push \
     || build_failed
 
-    # Check if :latest exists
-    if docker buildx imagetools inspect "${IMAGE}:latest" >/dev/null 2>&1; then
-      # Get existing manifest
-      manifest_json=$(docker buildx imagetools inspect --format '{{json .Manifest}}' "${IMAGE}:latest" 2>/dev/null || echo "")
-      mediaType=$(printf '%s' "$manifest_json" | jq -r '.mediaType // empty' || true)
-      
-      if [[ -n "$mediaType" ]]; then
-        # If it's a manifest list/index
-        if [[ "$mediaType" == "application/vnd.docker.distribution.manifest.list.v2+json" ]] \
-            || [[ "$mediaType" == "application/vnd.oci.image.index.v1+json" ]]; then
-          
-          # Get all existing arch tags EXCEPT the one we're replacing
+    # Update versioned multi-arch manifests (semver, minor, major) using the versioned arch ref
+    version_tags=("$SEMVER_TAG" "$SEMVER_MINOR_TAG" "$SEMVER_MAJOR_TAG")
+    for vtag in "${version_tags[@]}"; do
+      full_vtag="${IMAGE}:${vtag}"
+      # If the manifest exists, inspect and rebuild while preserving other arch entries
+      if docker buildx imagetools inspect "${full_vtag}" >/dev/null 2>&1; then
+        manifest_json=$(docker buildx imagetools inspect --format '{{json .Manifest}}' "${full_vtag}" 2>/dev/null || echo "")
+        mediaType=$(printf '%s' "$manifest_json" | jq -r '.mediaType // empty' || true)
+
+        if [[ -n "$mediaType" ]] && \
+           ([[ "$mediaType" == "application/vnd.docker.distribution.manifest.list.v2+json" ]] || \
+            [[ "$mediaType" == "application/vnd.oci.image.index.v1+json" ]]); then
+
           existing_tags=()
           manifests=$(printf '%s' "$manifest_json" | jq -c '.manifests[]?' || echo "")
-          
+
           while IFS= read -r manifest; do
             plat_os=$(echo "$manifest" | jq -r '.platform.os // empty')
             plat_arch=$(echo "$manifest" | jq -r '.platform.architecture // empty')
             manifest_digest=$(echo "$manifest" | jq -r '.digest // empty')
-            
-            # Skip if this is the arch we're replacing or if it's unknown/unknown (attestations)
+
+            # keep all arches except the one we're replacing now
             if [[ "$plat_os/$plat_arch" != "$arch" ]] && [[ "$plat_os" != "" ]] && [[ "$plat_os" != "unknown" ]]; then
               existing_tags+=("${IMAGE}@${manifest_digest}")
             fi
           done <<< "$manifests"
-          
-          # Create new manifest list with existing archs (minus current) + new current arch
-          run_step "Replacing ${CYAN}$arch${NC} in ${IMAGE}:latest" \
-            docker buildx imagetools create -t "${IMAGE}:latest" "${existing_tags[@]}" "${arch_tag}" || build_failed
+
+          run_step "Updating ${CYAN}${full_vtag}${NC} (replace arch ${CYAN}${arch}${NC})" \
+            docker buildx imagetools create -t "${full_vtag}" "${existing_tags[@]}" "${arch_tag_version}" || build_failed
         else
-          # Single-arch manifest - just replace it
-          run_step "Replacing single-arch manifest with ${CYAN}$arch${NC}" \
-            docker buildx imagetools create -t "${IMAGE}:latest" "${arch_tag}" || build_failed
+          # Single-arch: just replace
+          run_step "Replacing single-arch ${CYAN}${full_vtag}${NC} with ${CYAN}${arch_tag_version}${NC}" \
+            docker buildx imagetools create -t "${full_vtag}" "${arch_tag_version}" || build_failed
         fi
       else
-        # Fallback
-        run_step "Creating ${IMAGE}:latest from ${CYAN}$arch${NC}" \
-          docker buildx imagetools create -t "${IMAGE}:latest" "${arch_tag}" || build_failed
+        # No existing manifest -> create new from this arch
+        run_step "Creating ${CYAN}${full_vtag}${NC} from ${CYAN}${arch_tag_version}${NC}" \
+          docker buildx imagetools create -t "${full_vtag}" "${arch_tag_version}" || build_failed
+      fi
+    done
+
+    # Update :latest multi-arch manifest
+    latest_full="${IMAGE}:latest"
+    if docker buildx imagetools inspect "${latest_full}" >/dev/null 2>&1; then
+      manifest_json=$(docker buildx imagetools inspect --format '{{json .Manifest}}' "${latest_full}" 2>/dev/null || echo "")
+      mediaType=$(printf '%s' "$manifest_json" | jq -r '.mediaType // empty' || true)
+
+      if [[ -n "$mediaType" ]] && \
+         ([[ "$mediaType" == "application/vnd.docker.distribution.manifest.list.v2+json" ]] || \
+          [[ "$mediaType" == "application/vnd.oci.image.index.v1+json" ]]); then
+
+        existing_tags=()
+        manifests=$(printf '%s' "$manifest_json" | jq -c '.manifests[]?' || echo "")
+
+        while IFS= read -r manifest; do
+          plat_os=$(echo "$manifest" | jq -r '.platform.os // empty')
+          plat_arch=$(echo "$manifest" | jq -r '.platform.architecture // empty')
+          manifest_digest=$(echo "$manifest" | jq -r '.digest // empty')
+
+          if [[ "$plat_os/$plat_arch" != "$arch" ]] && [[ "$plat_os" != "" ]] && [[ "$plat_os" != "unknown" ]]; then
+            existing_tags+=("${IMAGE}@${manifest_digest}")
+          fi
+        done <<< "$manifests"
+
+        run_step "Replacing ${CYAN}${arch}${NC} entry in ${CYAN}${latest_full}${NC}" \
+          docker buildx imagetools create -t "${latest_full}" "${existing_tags[@]}" "${arch_tag_latest}" || build_failed
+      else
+        # single-arch fallback
+        run_step "Replacing single-arch ${CYAN}${latest_full}${NC} with ${CYAN}${arch_tag_latest}${NC}" \
+          docker buildx imagetools create -t "${latest_full}" "${arch_tag_latest}" || build_failed
       fi
     else
-      # No :latest yet — create initial manifest from this arch
-      run_step "Creating ${IMAGE}:latest from ${CYAN}$arch${NC}" \
-        docker buildx imagetools create -t "${IMAGE}:latest" "${arch_tag}" || build_failed
+      # create initial latest manifest
+      run_step "Creating ${CYAN}${latest_full}${NC} from ${CYAN}${arch_tag_latest}${NC}" \
+        docker buildx imagetools create -t "${latest_full}" "${arch_tag_latest}" || build_failed
     fi
 
-    run_step "Signing images for ${CYAN}$arch${NC}" \
-      "COSIGN_PASSWORD='${COSIGN_PASSWORD}' COSIGN_OCI_EXPERIMENTAL=1 COSIGN_EXPERIMENTAL=1 cosign sign -y --key ${COSIGN_PRIVATE} --registry-referrers-mode=oci-1-1 ${IMAGE}:latest && \
-      COSIGN_PASSWORD='${COSIGN_PASSWORD}' COSIGN_OCI_EXPERIMENTAL=1 COSIGN_EXPERIMENTAL=1 cosign sign -y --key ${COSIGN_PRIVATE} --registry-referrers-mode=oci-1-1 ${IMAGE}:latest-${safe_arch}" \
-    || build_failed
+    # Sign per-arch images (versioned and latest-arch)
+    run_step "Signing per-arch images for ${CYAN}${arch}${NC}" \
+      bash -lc "COSIGN_PASSWORD='${COSIGN_PASSWORD}' COSIGN_OCI_EXPERIMENTAL=1 COSIGN_EXPERIMENTAL=1 \
+        cosign sign -y --key '${COSIGN_PRIVATE}' --registry-referrers-mode=oci-1-1 '${arch_tag_version}' && \
+        COSIGN_PASSWORD='${COSIGN_PASSWORD}' COSIGN_OCI_EXPERIMENTAL=1 COSIGN_EXPERIMENTAL=1 \
+        cosign sign -y --key '${COSIGN_PRIVATE}' --registry-referrers-mode=oci-1-1 '${arch_tag_latest}'" \
+      || build_failed
+
+    # Sign multi-arch manifests: semver, minor, major, latest
+    multi_tags=("${SEMVER_TAG}" "${SEMVER_MINOR_TAG}" "${SEMVER_MAJOR_TAG}" "latest")
+    for mtag in "${multi_tags[@]}"; do
+      full_multi="${IMAGE}:${mtag}"
+      run_step "Signing manifest ${CYAN}${full_multi}${NC}" \
+        bash -lc "COSIGN_PASSWORD='${COSIGN_PASSWORD}' COSIGN_OCI_EXPERIMENTAL=1 COSIGN_EXPERIMENTAL=1 \
+          cosign sign -y --key '${COSIGN_PRIVATE}' --registry-referrers-mode=oci-1-1 '${full_multi}'" \
+        || build_failed
+    done
   done
 else
   # Build Astro project

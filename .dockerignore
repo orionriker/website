@@ -17,6 +17,7 @@ helm-charts
 dist/
 node_modules/
 scripts/
+k8s/
 
 Makefile
 README.md
@@ -25,6 +26,8 @@ LICENSE
 !scripts/docker
 
 .env*
+
+*.example
 
 *.gz
 *.zip

@@ -2,6 +2,9 @@
 
 This is my personal portfolio website built with Astro. It showcases my projects and skills through a clean & modern design crafted using Tailwind CSS.
 
+> [!NOTE]
+> **NEW! Now deployable on Kubernetes.**
+
 ## 🎨 Tech Stack
 
 - **Bun** [https://bun.sh/](https://bun.sh/)  
@@ -81,7 +84,8 @@ This is my personal portfolio website built with Astro. It showcases my projects
 - [x] Auto-Sign images using cosign
 - [ ] Auto-Scan images for vulnerabilities and display
 - [ ] Rolling Releases
-- [ ] Schemantic version handling
+- [x] Schemantic version handling
+- [x] Kubernetes Support
 - [ ] Multi-Host Deployment
 
 ## 📜 License
