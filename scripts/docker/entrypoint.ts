@@ -26,8 +26,11 @@ try {
         mkdirSync(PUBLIC_DIR, { recursive: true, mode: 0o755 })
     }
 
-    // Check if /app/public is empty (fast check - only reads directory entries)
-    const isEmpty = readdirSync(PUBLIC_DIR).length === 0
+    // Check if /app/public is empty (ignore lost+found from ext4 filesystems)
+    const entries = readdirSync(PUBLIC_DIR).filter(
+        (name) => name !== 'lost+found'
+    )
+    const isEmpty = entries.length === 0
 
     if (isEmpty) {
         console.log('Populating /app/public with default data...')
