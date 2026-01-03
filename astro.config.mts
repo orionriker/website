@@ -7,7 +7,7 @@
 import { defineConfig } from 'astro/config'
 
 // Integrations
-import bun from '@nurodev/astro-bun'
+import node from '@astrojs/node'
 import tailwindcss from '@tailwindcss/vite'
 import preact from '@astrojs/preact'
 import icon from 'astro-icon'
@@ -22,7 +22,7 @@ export default defineConfig({
         },
     },
 
-    adapter: bun(),
+    adapter: node({ mode: 'standalone' }),
     integrations: [preact({ compat: true }), icon()],
     output: 'server',
 

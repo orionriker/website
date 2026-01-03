@@ -71,6 +71,7 @@
         "release:major": "bun version:major && bun publish"
     },
     "dependencies": {
+        "@astrojs/node": "^9.5.1",
         "@astrojs/preact": "4.1.3",
         "@nurodev/astro-bun": "^2.1.2",
         "astro-icon": "^1.1.5",
