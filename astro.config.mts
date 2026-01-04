@@ -14,27 +14,66 @@ import icon from 'astro-icon'
 
 // https://astro.build/config
 export default defineConfig({
+    output: 'server',
+    adapter: node({ mode: 'standalone' }),
+
+    integrations: [
+        (await import('@playform/compress')).default({
+            CSS: false, // Let Astro handle CSS
+            HTML: true,
+            Image: true,
+            JavaScript: true,
+            JSON: true,
+            SVG: true,
+        }),
+        preact({
+            compat: true,
+            // Devtools off in production for smaller bundle
+            devtools: false,
+        }),
+        icon(),
+    ],
+
+    experimental: {
+        svgo: true,
+        clientPrerender: true,
+        preserveScriptOrder: true,
+    },
+
     i18n: {
         defaultLocale: 'en_IN',
         locales: ['en_IN'],
-        routing: {
-            prefixDefaultLocale: false,
-        },
+        routing: { prefixDefaultLocale: false },
     },
 
-    adapter: node({ mode: 'standalone' }),
-    integrations: [preact({ compat: true }), icon()],
-    output: 'server',
-
     vite: {
+        plugins: [tailwindcss()],
+
         build: {
-            target: 'es2022',
+            target: 'es2023',
             minify: 'oxc',
-            sourcemap: false,
             manifest: true,
+
+            modulePreload: { polyfill: false },
+            cssCodeSplit: true,
+            assetsInlineLimit: 4096,
+
+            // Smaller chunks = better caching
+            chunkSizeWarningLimit: 500,
         },
 
-        plugins: [tailwindcss()],
+        // Dependency optimization
+        optimizeDeps: {
+            // Include heavy deps
+            include: ['@iconify/react', 'motion', 'preact', 'preact/compat'],
+            // Exclude server-only deps
+            exclude: ['@astrojs/node'],
+        },
+
+        // Enable resolver caching
+        resolve: {
+            dedupe: ['preact', 'preact/compat'],
+        },
 
         ssr: {
             noExternal: [
