@@ -1,7 +1,7 @@
 {
     "name": "orionriker",
     "description": "Orion C. Riker's Portfolio",
-    "version": "0.0.5",
+    "version": "0.0.6",
     "type": "module",
     "private": true,
     "license": "GPL-3.0-only",
