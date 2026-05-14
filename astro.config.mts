@@ -35,9 +35,7 @@ export default defineConfig({
     ],
 
     experimental: {
-        svgo: true,
         clientPrerender: true,
-        preserveScriptOrder: true,
     },
 
     i18n: {
@@ -51,7 +49,7 @@ export default defineConfig({
 
         build: {
             target: 'es2023',
-            minify: 'oxc',
+            minify: true,
             manifest: true,
 
             modulePreload: { polyfill: false },
@@ -81,6 +79,9 @@ export default defineConfig({
                 'motion',
                 'motion/react',
                 'framer-motion',
+                'preact',
+                'preact/compat',
+                'preact-render-to-string',
             ],
         },
     },
