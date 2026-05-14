@@ -40,37 +40,37 @@ const itemVariants = {
 export default function Hero() {
     return (
         <motion.div
-            class="flex flex-col justify-center gap-5 xl:flex-row xl:items-center xl:justify-between"
+            className="flex flex-col justify-center gap-5 p-4 xl:flex-row xl:items-center xl:justify-between"
             variants={containerVariants}
             initial="hidden"
             animate="visible"
         >
-            <div class="flex flex-row flex-wrap items-start gap-2 sm:gap-4">
+            <div className="flex flex-row flex-wrap items-start gap-2 sm:gap-4">
                 <motion.h1
-                    class="text-5xl font-extrabold tracking-tighter text-balance sm:text-6xl lg:text-3xl xl:text-6xl"
+                    className="text-5xl font-extrabold tracking-tighter text-balance sm:text-6xl lg:text-3xl xl:text-6xl"
                     variants={itemVariants}
                 >
                     Orion C. Riker.
                 </motion.h1>
                 <motion.h1
-                    class="text-4xl font-extrabold tracking-tighter text-balance sm:text-6xl lg:text-3xl xl:text-6xl"
+                    className="from-base-100 to-accent-400 bg-gradient-to-r bg-clip-text text-4xl font-extrabold tracking-tighter text-balance text-transparent sm:text-6xl lg:text-3xl xl:text-6xl"
                     variants={itemVariants}
                 >
                     Full Stack Developer
                 </motion.h1>
             </div>
             <motion.div
-                class="flex w-full flex-col items-start gap-5 xl:w-162.5"
+                className="flex w-full flex-col items-start gap-5 xl:w-162.5"
                 variants={itemVariants}
             >
-                <p class="mt-1 text-2xl font-bold text-balance sm:text-wrap">
+                <p className="mt-1 text-2xl font-bold text-balance sm:text-wrap">
                     I{' '}
-                    <span className="animate-pulse font-mono text-indigo-600 transition-colors duration-300 hover:text-indigo-500 dark:text-indigo-400">
+                    <span className="text-accent-400 animate-pulse font-mono transition-colors duration-300">
                         {'{develop}'}
                     </span>{' '}
-                    software that is aesthetically pleasing and emotionally
-                    resonant. I also design user interfaces that are intuitive
-                    and user-friendly.
+                    software. I automate server infrastructure. I architect
+                    global governance. My directive is engineering better
+                    systems for the Human race.
                 </p>
                 <div className="flex gap-2">
                     {socialLinks.map((link) => (
@@ -82,7 +82,11 @@ export default function Hero() {
                             className="hero-chip-container group"
                             whileHover={{ y: -3, rotate: 2 }}
                             whileTap={{ y: 0 }}
-                            transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+                            transition={{
+                                type: 'spring',
+                                stiffness: 300,
+                                damping: 20,
+                            }}
                         >
                             <span className="hero-chip chip p-3!">
                                 <Icon icon={link.icon} width="20" height="20" />
