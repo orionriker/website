@@ -103,7 +103,7 @@ export default function SkillsTabs() {
                         onClick={() => setActiveTab(category.id)}
                         className={`rounded-full px-4 py-2 text-sm font-medium transition-all duration-300 ${
                             activeTab === category.id
-                                ? 'bg-accent-600 text-white'
+                                ? 'bg-accent-400 text-white'
                                 : 'bg-base-800 text-base-300 hover:bg-base-700'
                         }`}
                     >
