@@ -53,7 +53,7 @@ export default function Hero() {
                     Orion C. Riker.
                 </motion.h1>
                 <motion.h1
-                    className="from-base-100 to-accent-400 bg-gradient-to-r bg-clip-text text-4xl font-extrabold tracking-tighter text-balance text-transparent sm:text-6xl lg:text-3xl xl:text-6xl"
+                    className="from-base-100 to-accent-400 bg-gradient-to-r bg-clip-text text-[8.5cqw] font-extrabold tracking-tighter text-balance text-transparent sm:text-6xl lg:text-3xl xl:text-6xl"
                     variants={itemVariants}
                 >
                     Full Stack Developer
@@ -74,24 +74,17 @@ export default function Hero() {
                 </p>
                 <div className="flex gap-2">
                     {socialLinks.map((link) => (
-                        <motion.a
+                        <a
                             key={link.label}
                             aria-label={link.label}
                             href={link.href}
                             target="_blank"
                             className="hero-chip-container group"
-                            whileHover={{ y: -3, rotate: 2 }}
-                            whileTap={{ y: 0 }}
-                            transition={{
-                                type: 'spring',
-                                stiffness: 300,
-                                damping: 20,
-                            }}
                         >
                             <span className="hero-chip chip p-3!">
                                 <Icon icon={link.icon} width="20" height="20" />
                             </span>
-                        </motion.a>
+                        </a>
                     ))}
                 </div>
             </motion.div>
