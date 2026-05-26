@@ -8,8 +8,7 @@ FROM --platform=$TARGETPLATFORM dhi.io/bun:1.3-debian13 AS runtime
 WORKDIR /app
 
 # ── Tini ───────────────────────────────────────────────────────────────────────
-FROM builder AS tini
-
+FROM --platform=$TARGETPLATFORM dhi.io/bun:1.3-debian13-dev AS tini
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     --mount=type=cache,target=/var/lib/apt,sharing=locked \
     apt-get update \
