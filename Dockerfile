@@ -23,15 +23,6 @@ COPY package.json bun.lock ./
 RUN --mount=type=cache,id=bun-cache,target=/root/.bun/install/cache \
     bun install --frozen-lockfile
 
-# ── Install: prod deps ─────────────────────────────────────────────────────────
-FROM builder AS install-prod
-WORKDIR /temp/prod
-
-COPY package.json bun.lock ./
-
-RUN --mount=type=cache,id=bun-cache,target=/root/.bun/install/cache \
-    bun install --frozen-lockfile --production
-
 # ── Build ──────────────────────────────────────────────────────────────────────
 FROM builder AS build
 
@@ -43,10 +34,8 @@ RUN bun b:b
 # ── Release ────────────────────────────────────────────────────────────────────
 FROM runtime AS release
 
-COPY --chown=nonroot:nonroot --from=install-prod /temp/prod/node_modules ./node_modules
 COPY --chown=nonroot:nonroot --from=build /app/dist ./dist
 COPY --chown=nonroot:nonroot --from=build /app/public ./public-default
-COPY --chown=nonroot:nonroot --from=build /app/package.json ./package.json
 
 COPY --chown=nonroot:nonroot ./scripts/docker/entrypoint.ts ./entrypoint.ts
 COPY --chown=nonroot:nonroot ./scripts/docker/healthcheck.mts ./healthcheck.mts
