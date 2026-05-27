@@ -3,7 +3,9 @@
 This is my personal portfolio website built with Astro. It showcases my projects and skills through a clean & modern design crafted using Tailwind CSS.
 
 > [!NOTE]
-> **NEW! Now deployable on Kubernetes.**
+> **🚀 NEW: 56% Docker Image Size Reduction!**  
+> The production Docker image has been optimized, dropping from **330 MB to 146 MB**. By leveraging Vite's `noExternal` SSR bundling and multi-stage Docker builds, we completely eliminated the need to ship the heavy `node_modules` folder into production.  
+> 💡 **Fun Fact:** Out of that 146 MB, the hardened Debian/Bun base image takes up ~132 MB. The _entire_ application payload (HTML, CSS, JS, and server logic) is **under 14 MB!**
 
 ## 🎨 Tech Stack
 
@@ -83,6 +85,7 @@ This is my personal portfolio website built with Astro. It showcases my projects
 - [x] Script for deploying
 - [x] Auto-Sign images using cosign
 - [ ] Auto-Scan images for vulnerabilities and display
+- [x] Small Docker Image
 - [ ] Rolling Releases
 - [x] Schemantic version handling
 - [x] Kubernetes Support
