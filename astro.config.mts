@@ -6,6 +6,8 @@
  */
 import { defineConfig } from 'astro/config'
 
+const isBuild = process.argv.includes('build')
+
 // Integrations
 import node from '@astrojs/node'
 import tailwindcss from '@tailwindcss/vite'
@@ -60,7 +62,6 @@ export default defineConfig({
             chunkSizeWarningLimit: 500,
         },
 
-        // Dependency optimization
         optimizeDeps: {
             // Include heavy deps
             include: ['@iconify/react', 'motion', 'preact', 'preact/compat'],
@@ -68,20 +69,18 @@ export default defineConfig({
             exclude: ['@astrojs/node'],
         },
 
-        // Enable resolver caching
-        resolve: {
-            dedupe: ['preact', 'preact/compat'],
+        ssr: {
+            noExternal: isBuild ? true : ['motion', 'framer-motion'],
         },
 
-        ssr: {
-            noExternal: [
-                '@iconify/react',
-                'motion',
-                'motion/react',
-                'framer-motion',
+        resolve: {
+            // Forces Vite to use a single, shared instance of Preact/React
+            dedupe: [
                 'preact',
+                'preact/hooks',
                 'preact/compat',
-                'preact-render-to-string',
+                'react',
+                'react-dom',
             ],
         },
     },
