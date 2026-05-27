@@ -1,7 +1,7 @@
 {
     "name": "orionriker",
     "description": "Orion C. Riker's Portfolio",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "type": "module",
     "private": true,
     "license": "GPL-3.0-only",
@@ -31,6 +31,8 @@
         "b:b:d": "bun run b:b && bun run b:docker && bun run d",
         "b:docker:linux/amd64": "bun b -d -a linux/amd64",
         "b:docker:linux/arm64": "bun b -d -a linux/arm64",
+        "b:docker:local:linux/amd64": "PROJECT_NAME=$(bun -p \"require('./package.json').name\"); docker buildx build --platform linux/amd64 --file Dockerfile -t bunapp-$PROJECT_NAME:latest . --load --progress=plain --no-cache --network host && docker image prune -f",
+        "b:docker:local:linux/arm64": "PROJECT_NAME=$(bun -p \"require('./package.json').name\"); docker buildx build --platform linux/arm64 --file Dockerfile -t bunapp-$PROJECT_NAME:latest . --load --progress=plain --no-cache --network host && docker image prune -f",
         "docker-security": "./scripts/docker/security.sh bunapp-$(bun -p \"require('./package.json').name\")",
         "b:tar": "PROJECT_NAME=$(bun -p \"require('./package.json').name\"); rm -f $PROJECT_NAME-build.tar.gz && time tar -czvf $PROJECT_NAME-build.tar.gz $(ls -A | grep -vE '^(node_modules|public|.astro|.git|.vscode|bun.lock|.env.development)$')",
         "b:tar:source": "PROJECT_NAME=$(bun -p \"require('./package.json').name\"); rm -f $PROJECT_NAME-source.tar.gz && time tar -czvf $PROJECT_NAME-source.tar.gz $(ls -A | grep -vE '^(node_modules|.astro|bun.lock)$')",
