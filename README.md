@@ -3,9 +3,9 @@
 This is my personal portfolio website built with Astro. It showcases my projects and skills through a clean & modern design crafted using Tailwind CSS.
 
 > [!NOTE]
-> **🚀 NEW: 56% Docker Image Size Reduction!**  
-> The production Docker image has been optimized, dropping from **330 MB to 146 MB**. By leveraging Vite's `noExternal` SSR bundling and multi-stage Docker builds, we completely eliminated the need to ship the heavy `node_modules` folder into production.  
-> 💡 **Fun Fact:** Out of that 146 MB, the hardened Debian/Bun base image takes up ~132 MB. The _entire_ application payload (HTML, CSS, JS, and server logic) is **under 14 MB!**
+> **🚀 NEW: 57% Docker Image Size Reduction!**  
+> The production Docker image has been optimized, dropping from **330 MB to 141 MB**. By leveraging Vite's `noExternal` SSR bundling and multi-stage Docker builds, we completely eliminated the need to ship the heavy `node_modules` folder into production. The _only_ dependency kept external is **`sharp`**, which is required as a compiled C++ binary for native on-the-fly image processing.  
+> 💡 **Fun Fact:** Out of that 141 MB, the hardened Alpine/Bun base image takes up ~132 MB, and the `sharp` binary accounts for ~33 MB. The _entire_ application payload (HTML, CSS, JS, and server logic) is **under 14 MB!**
 
 ## 🎨 Tech Stack
 
