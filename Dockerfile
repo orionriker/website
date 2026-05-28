@@ -1,18 +1,20 @@
 # syntax=docker/dockerfile:1.4
 
 # ── Base images ────────────────────────────────────────────────────────────────
-FROM --platform=$BUILDPLATFORM dhi.io/bun:1.3-debian13-dev AS builder
+
+FROM --platform=$BUILDPLATFORM dhi.io/bun:1.3-alpine3.22-dev AS builder
 WORKDIR /app
 
-FROM --platform=$TARGETPLATFORM dhi.io/bun:1.3-debian13 AS runtime
+FROM --platform=$TARGETPLATFORM dhi.io/bun:1.3-alpine3.22-dev AS builder-target
+WORKDIR /app
+
+FROM --platform=$TARGETPLATFORM dhi.io/bun:1.3-alpine3.22 AS runtime
 WORKDIR /app
 
 # ── Tini ───────────────────────────────────────────────────────────────────────
-FROM --platform=$TARGETPLATFORM dhi.io/bun:1.3-debian13-dev AS tini
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
-    --mount=type=cache,target=/var/lib/apt,sharing=locked \
-    apt-get update \
- && apt-get install -y --no-install-recommends tini
+FROM builder-target AS tini
+
+RUN apk add --no-cache tini
 
 # ── Install: dev deps ──────────────────────────────────────────────────────────
 FROM builder AS install-dev
@@ -31,16 +33,21 @@ COPY . .
 
 RUN bun b:b
 
+FROM builder-target AS sharp
+
+RUN bun install sharp
+
 # ── Release ────────────────────────────────────────────────────────────────────
 FROM runtime AS release
 
 COPY --chown=nonroot:nonroot --from=build /app/dist ./dist
 COPY --chown=nonroot:nonroot --from=build /app/public ./public-default
+COPY --chown=nonroot:nonroot --from=sharp /app/node_modules ./node_modules
 
 COPY --chown=nonroot:nonroot ./scripts/docker/entrypoint.mts ./entrypoint.mts
 COPY --chown=nonroot:nonroot ./scripts/docker/healthcheck.mts ./healthcheck.mts
 
-COPY --from=tini /usr/bin/tini /bin/tini
+COPY --from=tini /sbin/tini /bin/tini
 
 ENV HOST=0.0.0.0 PORT=4321 NODE_ENV=production
 EXPOSE 4321
