@@ -37,7 +37,7 @@ FROM runtime AS release
 COPY --chown=nonroot:nonroot --from=build /app/dist ./dist
 COPY --chown=nonroot:nonroot --from=build /app/public ./public-default
 
-COPY --chown=nonroot:nonroot ./scripts/docker/entrypoint.ts ./entrypoint.ts
+COPY --chown=nonroot:nonroot ./scripts/docker/entrypoint.mts ./entrypoint.mts
 COPY --chown=nonroot:nonroot ./scripts/docker/healthcheck.mts ./healthcheck.mts
 
 COPY --from=tini /usr/bin/tini /bin/tini
@@ -48,5 +48,5 @@ USER nonroot
 
 HEALTHCHECK --start-period=20s --interval=30s --timeout=3s --retries=3 \
     CMD ["bun", "--bun", "/app/healthcheck.mts"]
-ENTRYPOINT ["/bin/tini", "--", "bun", "--bun", "/app/entrypoint.ts"]
+ENTRYPOINT ["/bin/tini", "--", "bun", "--bun", "/app/entrypoint.mts"]
 CMD ["bun", "--bun", "/app/dist/server/entry.mjs"]
