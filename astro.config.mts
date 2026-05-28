@@ -9,7 +9,8 @@ import { defineConfig } from 'astro/config'
 const isBuild = process.argv.includes('build')
 
 // Integrations
-import node from '@astrojs/node'
+//import node from '@astrojs/node'
+import bun from '@wyattjoh/astro-bun-adapter'
 import tailwindcss from '@tailwindcss/vite'
 import preact from '@astrojs/preact'
 import icon from 'astro-icon'
@@ -17,7 +18,7 @@ import icon from 'astro-icon'
 // https://astro.build/config
 export default defineConfig({
     output: 'server',
-    adapter: node({ mode: 'standalone' }),
+    adapter: bun(),
 
     integrations: [
         (await import('@playform/compress')).default({
@@ -66,11 +67,12 @@ export default defineConfig({
             // Include heavy deps
             include: ['@iconify/react', 'motion', 'preact', 'preact/compat'],
             // Exclude server-only deps
-            exclude: ['@astrojs/node'],
+            exclude: ['@astrojs/node', '@wyattjoh/astro-bun-adapter'],
         },
 
         ssr: {
             noExternal: isBuild ? true : ['motion', 'framer-motion'],
+            external: ['sharp'],
         },
 
         resolve: {
