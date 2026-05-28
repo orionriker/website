@@ -5,7 +5,7 @@ This is my personal portfolio website built with Astro. It showcases my projects
 > [!NOTE]
 > **🚀 NEW: 57% Docker Image Size Reduction!**  
 > The production Docker image has been optimized, dropping from **330 MB to 141 MB**. By leveraging Vite's `noExternal` SSR bundling and multi-stage Docker builds, we completely eliminated the need to ship the heavy `node_modules` folder into production. The _only_ dependency kept external is **`sharp`**, which is required as a compiled C++ binary for native on-the-fly image processing.  
-> 💡 **Fun Fact:** Out of that 141 MB, the hardened Alpine/Bun base image takes up ~132 MB, and the `sharp` binary accounts for ~33 MB. The _entire_ application payload (HTML, CSS, JS, and server logic) is **under 14 MB!**
+> 💡 **Fun Fact:** Out of that 141 MB, the hardened Alpine/Bun base image takes up ~94 MB, and the `sharp` binary accounts for ~33 MB. The _entire_ application payload (HTML, CSS, JS, and server logic) is **under 14 MB!**
 
 ## 🎨 Tech Stack
 
