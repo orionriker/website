@@ -73,7 +73,7 @@ const { title, description, page, NoFooter, NoNavbar, AltFooter } = Astro.props
         </script>
     </head>
     <body class="min-h-screen">
-        {!NoNavbar && <Navbar client:load />}
+        {!NoNavbar && <Navbar client:visible />}
 
         <div
             class={AltFooter && !NoFooter
