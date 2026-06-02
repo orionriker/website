@@ -53,7 +53,7 @@ const Navbar = () => {
 
     return (
         <>
-            <div class="navbar h-[80px]">
+            <div class="navbar h-20">
                 <div class="page-container flex justify-between">
                     <div class="navbar-start sm:w-full lg:w-max">
                         <a href="/" class="flex items-center">
