@@ -46,17 +46,17 @@
 
 @layer base {
     [data-theme='dark'] {
-        --color-base-50: #f1f1f1;
-        --color-base-100: #e2e2e2;
-        --color-base-200: #c9c9c9;
-        --color-base-300: #aeaeae;
-        --color-base-400: #939393;
-        --color-base-500: #7c7c7c;
-        --color-base-600: #636363;
-        --color-base-700: #4b4b4b;
-        --color-base-800: #373737;
-        --color-base-900: #222222;
-        --color-base-950: #181818;
+        --color-base-50: #e5e5ea;
+        --color-base-100: #d1d1d6;
+        --color-base-200: #c7c7cc;
+        --color-base-300: #aeaeb2;
+        --color-base-400: #8e8e93;
+        --color-base-500: #636366;
+        --color-base-600: #48484a;
+        --color-base-700: #3a3a3c;
+        --color-base-800: #2c2c2e;
+        --color-base-900: #1c1c1e;
+        --color-base-950: #141416;
 
         --color-text-primary: oklch(0.9846 0.0017 247.84);
         --color-text-secondary: oklch(0.8717 0.0093 258.34);
