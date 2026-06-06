@@ -1,4 +1,4 @@
-import { useState } from 'preact/hooks'
+import { useState, useEffect } from 'preact/hooks'
 import { motion, AnimatePresence } from 'motion/react'
 import ThemeBtn from '@components/ThemeBtn'
 import ImageAvatar from '@images/avatar.svg'
@@ -11,27 +11,7 @@ const Pages = [
 
 const Navbar = () => {
     const [isMenuOpen, setMenuOpen] = useState(false)
-
-    const menuVariants = {
-        closed: {
-            height: 0,
-            opacity: 0,
-            transition: {
-                height: { duration: 0.2, ease: [0.32, 0, 0.67, 0] },
-                opacity: { duration: 0.2 },
-                when: 'afterChildren',
-            },
-        },
-        open: {
-            height: 'auto',
-            opacity: 1,
-            transition: {
-                height: { duration: 0.3, ease: [0.33, 1, 0.68, 1] },
-                opacity: { duration: 0.3 },
-                when: 'beforeChildren',
-            },
-        },
-    }
+    const [scrolled, setScrolled] = useState(false)
 
     const itemVariants = {
         closed: {
@@ -51,9 +31,21 @@ const Navbar = () => {
         closed: { transition: { staggerChildren: 0.05, staggerDirection: -1 } },
     }
 
+    useEffect(() => {
+        const onScroll = () => setScrolled(window.scrollY > 10)
+        window.addEventListener('scroll', onScroll, { passive: true })
+        return () => window.removeEventListener('scroll', onScroll)
+    }, [])
+
+    const glassBase = scrolled
+        ? 'bg-base-950/80 backdrop-blur-md shadow-lg shadow-black/10'
+        : 'bg-base-950/90 backdrop-blur-sm'
+
     return (
-        <>
-            <div class="navbar h-20">
+        <div class="sticky top-0 z-50">
+            <div
+                class={`navbar border-base-800 h-20 border-b transition-[background,backdrop-filter,box-shadow] duration-300 ${glassBase}`}
+            >
                 <div class="page-container flex justify-between">
                     <div class="navbar-start sm:w-full lg:w-max">
                         <a href="/" class="flex items-center">
@@ -163,43 +155,58 @@ const Navbar = () => {
                 </div>
             </div>
 
-            <AnimatePresence initial={false}>
+            <AnimatePresence>
                 {isMenuOpen && (
                     <motion.div
-                        class="page-container my-10 overflow-hidden"
-                        initial="closed"
-                        animate="open"
-                        exit="closed"
-                        variants={menuVariants}
+                        class={`absolute right-0 left-0 ${scrolled ? 'shadow-lg shadow-black/10' : ''}`}
+                        style={{ top: 'calc(100% - 1px)' }}
+                        initial={{ height: 0 }}
+                        animate={{ height: 'auto' }}
+                        exit={{ height: 0 }}
+                        transition={{
+                            duration: 0.45,
+                            ease: [0.33, 1, 0.68, 1],
+                        }}
                     >
-                        <motion.ul
-                            class="items-left flex w-full flex-col justify-start gap-4 pt-2 pb-8"
-                            variants={containerVariants}
+                        <div
+                            class={`${scrolled ? 'bg-base-950/80 backdrop-blur-md' : 'bg-base-950/90 backdrop-blur-sm'}`}
                         >
-                            {Pages.map((page) => (
-                                <motion.li
-                                    key={page.num}
-                                    class="border-base-800 flex flex-row gap-2 border-b pb-4"
-                                    variants={itemVariants}
+                            <div class="page-container">
+                                <motion.ul
+                                    class="flex w-full flex-col gap-4 pt-2 pb-6"
+                                    variants={containerVariants}
+                                    initial="closed"
+                                    animate="open"
+                                    exit="closed"
                                 >
-                                    <span class="font-mono text-sm font-medium opacity-100">
-                                        {page.num}
-                                    </span>
-                                    <a
-                                        href={page.href}
-                                        class="text-6xl font-bold tracking-tighter text-balance transition-opacity duration-300 ease-in-out hover:opacity-55"
-                                    >
-                                        {page.label}
-                                    </a>
-                                </motion.li>
-                            ))}
-                        </motion.ul>
+                                    {Pages.map((page) => (
+                                        <motion.li
+                                            key={page.num}
+                                            class="border-base-800 flex flex-row items-center gap-4 border-b pb-4"
+                                            variants={itemVariants}
+                                        >
+                                            <span class="text-base-500 font-mono text-sm font-medium">
+                                                {page.num}
+                                            </span>
+                                            <a
+                                                href={page.href}
+                                                class="text-5xl font-bold tracking-tighter text-balance transition-opacity duration-300 ease-in-out hover:opacity-55 sm:text-6xl"
+                                                onClick={() =>
+                                                    setMenuOpen(false)
+                                                }
+                                            >
+                                                {page.label}
+                                            </a>
+                                        </motion.li>
+                                    ))}
+                                </motion.ul>
+                            </div>
+                            <div class="border-base-800 border-b" />
+                        </div>
                     </motion.div>
                 )}
             </AnimatePresence>
-
-            <hr class="border-base-800 m-0 p-0 shadow-md" />
-        </>
+        </div>
     )
 }
 
