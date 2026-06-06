@@ -40,20 +40,20 @@ const itemVariants = {
 export default function Hero() {
     return (
         <motion.div
-            className="flex flex-col justify-center gap-5 p-4 xl:flex-row xl:items-center xl:justify-between"
+            className="flex flex-col justify-center gap-8 lg:gap-5 xl:flex-row xl:items-center xl:justify-between"
             variants={containerVariants}
             initial="hidden"
             animate="visible"
         >
-            <div className="flex flex-row flex-wrap items-start gap-2 sm:gap-4">
+            <div className="flex flex-col items-start sm:gap-4">
                 <motion.h1
-                    className="text-5xl font-extrabold tracking-tighter text-balance sm:text-6xl lg:text-3xl xl:text-6xl"
+                    className="text-[clamp(2rem,14vw,4rem)] font-extrabold tracking-tighter text-balance sm:text-5xl lg:text-6xl xl:text-7xl"
                     variants={itemVariants}
                 >
                     Orion C. Riker.
                 </motion.h1>
                 <motion.h1
-                    className="from-base-100 to-accent-400 bg-gradient-to-r bg-clip-text text-[8.5cqw] font-extrabold tracking-tighter text-balance text-transparent sm:text-6xl lg:text-3xl xl:text-6xl"
+                    className="text-[clamp(1.25rem,9.5vw,3.5rem)] font-extrabold tracking-tighter text-balance sm:text-5xl lg:text-6xl xl:text-7xl"
                     variants={itemVariants}
                 >
                     Full Stack Developer
@@ -63,14 +63,32 @@ export default function Hero() {
                 className="flex w-full flex-col items-start gap-5 xl:w-162.5"
                 variants={itemVariants}
             >
-                <p className="mt-1 text-2xl font-bold text-balance sm:text-wrap">
-                    I{' '}
-                    <span className="text-accent-400 animate-pulse font-mono transition-colors duration-300">
-                        {'{develop}'}
+                <p className="flex flex-col text-xl leading-relaxed font-bold text-balance sm:text-2xl sm:text-wrap lg:block xl:text-2xl">
+                    <span>
+                        I{' '}
+                        <span className="text-accent-400 animate-pulse font-mono transition-colors duration-300">
+                            {'{develop}'}
+                        </span>{' '}
+                        software.
                     </span>{' '}
-                    software. I automate server infrastructure. I architect
-                    global governance. My directive is engineering better
-                    systems for the Human race.
+                    <span>
+                        I{' '}
+                        <span className="animate-pulse font-mono text-red-400 transition-colors duration-300">
+                            {'(automate)'}
+                        </span>{' '}
+                        server infrastructure.
+                    </span>{' '}
+                    <span>
+                        I{' '}
+                        <span className="animate-pulse font-mono text-violet-400 transition-colors duration-300">
+                            {'[architect]'}
+                        </span>{' '}
+                        global governance.
+                    </span>{' '}
+                    <span>
+                        My directive is engineering better systems for the Human
+                        race.
+                    </span>
                 </p>
                 <div className="flex gap-2">
                     {socialLinks.map((link) => (

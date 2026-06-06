@@ -39,7 +39,7 @@ body {
  * Navbar
  */
 .navbar {
-    @apply bg-base-950 flex w-full items-center;
+    @apply flex w-full items-center;
 }
 .navbar-start {
     @apply flex items-center justify-start gap-4;
@@ -76,7 +76,7 @@ body {
  */
 
 .page-heading {
-    @apply mb-16 flex flex-row items-center justify-start gap-3 text-6xl font-extrabold tracking-tighter text-balance;
+    @apply mb-16 flex flex-row items-center justify-start gap-3 text-5xl font-extrabold tracking-tighter text-balance lg:text-6xl;
 }
 .page-home-section-heading {
     @apply bg-base-100 text-base-950 mb-16 flex w-fit flex-row items-center justify-start gap-3 rounded-2xl px-3 py-2 text-3xl font-bold tracking-tight text-balance;
