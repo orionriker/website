@@ -99,7 +99,7 @@ Orion C. Riker's Portfolio Website is licensed under the GNU General Public v3 L
 
 <div align="center">
 
-Copyright © 2025 Orion C. Riker <orionriker@proton.me>  
+Copyright © 2026 Orion C. Riker <orionriker@proton.me>  
 Licensed under the GNU General Public v3 License.
 
 </div>
