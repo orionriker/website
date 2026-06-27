@@ -3,7 +3,7 @@
     "include": [".astro/types.d.ts", "**/*"],
     "exclude": ["dist"],
     "compilerOptions": {
-        "target": "es2022",
+        "target": "es2023",
         "jsx": "react-jsx",
         "jsxImportSource": "preact",
         "types": ["bun-types"],
