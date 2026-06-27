@@ -4,7 +4,7 @@
  * @see https://astro.build/config
  * @type {import('astro').AstroUserConfig}
  */
-import { defineConfig } from 'astro/config'
+import { defineConfig, memoryCache, logHandlers } from 'astro/config'
 
 const isBuild = process.argv.includes('build')
 
@@ -13,17 +13,24 @@ const isBuild = process.argv.includes('build')
 import bun from '@wyattjoh/astro-bun-adapter'
 import tailwindcss from '@tailwindcss/vite'
 import preact from '@astrojs/preact'
-import icon from 'astro-icon'
 
 // https://astro.build/config
 export default defineConfig({
     output: 'server',
     adapter: bun(),
 
+    cache: { provider: memoryCache() },
+    routeRules: {
+        '/': { maxAge: 300, swr: 60 },
+        '/projects': { maxAge: 300, swr: 60 },
+    },
+
+    logger: logHandlers.console(),
+
     integrations: [
         (await import('@playform/compress')).default({
             CSS: false, // Let Astro handle CSS
-            HTML: true,
+            HTML: false, // Let Astro handle HTML
             Image: true,
             JavaScript: true,
             JSON: true,
@@ -34,7 +41,6 @@ export default defineConfig({
             // Devtools off in production for smaller bundle
             devtools: false,
         }),
-        icon(),
     ],
 
     experimental: {
@@ -76,6 +82,8 @@ export default defineConfig({
         },
 
         resolve: {
+            tsconfigPaths: true,
+
             // Forces Vite to use a single, shared instance of Preact/React
             dedupe: [
                 'preact',
