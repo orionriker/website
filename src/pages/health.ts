@@ -4,7 +4,8 @@ export const prerender = false
  * @param {import('astro').APIContext} context
  * @returns {Response}
  */
-export function GET(context: any) {
+import type { APIContext } from 'astro'
+export function GET({}: APIContext) {
     return new Response(JSON.stringify({ healthy: true }), {
         status: 200,
         headers: { 'Content-Type': 'application/json' },
