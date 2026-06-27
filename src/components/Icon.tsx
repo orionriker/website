@@ -10,18 +10,31 @@ interface IconData {
     height?: number
 }
 
+interface IconifyJSON {
+    prefix: string
+    icons: Record<string, IconData>
+    width?: number
+    height?: number
+}
+
 const iconSets = [
     {
         prefix: mdiData.prefix,
         icons: mdiData.icons as Record<string, IconData>,
+        width: (mdiData as unknown as IconifyJSON).width,
+        height: (mdiData as unknown as IconifyJSON).height,
     },
     {
         prefix: cibData.prefix,
         icons: cibData.icons as Record<string, IconData>,
+        width: (cibData as unknown as IconifyJSON).width,
+        height: (cibData as unknown as IconifyJSON).height,
     },
 ]
 
 function getIcon(icon: string): (IconData & { viewBox: string }) | null {
+    if (!icon || typeof icon !== 'string') return null
+
     const colonIndex = icon.indexOf(':')
     if (colonIndex === -1) return null
 
@@ -34,8 +47,8 @@ function getIcon(icon: string): (IconData & { viewBox: string }) | null {
     const data = set.icons[name]
     if (!data) return null
 
-    const width = data.width ?? 24
-    const height = data.height ?? 24
+    const width = data.width ?? set.width ?? 24
+    const height = data.height ?? set.height ?? 24
 
     return {
         body: data.body,
@@ -46,25 +59,32 @@ function getIcon(icon: string): (IconData & { viewBox: string }) | null {
 }
 
 interface IconProps {
-    icon: string
+    name: string
+    size?: number | string
     width?: number | string
     height?: number | string
     class?: string
 }
 
 const Icon = memo(function Icon({
-    icon,
-    width = 24,
-    height = 24,
+    name,
+    size,
+    width,
+    height,
     class: className,
 }: IconProps): VNode | null {
-    const data = getIcon(icon)
+    if (!name || typeof name !== 'string') return null
+
+    const data = getIcon(name)
     if (!data) return null
+
+    const finalWidth = width ?? size ?? 24
+    const finalHeight = height ?? size ?? 24
 
     return (
         <svg
-            width={width}
-            height={height}
+            width={finalWidth}
+            height={finalHeight}
             viewBox={data.viewBox}
             class={className}
             fill="currentColor"

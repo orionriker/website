@@ -100,7 +100,7 @@ export default function Hero() {
                             className="hero-chip-container group"
                         >
                             <span className="hero-chip chip p-3!">
-                                <Icon icon={link.icon} width="20" height="20" />
+                                <Icon name={link.icon} width="20" height="20" />
                             </span>
                         </a>
                     ))}

@@ -1,6 +1,6 @@
 import { useState } from 'preact/hooks'
 import { motion, AnimatePresence } from 'motion/react'
-import Icon from './Icon'
+import Icon from '@components/Icon'
 
 const skillCategories = [
     {
@@ -108,7 +108,7 @@ export default function SkillsTabs() {
                         }`}
                     >
                         <span className="flex items-center gap-2">
-                            <Icon icon={category.icon} width={16} height={16} />
+                            <Icon name={category.icon} size={16} />
                             {category.label}
                         </span>
                     </button>

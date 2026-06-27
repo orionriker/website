@@ -2,7 +2,7 @@
 // FOR: future implementaion.
 
 import { Image } from 'astro:assets'
-import { Icon } from 'astro-icon/components'
+import Icon from '@components/Icon'
 
 interface Props {
     name: string
@@ -31,7 +31,7 @@ const { name, image, image_alt, tags, wip } = Astro.props
         <div class="flex flex-row justify-between items-center mt-2">
             <div class="flex gap-2">
                 {
-                    tags.map((tag) => (
+                    tags.map((tag: string) => (
                         <span class="chip project-chip">{tag}</span>
                     ))
                 }
@@ -39,7 +39,11 @@ const { name, image, image_alt, tags, wip } = Astro.props
             {
                 wip && (
                     <span class="text-yellow-600 dark:text-yellow-400 text-sm flex flex-row justify-center items-center gap-2">
-                        <Icon name="mdi:information-circle-outline" size="20" />
+                        <Icon
+                            client:visible
+                            name="mdi:information-circle-outline"
+                            size={20}
+                        />
                         Work In Progress
                     </span>
                 )
