@@ -71,7 +71,7 @@ export default defineConfig({
 
         optimizeDeps: {
             // Include heavy deps
-            include: ['@iconify/react', 'motion', 'preact', 'preact/compat'],
+            include: ['motion', 'preact', 'preact/compat'],
             // Exclude server-only deps
             exclude: ['@astrojs/node', '@wyattjoh/astro-bun-adapter'],
         },
