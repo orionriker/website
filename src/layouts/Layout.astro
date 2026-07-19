@@ -42,35 +42,19 @@ const { title, description, page, NoFooter, NoNavbar, AltFooter } = Astro.props
         <title>{title}</title>
         <ClientRouter />
         <script is:inline async>
-            ;((window.applyTheme = function e() {
-                try {
-                    let t = document.documentElement,
-                        a = localStorage.getItem('theme')
-                    if ('dark' === a || 'light' === a) {
-                        t.setAttribute('data-theme', a)
-                        return
-                    }
-                    let r =
-                        'auto' === a ||
-                        'auto' === t.getAttribute('data-theme') ||
-                        null === a
-                    if (r) {
-                        let h =
-                            window.matchMedia &&
-                            window.matchMedia('(prefers-color-scheme: dark)')
-                                .matches
-                        t.setAttribute('data-theme', h ? 'dark' : 'light')
-                    }
-                } catch (m) {
-                    console.error('applyTheme error', m)
+            const applyTheme = () => {
+                let e = document.documentElement,
+                    t = localStorage.getItem('theme')
+                if ('dark' === t || 'light' === t)
+                    e.setAttribute('data-theme', t)
+                else {
+                    let a = matchMedia('(prefers-color-scheme: dark)').matches
+                    e.setAttribute('data-theme', a ? 'dark' : 'light')
                 }
-            }),
-                window.applyTheme(),
-                document.addEventListener(
-                    'astro:after-swap',
-                    window.applyTheme
-                ),
-                document.addEventListener('astro:page-load', window.applyTheme))
+            }
+            ;(applyTheme(),
+                document.addEventListener('astro:after-swap', applyTheme),
+                document.addEventListener('astro:page-load', applyTheme))
         </script>
     </head>
     <body class="min-h-screen">
@@ -87,8 +71,8 @@ const { title, description, page, NoFooter, NoNavbar, AltFooter } = Astro.props
         {
             (!NoFooter && (
                 <div class="page-container">
-                    <footer class="footer py-8 px-8 sm:py-10 sm:px-10 mb-5 rounded-4xl shadow bg-base-900 bottom-0 mt-auto shrink-0">
-                        <div class="text-center pb-10">
+                    <footer class="footer">
+                        <div class="text-center pb-6">
                             <a class="normal-case text-4xl font-bold" href="/">
                                 Orion C. Riker
                             </a>
@@ -124,7 +108,7 @@ const { title, description, page, NoFooter, NoNavbar, AltFooter } = Astro.props
                                     href="mailto:orionriker@proton.me"
                                     class="hero-chip-container group"
                                 >
-                                    <span class="hero-chip p-3! chip">
+                                    <span class="hero-chip p-2.5! chip">
                                         <Icon
                                             client:visible
                                             name="mdi:email"
@@ -138,7 +122,7 @@ const { title, description, page, NoFooter, NoNavbar, AltFooter } = Astro.props
                                     target="_blank"
                                     class="hero-chip-container group"
                                 >
-                                    <span class="hero-chip p-3! chip">
+                                    <span class="hero-chip p-2.5! chip">
                                         <Icon
                                             client:visible
                                             name="mdi:github"
@@ -152,7 +136,7 @@ const { title, description, page, NoFooter, NoNavbar, AltFooter } = Astro.props
                                     target="_blank"
                                     class="hero-chip-container group"
                                 >
-                                    <span class="hero-chip p-3! chip">
+                                    <span class="hero-chip p-2.5! chip">
                                         <Icon
                                             client:visible
                                             name="mdi:stack-overflow"
@@ -166,7 +150,7 @@ const { title, description, page, NoFooter, NoNavbar, AltFooter } = Astro.props
                                     target="_blank"
                                     class="hero-chip-container group"
                                 >
-                                    <span class="hero-chip p-3! chip">
+                                    <span class="hero-chip p-2.5! chip">
                                         <Icon
                                             client:visible
                                             name="cib:twitter"
@@ -180,7 +164,7 @@ const { title, description, page, NoFooter, NoNavbar, AltFooter } = Astro.props
                                     target="_blank"
                                     class="hero-chip-container group"
                                 >
-                                    <span class="hero-chip p-3! chip">
+                                    <span class="hero-chip p-2.5! chip">
                                         <Icon
                                             client:visible
                                             name="cib:reddit"
@@ -194,7 +178,7 @@ const { title, description, page, NoFooter, NoNavbar, AltFooter } = Astro.props
                                     target="_blank"
                                     class="hero-chip-container group"
                                 >
-                                    <span class="hero-chip p-3! chip">
+                                    <span class="hero-chip p-2.5! chip">
                                         <Icon
                                             client:visible
                                             name="cib:linkedin"
@@ -204,41 +188,43 @@ const { title, description, page, NoFooter, NoNavbar, AltFooter } = Astro.props
                                 </a>
                             </div>
                         </div>
-                        <div class="font-mono flex flex-col gap-4 lg:flex-row lg:justify-between">
-                            <p class="text-center">
-                                © {new Date().getFullYear()} Orion C. Riker. All
-                                rights reserved.
-                            </p>
-                            <p class="text-center">
-                                Built using{' '}
-                                <a
-                                    href="https://astro.build/"
-                                    class="text-base-400 hover:underline decoration-wavy"
-                                >
-                                    Astro
-                                </a>{' '}
-                                +{' '}
-                                <a
-                                    href="https://preactjs.com/"
-                                    class="text-base-400 hover:underline decoration-wavy"
-                                >
-                                    Preact
-                                </a>{' '}
-                                +{' '}
-                                <a
-                                    href="https://tailwindcss.com/"
-                                    class="text-base-400 hover:underline decoration-wavy"
-                                >
-                                    TailwindCSS
-                                </a>{' '}
-                                +{' '}
-                                <a
-                                    href="https://motion.dev/"
-                                    class="text-base-400 hover:underline decoration-wavy"
-                                >
-                                    Framer Motion
-                                </a>
-                            </p>
+                        <div class="border-t border-base-800 pt-6">
+                            <div class="font-mono flex flex-col gap-4 text-center lg:flex-row lg:justify-between">
+                                <p>
+                                    © {new Date().getFullYear()} Orion C. Riker.
+                                    All rights reserved.
+                                </p>
+                                <p>
+                                    Built using{' '}
+                                    <a
+                                        href="https://astro.build/"
+                                        class="text-base-400 hover:underline decoration-wavy"
+                                    >
+                                        Astro
+                                    </a>{' '}
+                                    +{' '}
+                                    <a
+                                        href="https://preactjs.com/"
+                                        class="text-base-400 hover:underline decoration-wavy"
+                                    >
+                                        Preact
+                                    </a>{' '}
+                                    +{' '}
+                                    <a
+                                        href="https://tailwindcss.com/"
+                                        class="text-base-400 hover:underline decoration-wavy"
+                                    >
+                                        TailwindCSS
+                                    </a>{' '}
+                                    +{' '}
+                                    <a
+                                        href="https://motion.dev/"
+                                        class="text-base-400 hover:underline decoration-wavy"
+                                    >
+                                        Framer Motion
+                                    </a>
+                                </p>
+                            </div>
                         </div>
                     </footer>
 
@@ -246,7 +232,7 @@ const { title, description, page, NoFooter, NoNavbar, AltFooter } = Astro.props
                         <p>
                             Licensed under GNU General Public License v3.0
                             <a
-                                class="text-accent-500 ml-4 inline gap-2"
+                                class="text-accent-500 ml-4 inline"
                                 href="https://github.com/orionriker/website"
                             >
                                 Source{' '}
@@ -273,53 +259,62 @@ const { title, description, page, NoFooter, NoNavbar, AltFooter } = Astro.props
                 ))
         }
     </body><script is:inline defer>
-        ;((window.initThemeControls = function t() {
-            try {
-                let e = document.documentElement,
-                    a = document.getElementById('theme-light-btn'),
-                    i = document.getElementById('theme-dark-btn')
-                function n(t) {
-                    try {
-                        ;('dark' === t || 'light' === t
-                            ? (localStorage.setItem('theme', t),
-                              e.setAttribute('data-theme', t))
-                            : (localStorage.removeItem('theme'),
-                              e.removeAttribute('data-theme')),
-                            r(t))
-                    } catch (a) {
-                        console.error('setTheme error', a)
-                    }
+        const initThemeControls = () => {
+                try {
+                    let t = document.documentElement,
+                        e = document.getElementById('theme-light-btn'),
+                        a = document.getElementById('theme-dark-btn'),
+                        n = (e) => {
+                            try {
+                                ;(('dark' === e || 'light' === e) &&
+                                    (localStorage.setItem('theme', e),
+                                    t.setAttribute('data-theme', e)),
+                                    r(e))
+                            } catch (a) {
+                                console.error('setTheme error', a)
+                            }
+                        },
+                        r = (t) => {
+                            ;(e?.classList.remove(
+                                'bg-accent-800',
+                                'text-white'
+                            ),
+                                a?.classList.remove(
+                                    'bg-accent-800',
+                                    'text-white'
+                                ),
+                                'light' === t &&
+                                    e?.classList.add(
+                                        'bg-accent-800',
+                                        'text-white'
+                                    ),
+                                'dark' === t &&
+                                    a?.classList.add(
+                                        'bg-accent-800',
+                                        'text-white'
+                                    ))
+                        }
+                    ;(e &&
+                        !e.dataset.themeInit &&
+                        (e.addEventListener('click', () => n('light')),
+                        (e.dataset.themeInit = 'true')),
+                        a &&
+                            !a.dataset.themeInit &&
+                            (a.addEventListener('click', () => n('dark')),
+                            (a.dataset.themeInit = 'true')))
+                    let i = t.getAttribute('data-theme')
+                    ;('dark' === i || 'light' === i) && r(i)
+                } catch (s) {
+                    console.error('initThemeControls', s)
                 }
-                function r(t) {
-                    ;([a, i].forEach((t) => {
-                        t?.classList.remove('bg-accent-800', 'text-white')
-                    }),
-                        'light' === t &&
-                            a?.classList.add('bg-accent-800', 'text-white'),
-                        'dark' === t &&
-                            i?.classList.add('bg-accent-800', 'text-white'))
-                }
-                ;(a &&
-                    !a.dataset.themeInit &&
-                    (a.addEventListener('click', () => n('light')),
-                    (a.dataset.themeInit = '1')),
-                    i &&
-                        !i.dataset.themeInit &&
-                        (i.addEventListener('click', () => n('dark')),
-                        (i.dataset.themeInit = '1')))
-                let h = e.getAttribute('data-theme')
-                ;('dark' === h || 'light' === h) && r(h)
-            } catch (s) {
-                console.error('initThemeControls', s)
-            }
-        }),
-            window.initThemeControls(),
-            document.addEventListener('astro:after-swap', () => {
-                setTimeout(() => window.initThemeControls(), 0)
-            }),
-            window.addEventListener('storage', (t) => {
-                'theme' === t.key &&
-                    setTimeout(() => window.initThemeControls(), 0)
-            }))
+            },
+            onNav = () => requestAnimationFrame(initThemeControls)
+        let onStorage = (t) => {
+            'theme' === t.key && initThemeControls()
+        }
+        ;(initThemeControls(),
+            document.addEventListener('astro:after-swap', onNav),
+            document.addEventListener('astro:page-load', initThemeControls),
+            window.addEventListener('storage', onStorage))
     </script>
 </html>

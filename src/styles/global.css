@@ -3,6 +3,9 @@
 
 @import './themes.css';
 
+/* Override the default dark mode to trigger on data-theme="dark" */
+@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
+
 @media (prefers-color-scheme: dark) {
     :root {
         color-scheme: dark;
@@ -31,6 +34,19 @@ body {
     font-optical-sizing: auto;
 }
 
+.theme-sun {
+    display: block;
+}
+.theme-moon {
+    display: none;
+}
+[data-theme='dark'] .theme-sun {
+    display: none;
+}
+[data-theme='dark'] .theme-moon {
+    display: block;
+}
+
 /*
  * ------- Main styles -------------------------------------------------------------------------------
  */
@@ -52,13 +68,20 @@ body {
 }
 
 /*
+ * Footer
+ */
+.footer {
+    @apply bg-base-900 bottom-0 mt-auto mb-5 shrink-0 rounded-4xl px-8 py-8 shadow sm:px-10 sm:py-10;
+}
+
+/*
  * Cards
  */
 .card {
-    @apply bg-base-900 border-base-800 flex flex-col rounded-2xl border p-5;
+    @apply bg-base-900 border-base-100 flex flex-col rounded-3xl border-2 p-6;
 }
 .card-title {
-    @apply mb-5 text-2xl font-bold tracking-tight text-balance;
+    @apply mb-6 text-2xl font-bold tracking-tight text-balance;
 }
 .card-content {
     @apply mt-5;
@@ -79,7 +102,7 @@ body {
     @apply mb-16 flex flex-row items-center justify-start gap-3 text-5xl font-extrabold tracking-tighter text-balance lg:text-6xl;
 }
 .page-home-section-heading {
-    @apply bg-base-100 text-base-950 mb-16 flex w-fit flex-row items-center justify-start gap-3 rounded-2xl px-3 py-2 text-3xl font-bold tracking-tight text-balance;
+    @apply bg-base-100 text-base-900 mb-16 flex w-fit flex-row items-center justify-start gap-4 rounded-2xl px-4 py-2 text-3xl font-bold tracking-tight text-balance;
 }
 .page-container {
     @apply container mx-auto px-5;
@@ -124,13 +147,16 @@ body {
     position: relative;
     overflow: hidden;
 }
-
 .image-wrapper.loading {
-    background: linear-gradient(100deg, #1e1e1e 40%, #2a2a2a 50%, #1e1e1e 60%);
+    background: linear-gradient(
+        100deg,
+        var(--color-base-900) 40%,
+        var(--color-base-600) 50%,
+        var(--color-base-900) 60%
+    );
     background-size: 200% 100%;
     animation: shimmer 1.4s infinite;
 }
-
 .image-wrapper img {
     display: block;
     width: 100%;
@@ -144,30 +170,33 @@ body {
 }
 
 /*
- * Scroll animations
+ * Skills Section
  */
-.fade-in-up {
-    opacity: 0;
-    transform: translateY(20px);
-    transition:
-        opacity 0.6s ease-out,
-        transform 0.6s ease-out;
+.skill-sidebar {
+    @apply bg-base-900 border-base-800 flex flex-row gap-2 overflow-x-auto rounded-3xl border-2 p-2 md:w-50 md:shrink-0 md:flex-col md:overflow-x-visible;
+    scrollbar-width: none;
+}
+.skill-sidebar::-webkit-scrollbar {
+    display: none;
 }
 
-.fade-in-up.is-visible {
-    opacity: 1;
-    transform: translateY(0);
+.skill-sidebar-btn {
+    @apply relative flex items-center gap-2 rounded-2xl px-3 py-2 text-sm font-medium transition-colors duration-200;
+    @apply text-base-300 hover:bg-base-800;
+    @apply whitespace-nowrap md:w-full;
 }
 
-/*
- * Skill card animations
- */
 .skill-card {
-    @apply border-base-700 h-fit rounded-lg border p-4 transition-all duration-300 ease-out;
+    @apply flex items-center gap-3 rounded-2xl border-2 p-3;
 }
-
-.skill-card:hover {
-    @apply bg-base-800 border-base-600;
+.skill-card[data-level='Proficient'] {
+    @apply border-base-800 bg-base-900;
+}
+.skill-card[data-level='PreviouslyUsed'] {
+    @apply border-base-800 bg-base-900/50 opacity-60;
+}
+.skill-card[data-level='Learning'] {
+    @apply bg-base-900 border-dashed border-amber-600/50;
 }
 
 /*
@@ -180,10 +209,5 @@ body {
         animation-duration: 0.01ms !important;
         animation-iteration-count: 1 !important;
         transition-duration: 0.01ms !important;
-    }
-
-    .fade-in-up {
-        opacity: 1;
-        transform: none;
     }
 }

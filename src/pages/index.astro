@@ -6,6 +6,10 @@ import Icon from '@components/Icon'
 import { Image } from 'astro:assets'
 
 import ImageTechStack from '@images/tech-stack.svg'
+
+const MyAge = Math.floor(
+    (Date.now() - 1246406400000) / (1000 * 60 * 60 * 24 * 365.25)
+)
 ---
 
 <Layout
@@ -17,7 +21,7 @@ import ImageTechStack from '@images/tech-stack.svg'
         class="relative page-container h-[calc(100vh-60px)] flex flex-col justify-center"
         id="hero"
     >
-        <Hero client:visible />
+        <Hero client:visible transition:persist />
     </section>
     <section class="page-container py-16" id="about">
         <h2 class="page-home-section-heading">
@@ -25,91 +29,90 @@ import ImageTechStack from '@images/tech-stack.svg'
             About Me
         </h2>
         <div
-            class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 text-lg"
+            class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 xl:text-lg"
         >
-            <div class="card md:col-span-2 shadow">
+            <div class="card md:col-span-2">
                 <div class="card-content z-10 mt-0!">
                     <p class="font-medium mb-4">
-                        I'm a {
-                            Math.floor(
-                                (Date.now() - 1246406400000) /
-                                    (1000 * 60 * 60 * 24 * 365.25)
-                            )
-                        }-year-old Full Stack Developer. Federationist.
-                        Designer. Maker. Based in Bengaluru with 7 years of
-                        experience. I build Websites, APIs, Android apps, .NET
-                        software, AI products, and whatever else needs building.
-                        I design in Figma and implement what I design. Game
-                        development is also something I do: I work across Unity,
-                        Unreal, and Godot, mostly all personal projects. I also
-                        work with electronics, soldering, circuit design, and
-                        connecting sensors directly to mains AC and integrate
-                        them into Home Assistant. And 3D printing: mostly
-                        functional parts I've designed to make daily life
-                        easier.
+                        I'm a {MyAge}-year-old Full Stack Developer.
+                        Federationist. Designer. Maker. Based in Bengaluru,
+                        coding since age 10. I build Websites, APIs, Android
+                        apps, .NET software, AI products, and whatever else
+                        needs building. I design in Figma and implement what I
+                        design. I also work across Unity, Unreal, and Godot for
+                        game development. I also work with electronics,
+                        soldering, circuit design, and connecting sensors
+                        directly to mains AC and integrating them into Home
+                        Assistant. And 3D printing: mostly functional parts I've
+                        designed to make daily life easier.
                     </p>
                     <p class="font-medium mb-4">
                         I also run a homelab: Proxmox hosting TrueNAS across
                         16TB of total storage with ZFS RAIDZ2. Some of the
-                        services it runs are: Immich, Bitwarden, GitLab,
-                        Grafana, Pi-hole, Technitium DNS. And I use Tailscale so
-                        I can reach everything remotely.
+                        services it runs: Immich, Bitwarden, GitLab, Grafana,
+                        Pi-hole, Technitium DNS. And I use Tailscale so I can
+                        reach everything remotely, without port forwarding.
                     </p>
                     <p class="font-medium mb-4">
                         I study governance, track current affairs, and think
                         about rights and law. I'm a citizen of Earth before
-                        anything else. From that vantage point: the nation-state
-                        system was never built for the problems we face today. I
-                        am building a replacement: the United Federation of
-                        Earth, a world government to eventually replace
-                        nation-states. It has a quadricameral (four-chamber)
-                        legislature, branches that can check and remove each
-                        other, anti-corruption written into the architecture
-                        rather than bolted on as an afterthought, and things
-                        most governments still treat as negotiable: same and
-                        equal rights for every human on Earth, free healthcare,
-                        free public transport all guaranteed in the constitution
-                        itself.
+                        anything else. The nation-state system was never built
+                        for the problems we face today. The United Federation of
+                        Earth is what I'm building to replace it: a world
+                        government to eventually replace nation-states. It has a
+                        quadricameral (four-chamber) legislature, branches that
+                        can check and remove each other, anti-corruption in the
+                        architecture itself, and things most governments still
+                        treat as negotiable: same and equal rights for every
+                        human on Earth, free healthcare, free public transport
+                        all guaranteed in the constitution itself.
                     </p>
                     <p class="font-medium mb-4">
                         I use Arch Linux as my OS. Everything I rely on is open
-                        source. Also love to play video games, they are what got
-                        me into the rabbit hole of coding: Counter-Strike,
-                        Minecraft, Hytale are some which I play or played.
+                        source. I also love to play video games; they are what
+                        got me into the rabbit hole of coding: Counter-Strike 2,
+                        Minecraft, Terraria, Hytale, and indie games in general.
+                        I constantly try new games, but those are what I always
+                        return to.
                     </p>
                     <p class="font-medium">
                         This portfolio website runs on a 2-node Kubernetes
                         cluster with Caddy as the reverse proxy, deployed using
-                        FluxCD and custom CI/CD scripts. I'm a strong advocate
-                        for DevOps practices.
+                        FluxCD and custom CI/CD scripts.
                     </p>
                 </div>
             </div>
-            <div class="card shadow h-fit">
-                <div class="card-content z-10 mt-0!">
-                    <p class="font-semibold mb-3">Currently</p>
-                    <ul class="font-medium space-y-2 text-base">
-                        <li>🛠️ Building this portfolio</li>
-                        <li>🎮 Learning Godot</li>
-                        <li>📖 Exploring AI/ML</li>
-                    </ul>
+            <div
+                class="flex flex-col gap-6 md:contents lg:flex lg:flex-col lg:gap-6"
+            >
+                <div class="card h-fit">
+                    <div class="card-content z-10 mt-0!">
+                        <h1 class="card-title">Currently</h1>
+                        <ul class="font-medium space-y-2 text-base">
+                            <li>🛠️ Building this portfolio</li>
+                            <li>🎮 Learning Godot</li>
+                            <li>📖 Exploring AI/ML</li>
+                        </ul>
+                    </div>
                 </div>
-            </div>
-            <div class="card shadow">
-                <div class="card-content z-10 mt-0!">
-                    <p class="font-medium">
-                        You can contact me via <a
-                            href="https://linkedin.com/in/orionriker"
-                            target="_blank"
-                            class="underline decoration-accent decoration-2 underline-offset-2"
-                            >LinkedIn</a
-                        >, or you can email me{' '}
-                        <a
-                            href="mailto:orionriker@proton.me"
-                            class="underline decoration-accent decoration-2 underline-offset-2"
-                            >orionriker@proton.me</a
-                        >, or use any of the social media buttons.
-                    </p>
+                <div class="card">
+                    <div class="card-content z-10 mt-0!">
+                        <h1 class="card-title">Contact</h1>
+                        <p class="font-medium">
+                            You can contact me via <a
+                                href="https://linkedin.com/in/orionriker"
+                                target="_blank"
+                                class="text-accent-500 hover:underline decoration-wavy decoration-1 underline-offset-2"
+                                >LinkedIn</a
+                            >, or you can email me{' '}
+                            <a
+                                href="mailto:orionriker@proton.me"
+                                class="text-accent-500 hover:underline decoration-wavy decoration-1 underline-offset-2"
+                                >orionriker@proton.me</a
+                            >, or use any of the social media buttons (located
+                            in footer and hero).
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>

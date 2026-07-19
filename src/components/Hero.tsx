@@ -24,7 +24,7 @@ const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
         opacity: 1,
-        transition: { staggerChildren: 0.1, delayChildren: 0.3 },
+        transition: { staggerChildren: 0.05, delayChildren: 0.05 },
     },
 }
 
@@ -52,42 +52,41 @@ export default function Hero() {
                 >
                     Orion C. Riker.
                 </motion.h1>
-                <motion.h1
-                    className="text-[clamp(1.25rem,9.5vw,3.5rem)] font-extrabold tracking-tighter text-balance sm:text-5xl lg:text-6xl xl:text-7xl"
+                <motion.h2
+                    className="text-[clamp(1.25rem,6vw,2rem)] leading-snug font-medium tracking-tight text-balance text-zinc-600 xl:text-4xl dark:text-zinc-400"
                     variants={itemVariants}
                 >
-                    Full Stack Developer
-                </motion.h1>
+                    Full Stack Developer. Federationist. Designer. Maker.
+                </motion.h2>
             </div>
             <motion.div
                 className="flex w-full flex-col items-start gap-5 xl:w-162.5"
                 variants={itemVariants}
             >
-                <p className="flex flex-col text-xl leading-relaxed font-bold text-balance sm:text-2xl sm:text-wrap lg:block xl:text-2xl">
+                <p className="flex flex-col text-xl leading-relaxed font-semibold text-balance sm:text-2xl sm:text-wrap xl:text-2xl">
                     <span>
                         I{' '}
-                        <span className="text-accent-400 animate-pulse font-mono transition-colors duration-300">
-                            {'{develop}'}
+                        <span className="text-accent-500 dark:text-accent-400 animate-pulse font-mono transition-colors duration-300">
+                            {'{build}'}
                         </span>{' '}
                         software.
                     </span>{' '}
                     <span>
                         I{' '}
-                        <span className="animate-pulse font-mono text-red-400 transition-colors duration-300">
+                        <span className="animate-pulse font-mono text-red-500 transition-colors duration-300 dark:text-red-400">
                             {'(automate)'}
                         </span>{' '}
                         server infrastructure.
                     </span>{' '}
                     <span>
                         I{' '}
-                        <span className="animate-pulse font-mono text-violet-400 transition-colors duration-300">
+                        <span className="animate-pulse font-mono text-violet-500 transition-colors duration-300 dark:text-violet-400">
                             {'[architect]'}
                         </span>{' '}
                         global governance.
                     </span>{' '}
                     <span>
-                        My directive is engineering better systems for the Human
-                        race.
+                        My goal is making better systems for the Human race.
                     </span>
                 </p>
                 <div className="flex gap-2">
