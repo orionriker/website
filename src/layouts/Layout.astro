@@ -15,8 +15,7 @@ interface Props {
     AltFooter?: boolean
 }
 
-// @ts-ignore
-const { title, description, page, NoFooter, NoNavbar, AltFooter } = Astro.props
+const { title, description, NoFooter, NoNavbar, AltFooter } = Astro.props
 ---
 
 <!doctype html>
@@ -58,7 +57,7 @@ const { title, description, page, NoFooter, NoNavbar, AltFooter } = Astro.props
         </script>
     </head>
     <body class="min-h-screen">
-        {!NoNavbar && <Navbar client:visible />}
+        {!NoNavbar && <Navbar client:load />}
 
         <div
             class={AltFooter && !NoFooter
@@ -79,7 +78,7 @@ const { title, description, page, NoFooter, NoNavbar, AltFooter } = Astro.props
                             <ul class="flex justify-center gap-5 px-1 py-5 text-sm font-semibold">
                                 <li>
                                     <a
-                                        class="transition-colors duration-300 hover:text-base-400"
+                                        class="transition-colors duration-300 hover:text-base-500 hover:dark:text-base-400"
                                         href="/"
                                     >
                                         Home
@@ -87,7 +86,7 @@ const { title, description, page, NoFooter, NoNavbar, AltFooter } = Astro.props
                                 </li>
                                 <li>
                                     <a
-                                        class="transition-colors duration-300 hover:text-base-400"
+                                        class="transition-colors duration-300 hover:text-base-500 hover:dark:text-base-400"
                                         href="/projects"
                                     >
                                         Projects
@@ -95,7 +94,7 @@ const { title, description, page, NoFooter, NoNavbar, AltFooter } = Astro.props
                                 </li>
                                 <li>
                                     <a
-                                        class="transition-colors duration-300 hover:text-base-400"
+                                        class="transition-colors duration-300 hover:text-base-500 hover:dark:text-base-400"
                                         href="/#about"
                                     >
                                         About
@@ -112,6 +111,7 @@ const { title, description, page, NoFooter, NoNavbar, AltFooter } = Astro.props
                                         <Icon
                                             client:visible
                                             name="mdi:email"
+                                            class="not-xs:w-4.5 not-xs:h-4.5"
                                             size={20}
                                         />
                                     </span>
@@ -126,6 +126,7 @@ const { title, description, page, NoFooter, NoNavbar, AltFooter } = Astro.props
                                         <Icon
                                             client:visible
                                             name="mdi:github"
+                                            class="not-xs:w-4.5 not-xs:h-4.5"
                                             size={20}
                                         />
                                     </span>
@@ -140,6 +141,7 @@ const { title, description, page, NoFooter, NoNavbar, AltFooter } = Astro.props
                                         <Icon
                                             client:visible
                                             name="mdi:stack-overflow"
+                                            class="not-xs:w-4.5 not-xs:h-4.5"
                                             size={20}
                                         />
                                     </span>
@@ -154,6 +156,7 @@ const { title, description, page, NoFooter, NoNavbar, AltFooter } = Astro.props
                                         <Icon
                                             client:visible
                                             name="cib:twitter"
+                                            class="not-xs:w-4.5 not-xs:h-4.5"
                                             size={20}
                                         />
                                     </span>
@@ -168,6 +171,7 @@ const { title, description, page, NoFooter, NoNavbar, AltFooter } = Astro.props
                                         <Icon
                                             client:visible
                                             name="cib:reddit"
+                                            class="not-xs:w-4.5 not-xs:h-4.5"
                                             size={20}
                                         />
                                     </span>
@@ -182,6 +186,7 @@ const { title, description, page, NoFooter, NoNavbar, AltFooter } = Astro.props
                                         <Icon
                                             client:visible
                                             name="cib:linkedin"
+                                            class="not-xs:w-4.5 not-xs:h-4.5"
                                             size={20}
                                         />
                                     </span>
@@ -189,60 +194,74 @@ const { title, description, page, NoFooter, NoNavbar, AltFooter } = Astro.props
                             </div>
                         </div>
                         <div class="border-t border-base-800 pt-6">
-                            <div class="font-mono flex flex-col gap-4 text-center lg:flex-row lg:justify-between">
-                                <p>
-                                    © {new Date().getFullYear()} Orion C. Riker.
-                                    All rights reserved.
-                                </p>
-                                <p>
-                                    Built using{' '}
+                            <div class="font-mono flex flex-col gap-4 text-center not-xs:text-sm lg:flex-row lg:justify-between">
+                                {/* Flex handles the copyright wrap cleanly without forced blocks */}
+                                <div class="leading-relaxed flex flex-wrap justify-center gap-x-1 lg:justify-start">
+                                    <span>
+                                        © {new Date().getFullYear()} Orion C.
+                                        Riker.
+                                    </span>
+                                    <span>All rights reserved.</span>
+                                </div>
+
+                                <div class="leading-relaxed flex flex-wrap justify-center gap-x-1.5 gap-y-0.5 lg:justify-end">
+                                    <span class="text-text-primary">
+                                        Built using
+                                    </span>
                                     <a
                                         href="https://astro.build/"
-                                        class="text-base-400 hover:underline decoration-wavy"
+                                        class="text-base-500 dark:text-base-400 hover:underline decoration-wavy"
                                     >
                                         Astro
-                                    </a>{' '}
-                                    +{' '}
+                                    </a>
+                                    <span class="text-yellow-600 dark:text-yellow-500">
+                                        +
+                                    </span>
                                     <a
                                         href="https://preactjs.com/"
-                                        class="text-base-400 hover:underline decoration-wavy"
+                                        class="text-base-500 dark:text-base-400 hover:underline decoration-wavy"
                                     >
                                         Preact
-                                    </a>{' '}
-                                    +{' '}
+                                    </a>
+                                    <span class="text-yellow-600 dark:text-yellow-500">
+                                        +
+                                    </span>
                                     <a
                                         href="https://tailwindcss.com/"
-                                        class="text-base-400 hover:underline decoration-wavy"
+                                        class="text-base-500 dark:text-base-400 hover:underline decoration-wavy"
                                     >
                                         TailwindCSS
-                                    </a>{' '}
-                                    +{' '}
+                                    </a>
+                                    <span class="text-yellow-600 dark:text-yellow-500">
+                                        +
+                                    </span>
                                     <a
                                         href="https://motion.dev/"
-                                        class="text-base-400 hover:underline decoration-wavy"
+                                        class="text-base-500 dark:text-base-400 hover:underline decoration-wavy"
                                     >
                                         Framer Motion
                                     </a>
-                                </p>
+                                </div>
                             </div>
                         </div>
                     </footer>
 
-                    <div class="text-center text-base-400 mb-5">
-                        <p>
+                    <div class="text-center text-text-tertiary not-xs:text-sm mb-5">
+                        <p class="leading-relaxed">
                             Licensed under GNU General Public License v3.0
-                            <a
-                                class="text-accent-500 ml-4 inline"
-                                href="https://github.com/orionriker/website"
-                            >
-                                Source{' '}
-                                <Icon
-                                    client:visible
-                                    name="mdi:open-in-new"
-                                    class="inline"
-                                    size={16}
-                                />
-                            </a>
+                            <span class="block mt-1 sm:inline sm:mt-0 sm:ml-2">
+                                <a
+                                    class="text-accent-500 inline-flex items-center gap-1 hover:underline"
+                                    href="https://github.com/orionriker/website"
+                                >
+                                    Source
+                                    <Icon
+                                        client:visible
+                                        name="mdi:open-in-new"
+                                        size={16}
+                                    />
+                                </a>
+                            </span>
                         </p>
                     </div>
                 </div>

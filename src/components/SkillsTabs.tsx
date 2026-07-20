@@ -211,35 +211,58 @@ export default function SkillsTabs() {
 
     return (
         <div class="flex flex-col gap-6 md:flex-row">
-            <nav class="skill-sidebar">
-                {skillCategories.map((cat) => (
-                    <button
-                        key={cat.id}
-                        onClick={() => setActiveTab(cat.id)}
-                        className="skill-sidebar-btn"
-                    >
-                        {activeTab === cat.id && (
-                            <motion.div
-                                layoutId="active-bg"
-                                className="bg-base-100 absolute inset-0 rounded-2xl"
-                                transition={{
-                                    type: 'spring',
-                                    stiffness: 400,
-                                    damping: 30,
-                                }}
-                            />
-                        )}
-                        <span
-                            class={`relative z-10 flex items-center gap-2 transition-colors duration-300 ${
-                                activeTab === cat.id ? 'text-base-950' : ''
-                            }`}
+            <div class="relative md:w-50 md:shrink-0">
+                <div
+                    class="from-base-950 pointer-events-none absolute inset-y-0 left-0 z-12 w-20 rounded-l-3xl bg-linear-to-r to-transparent md:hidden"
+                    id="shadow-left"
+                    style="opacity:0"
+                />
+                <nav
+                    class="skill-sidebar"
+                    onScroll={(e) => {
+                        const el = e.currentTarget
+                        const left = document.getElementById('shadow-left')!
+                        const right = document.getElementById('shadow-right')!
+                        left.style.opacity = el.scrollLeft > 4 ? '1' : '0'
+                        right.style.opacity =
+                            el.scrollLeft < el.scrollWidth - el.clientWidth - 4
+                                ? '1'
+                                : '0'
+                    }}
+                >
+                    {skillCategories.map((cat) => (
+                        <button
+                            key={cat.id}
+                            onClick={() => setActiveTab(cat.id)}
+                            className="skill-sidebar-btn"
                         >
-                            <Icon name={cat.icon} size={16} />
-                            <span class="truncate">{cat.label}</span>
-                        </span>
-                    </button>
-                ))}
-            </nav>
+                            {activeTab === cat.id && (
+                                <motion.div
+                                    layoutId="active-bg"
+                                    className="bg-base-100 absolute inset-0 rounded-2xl"
+                                    transition={{
+                                        type: 'spring',
+                                        stiffness: 400,
+                                        damping: 30,
+                                    }}
+                                />
+                            )}
+                            <span
+                                class={`relative z-10 flex items-center gap-2 transition-colors duration-300 ${
+                                    activeTab === cat.id ? 'text-base-950' : ''
+                                }`}
+                            >
+                                <Icon name={cat.icon} size={16} />
+                                <span class="truncate">{cat.label}</span>
+                            </span>
+                        </button>
+                    ))}
+                </nav>
+                <div
+                    class="from-base-950 pointer-events-none absolute inset-y-0 right-0 z-12 w-20 rounded-r-3xl bg-linear-to-l to-transparent md:hidden"
+                    id="shadow-right"
+                />
+            </div>
 
             <div class="min-w-0 flex-1">
                 {groupedSkills.map((group) => (

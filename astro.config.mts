@@ -65,8 +65,7 @@ export default defineConfig({
             cssCodeSplit: true,
             assetsInlineLimit: 4096,
 
-            // Smaller chunks = better caching
-            chunkSizeWarningLimit: 500,
+            chunkSizeWarningLimit: 5000,
         },
 
         optimizeDeps: {

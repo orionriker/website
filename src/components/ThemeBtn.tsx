@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'preact/hooks'
+import { useState } from 'preact/hooks'
 
 const ThemeBtn = () => {
     const [theme, setTheme] = useState(() => {
@@ -6,12 +6,6 @@ const ThemeBtn = () => {
         const saved = document.documentElement.getAttribute('data-theme')
         return saved === 'dark' || saved === 'light' ? saved : null
     })
-
-    //    useEffect(() => {
-    //        if (typeof window === 'undefined') return
-    //        const saved = document.documentElement.getAttribute('data-theme')
-    //        setTheme(saved === 'dark' || saved === 'light' ? saved : 'light')
-    //    }, [])
 
     function switchTheme() {
         const next = theme === 'light' ? 'dark' : 'light'

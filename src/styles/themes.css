@@ -36,8 +36,8 @@
     --color-secondary-950: #202021;
 
     --color-text-primary: oklch(0.2101 0.0318 264.66);
-    --color-text-secondary: oklch(0.3729 0.0306 259.73);
-    --color-text-tertiary: oklch(0.551 0.0234 264.36);
+    --color-text-secondary: oklch(0.4585 0.0247 269.83);
+    --color-text-tertiary: oklch(0.5 0.01 271.25);
 
     --breakpoint-xs: 30rem;
     --breakpoint-2xl: 100rem;
@@ -59,7 +59,7 @@
         --color-base-950: #141416;
 
         --color-text-primary: oklch(0.9846 0.0017 247.84);
-        --color-text-secondary: oklch(0.8717 0.0093 258.34);
-        --color-text-tertiary: oklch(0.7137 0.0192 261.32);
+        --color-text-secondary: oklch(0.7572 0.001 247.72);
+        --color-text-tertiary: oklch(0.6731 0.002 247.7);
     }
 }

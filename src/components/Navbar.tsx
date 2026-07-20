@@ -37,14 +37,10 @@ const Navbar = () => {
         return () => window.removeEventListener('scroll', onScroll)
     }, [])
 
-    const glassBase = scrolled
-        ? 'bg-base-950/80 backdrop-blur-md shadow-lg shadow-black/10'
-        : 'bg-base-950/90 backdrop-blur-sm'
-
     return (
         <div class="sticky top-0 z-50">
             <div
-                class={`navbar border-base-800 h-20 border-b transition-[background,backdrop-filter,box-shadow] duration-300 ${glassBase}`}
+                class={`navbar border-base-800 h-20 border-b transition-[background,backdrop-filter,box-shadow] duration-300 ${scrolled ? 'bg-base-950/80 shadow-lg shadow-black/10 backdrop-blur-md' : 'bg-base-950/50 backdrop-blur-xl'}`}
             >
                 <div class="page-container flex justify-between">
                     <div class="navbar-start sm:w-full lg:w-max">
@@ -169,7 +165,11 @@ const Navbar = () => {
                         }}
                     >
                         <div
-                            class={`${scrolled ? 'bg-base-950/80 backdrop-blur-md' : 'bg-base-950/90 backdrop-blur-sm'}`}
+                            class={
+                                scrolled
+                                    ? 'bg-base-950/80 backdrop-blur-md'
+                                    : 'bg-base-950/50 backdrop-blur-xl'
+                            }
                         >
                             <div class="page-container">
                                 <motion.ul
@@ -185,7 +185,7 @@ const Navbar = () => {
                                             class="border-base-800 flex flex-row items-center gap-4 border-b pb-4"
                                             variants={itemVariants}
                                         >
-                                            <span class="text-base-500 font-mono text-sm font-medium">
+                                            <span class="text-text-tertiary font-mono text-sm font-medium">
                                                 {page.num}
                                             </span>
                                             <a
