@@ -84,7 +84,7 @@ export default function Hero() {
             >
                 <div className="flex min-w-0 flex-col items-start justify-center">
                     <motion.h1
-                        className="text-[clamp(3.40rem,9vw,4.5rem)] leading-tight font-extrabold tracking-tighter text-balance"
+                        className="text-[clamp(3rem,9vw,4.5rem)] leading-tight font-extrabold tracking-tighter text-balance"
                         variants={itemVariants}
                     >
                         Orion C. Riker.
@@ -100,7 +100,7 @@ export default function Hero() {
                     className="flex w-full flex-col items-start gap-5 xl:max-w-fit"
                     variants={itemVariants}
                 >
-                    <p className="flex flex-col text-[clamp(1.25rem,4vw,1.7rem)] leading-relaxed font-semibold">
+                    <p className="flex flex-col text-[clamp(1.1rem,4vw,1.7rem)] leading-relaxed font-semibold">
                         <span>
                             I{' '}
                             <span className="from-accent-500 dark:from-accent-400 animate-pulse bg-gradient-to-r to-teal-500 bg-clip-text font-mono text-transparent dark:to-teal-400">

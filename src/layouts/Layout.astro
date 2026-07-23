@@ -38,6 +38,10 @@ const { title, description, NoFooter, NoNavbar, AltFooter } = Astro.props
             href="https://fonts.googleapis.com/css2?family=Mona+Sans:ital,wght@0,200..900;1,200..900&display=swap"
             rel="stylesheet"
         />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Fira+Mono:wght@400;500;700&display=swap"
+            rel="stylesheet"
+        />
         <title>{title}</title>
         <ClientRouter />
         <script is:inline async>
@@ -72,7 +76,10 @@ const { title, description, NoFooter, NoNavbar, AltFooter } = Astro.props
                 <div class="page-container">
                     <footer class="footer">
                         <div class="text-center pb-6">
-                            <a class="normal-case text-4xl font-bold" href="/">
+                            <a
+                                class="text-4xl font-bold tracking-tight"
+                                href="/"
+                            >
                                 Orion C. Riker
                             </a>
                             <ul class="flex justify-center gap-5 px-1 py-5 text-sm font-semibold">
@@ -195,7 +202,6 @@ const { title, description, NoFooter, NoNavbar, AltFooter } = Astro.props
                         </div>
                         <div class="border-t border-base-800 pt-6">
                             <div class="font-mono flex flex-col gap-4 text-center not-xs:text-sm lg:flex-row lg:justify-between">
-                                {/* Flex handles the copyright wrap cleanly without forced blocks */}
                                 <div class="leading-relaxed flex flex-wrap justify-center gap-x-1 lg:justify-start">
                                     <span>
                                         © {new Date().getFullYear()} Orion C.
@@ -210,34 +216,28 @@ const { title, description, NoFooter, NoNavbar, AltFooter } = Astro.props
                                     </span>
                                     <a
                                         href="https://astro.build/"
-                                        class="text-base-500 dark:text-base-400 hover:underline decoration-wavy"
+                                        class="link underline-offset-2 font-bold text-base-500! dark:text-base-400!"
                                     >
                                         Astro
                                     </a>
-                                    <span class="text-yellow-600 dark:text-yellow-500">
-                                        +
-                                    </span>
+                                    <span>+</span>
                                     <a
                                         href="https://preactjs.com/"
-                                        class="text-base-500 dark:text-base-400 hover:underline decoration-wavy"
+                                        class="link underline-offset-2 font-bold text-base-500! dark:text-base-400!"
                                     >
                                         Preact
                                     </a>
-                                    <span class="text-yellow-600 dark:text-yellow-500">
-                                        +
-                                    </span>
+                                    <span>+</span>
                                     <a
                                         href="https://tailwindcss.com/"
-                                        class="text-base-500 dark:text-base-400 hover:underline decoration-wavy"
+                                        class="link underline-offset-2 font-bold text-base-500! dark:text-base-400!"
                                     >
                                         TailwindCSS
                                     </a>
-                                    <span class="text-yellow-600 dark:text-yellow-500">
-                                        +
-                                    </span>
+                                    <span>+</span>
                                     <a
                                         href="https://motion.dev/"
-                                        class="text-base-500 dark:text-base-400 hover:underline decoration-wavy"
+                                        class="link underline-offset-2 font-bold text-base-500! dark:text-base-400!"
                                     >
                                         Framer Motion
                                     </a>
@@ -251,7 +251,7 @@ const { title, description, NoFooter, NoNavbar, AltFooter } = Astro.props
                             Licensed under GNU General Public License v3.0
                             <span class="block mt-1 sm:inline sm:mt-0 sm:ml-2">
                                 <a
-                                    class="text-accent-500 inline-flex items-center gap-1 hover:underline"
+                                    class="link underline-offset-2 inline-flex items-center gap-1"
                                     href="https://github.com/orionriker/website"
                                 >
                                     Source
