@@ -4,7 +4,12 @@
  * @see https://astro.build/config
  * @type {import('astro').AstroUserConfig}
  */
-import { defineConfig, memoryCache, logHandlers } from 'astro/config'
+import {
+    defineConfig,
+    fontProviders,
+    memoryCache,
+    logHandlers,
+} from 'astro/config'
 
 const isBuild = process.argv.includes('build')
 
@@ -93,4 +98,60 @@ export default defineConfig({
             ],
         },
     },
+
+    fonts: [
+        {
+            provider: fontProviders.local(),
+            name: 'Mona Sans',
+            cssVariable: '--font-mona',
+            options: {
+                variants: [
+                    {
+                        weight: '100 900',
+                        style: 'normal',
+                        src: [
+                            './src/assets/fonts/Mona_Sans/MonaSans-VariableFont.woff2',
+                        ],
+                    },
+                    {
+                        weight: '100 900',
+                        style: 'italic',
+                        src: [
+                            './src/assets/fonts/Mona_Sans/MonaSans-Italic-VariableFont.woff2',
+                        ],
+                    },
+                ],
+            },
+        },
+        {
+            provider: fontProviders.local(),
+            name: 'Fira Mono',
+            cssVariable: '--font-fira',
+            options: {
+                variants: [
+                    {
+                        weight: '400',
+                        style: 'normal',
+                        src: [
+                            './src/assets/fonts/Fira_Mono/FiraMono-Regular.woff2',
+                        ],
+                    },
+                    {
+                        weight: '500',
+                        style: 'normal',
+                        src: [
+                            './src/assets/fonts/Fira_Mono/FiraMono-Medium.woff2',
+                        ],
+                    },
+                    {
+                        weight: '700',
+                        style: 'normal',
+                        src: [
+                            './src/assets/fonts/Fira_Mono/FiraMono-Bold.woff2',
+                        ],
+                    },
+                ],
+            },
+        },
+    ],
 })

@@ -42,6 +42,13 @@
     --breakpoint-xs: 30rem;
     --breakpoint-2xl: 100rem;
     --breakpoint-3xl: 120rem;
+
+    --font-sans:
+        var(--font-mona), -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+        Helvetica, Arial, sans-serif;
+    --font-mono:
+        var(--font-fira), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+        monospace;
 }
 
 @layer base {

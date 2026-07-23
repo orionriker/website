@@ -1,4 +1,5 @@
 ---
+import { Font } from 'astro:assets'
 import { ClientRouter } from 'astro:transitions'
 import '@styles/global.css'
 
@@ -26,22 +27,8 @@ const { title, description, NoFooter, NoNavbar, AltFooter } = Astro.props
         <meta name="viewport" content="width=device-width" />
         <meta name="color-scheme" content="dark light" />
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-        <link
-            href="https://fonts.gstatic.com/s/monasans/v4/o-0bIpQmx24alC5A4PNB6Ryti20_6n1iPHjc5a7duw.woff2"
-            rel="preload"
-            as="font"
-            crossorigin
-        />
-        <link
-            href="https://fonts.googleapis.com/css2?family=Mona+Sans:ital,wght@0,200..900;1,200..900&display=swap"
-            rel="stylesheet"
-        />
-        <link
-            href="https://fonts.googleapis.com/css2?family=Fira+Mono:wght@400;500;700&display=swap"
-            rel="stylesheet"
-        />
+        <Font cssVariable="--font-mona" preload />
+        <Font cssVariable="--font-fira" preload />
         <title>{title}</title>
         <ClientRouter />
         <script is:inline async>

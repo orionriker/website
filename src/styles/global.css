@@ -30,24 +30,14 @@ html {
 body {
     @apply text-text-primary;
 
-    font-family:
-        'Mona Sans',
-        -apple-system,
-        BlinkMacSystemFont,
-        'Segoe UI',
-        Roboto,
-        Helvetica,
-        Arial,
-        sans-serif;
+    font-family: var(--font-sans);
     font-optical-sizing: auto;
     line-height: 1.55;
     letter-spacing: -0.01em;
 }
 
 .font-mono {
-    font-family:
-        'Fira Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
-        monospace;
+    font-family: var(--font-mono);
     line-height: 1.55;
     letter-spacing: normal;
 }
