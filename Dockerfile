@@ -1,20 +1,29 @@
 # syntax=docker/dockerfile:1.4
 
 # ── Base images ────────────────────────────────────────────────────────────────
+# Defaults use Docker Hardened Images. Override with --build-arg to use custom
+# bases built by the bun-base project (apko/melange, wolfi-based), e.g.:
+#   --build-arg BUILDER_IMAGE=registry.example.com/bun-dev:1.4.0
+#   --build-arg RUNTIME_IMAGE=registry.example.com/bun-runtime:1.4.0
 
-FROM --platform=$BUILDPLATFORM dhi.io/bun:1.3-alpine3.22-dev AS builder
+# NOTE: dhi.io has no bun 1.4 images yet (as of 2026-08-21); defaults pinned to 1.3.
+ARG BUILDER_IMAGE=dhi.io/bun:1.3-alpine3.22-dev
+ARG RUNTIME_IMAGE=dhi.io/bun:1.3-alpine3.22
+
+FROM --platform=$BUILDPLATFORM ${BUILDER_IMAGE} AS builder
 WORKDIR /app
 
-FROM --platform=$TARGETPLATFORM dhi.io/bun:1.3-alpine3.22-dev AS builder-target
+FROM --platform=$TARGETPLATFORM ${BUILDER_IMAGE} AS builder-target
 WORKDIR /app
 
-FROM --platform=$TARGETPLATFORM dhi.io/bun:1.3-alpine3.22 AS runtime
+FROM --platform=$TARGETPLATFORM ${RUNTIME_IMAGE} AS runtime
 WORKDIR /app
 
 # ── Tini ───────────────────────────────────────────────────────────────────────
 FROM builder-target AS tini
 
-RUN apk add --no-cache tini
+# Normalize install path: alpine -> /sbin/tini, wolfi -> /usr/bin/tini
+RUN apk add --no-cache tini && cp "$(command -v tini)" /tini
 
 # ── Install: dev deps ──────────────────────────────────────────────────────────
 FROM builder AS install-dev
@@ -47,7 +56,7 @@ COPY --chown=nonroot:nonroot --from=sharp /app/node_modules ./node_modules
 COPY --chown=nonroot:nonroot ./scripts/docker/entrypoint.mts ./entrypoint.mts
 COPY --chown=nonroot:nonroot ./scripts/docker/healthcheck.mts ./healthcheck.mts
 
-COPY --from=tini /sbin/tini /bin/tini
+COPY --from=tini /tini /bin/tini
 
 ENV HOST=0.0.0.0 PORT=4321 NODE_ENV=production
 EXPOSE 4321
