@@ -10,17 +10,21 @@ command -v jq >/dev/null || { echo "Error: jq package is required"; build_failed
 
 TYPE_CHECK=false
 DOCKER=false
+LOCAL=false
 IMAGE_ARCH=
 IMAGE_REGISTRY=
 
 # Load variables from .env.build
 if [[ -f .env.build ]]; then
   # shellcheck disable=SC2046
-  export $(grep -E '^(IMAGE_ARCH|IMAGE_REGISTRY|COSIGN_PASSWORD|COSIGN_PRIVATE)=' .env.build | xargs)
+  export $(grep -E '^(IMAGE_ARCH|IMAGE_REGISTRY|BASE_FLAVOR|CUSTOM_BUILDER_IMAGE|CUSTOM_RUNTIME_IMAGE|COSIGN_PASSWORD|COSIGN_PRIVATE)=' .env.build | xargs)
 else
   echo "Error: .env.build not found" >&2
   build_failed
 fi
+
+# Base image flavor: dhi (default) or custom (bun-base images)
+BASE_FLAVOR="${BASE_FLAVOR:-dhi}"
 
 # Expand leading $HOME or ~ in COSIGN_PRIVATE (no eval)
 if [[ -n "${COSIGN_PRIVATE:-}" ]]; then
@@ -35,17 +39,23 @@ if [[ -n "${COSIGN_PRIVATE:-}" ]]; then
   fi
 fi
 
-while getopts ":cda:h" opt; do
+while getopts ":cdla:h" opt; do
   case $opt in
     c) TYPE_CHECK=true ;;
     d) DOCKER=true ;;
+    l) LOCAL=true ;;
     a) IMAGE_ARCH=$OPTARG ;;
     h)
       echo -e "Usage: $0
   -c Enable type-checking
-  -d build a docker image instead of local
-  -a <arch> Which docker build arch to use
-  -h Shows this help message"
+  -d Build a docker image (remote, pushed to registry)
+  -l Build docker image locally (--load) — like b:docker:local:<arch>
+  -a <arch> Which docker build arch to use (e.g. linux/amd64,linux/arm64)
+  -h Shows this help message
+Examples:
+  $0 -c -d -a linux/arm64        Remote build + push + sign
+  $0 -l -a linux/arm64           Local build (--load)
+  $0 -d -l -a linux/arm64        Local build (same as -l)"
       exit 0
       ;;
     \?)
@@ -56,13 +66,41 @@ while getopts ":cda:h" opt; do
 done
 shift $((OPTIND -1))
 
+# -l implies -d (local docker build)
+if [[ "$LOCAL" == "true" ]]; then
+  DOCKER=true
+fi
+
 # required variables
 [ -z "$PACKAGE_NAME" ] && echo "Error: package name cannot be empty\! Please set in your package.json" && build_failed
 [ -z "$PACKAGE_VERSION" ] && echo "Error: package version cannot be empty\! Please set in your package.json" && build_failed
 [ -z "$IMAGE_ARCH" ] && echo "Error: IMAGE_ARCH cannot be empty\! Please set in your .env.build or pass as an argument using -a <arch>" && build_failed
-[ -z "$IMAGE_REGISTRY" ] && echo "Error: IMAGE_REGISTRY cannot be empty\! Please set in your .env.build" && build_failed
-[ -z "$COSIGN_PASSWORD" ] && echo "Error: COSIGN_PASSWORD cannot be empty\! Please set in your .env.build" && build_failed
-[ -z "$COSIGN_PRIVATE" ] && echo "Error: COSIGN_PRIVATE cannot be empty\! Please set in your .env.build" && build_failed
+# Registry / signing only required for remote builds
+if [[ "$LOCAL" != "true" && "$DOCKER" == "true" ]]; then
+  [ -z "$IMAGE_REGISTRY" ] && echo "Error: IMAGE_REGISTRY cannot be empty\! Please set in your .env.build" && build_failed
+  [ -z "$COSIGN_PASSWORD" ] && echo "Error: COSIGN_PASSWORD cannot be empty\! Please set in your .env.build" && build_failed
+  [ -z "$COSIGN_PRIVATE" ] && echo "Error: COSIGN_PRIVATE cannot be empty\! Please set in your .env.build" && build_failed
+fi
+
+if [[ "$BASE_FLAVOR" == "custom" ]]; then
+  [ -z "${CUSTOM_BUILDER_IMAGE:-}" ] && echo "Error: CUSTOM_BUILDER_IMAGE cannot be empty when BASE_FLAVOR=custom\! Please set in your .env.build" && build_failed
+  [ -z "${CUSTOM_RUNTIME_IMAGE:-}" ] && echo "Error: CUSTOM_RUNTIME_IMAGE cannot be empty when BASE_FLAVOR=custom\! Please set in your .env.build" && build_failed
+elif [[ "$BASE_FLAVOR" != "dhi" ]]; then
+  echo "Error: BASE_FLAVOR must be 'dhi' or 'custom' (got '$BASE_FLAVOR')" >&2
+  build_failed
+fi
+
+# Base image build args passed to the Dockerfile (defaults are DHI)
+BASE_ARGS=()
+if [[ "$BASE_FLAVOR" == "custom" ]]; then
+  BASE_ARGS=(
+    --build-arg "BUILDER_IMAGE=${CUSTOM_BUILDER_IMAGE}"
+    --build-arg "RUNTIME_IMAGE=${CUSTOM_RUNTIME_IMAGE}"
+  )
+  echo -e "Base images: ${CYAN}custom${NC} (${CUSTOM_BUILDER_IMAGE} / ${CUSTOM_RUNTIME_IMAGE})"
+else
+  echo -e "Base images: ${CYAN}dhi${NC} (Dockerfile defaults)"
+fi
 
 IFS='.' read -r SEMVER_MAJOR SEMVER_MINOR SEMVER_PATCH <<< "$PACKAGE_VERSION"
 
@@ -92,7 +130,50 @@ else
 fi
 
 # Build docker image or local
-if [[ "$DOCKER" == "true" ]]; then
+if [[ "$LOCAL" == "true" ]]; then
+  echo -e "${MAGENTA}✦${NC} Building Astro project (skipped)"
+
+  # Local docker build — mirrors b:docker:local:<arch> in package.json
+  # ponytail: --load is single-arch only; multi-arch comma list overwrites :latest each iteration
+  IMAGE=bunapp-$PACKAGE_NAME
+
+  for arch in "${IMAGE_ARCH_LIST[@]}"; do
+    # Required labels (same as remote for consistency)
+    LABEL_ARGS=(
+      --label "org.opencontainers.image.title=bunapp-$PACKAGE_NAME"
+      --label "org.opencontainers.image.created=$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
+    )
+
+    GIT_REVISION=$(git rev-parse --verify HEAD 2>/dev/null) || GIT_REVISION=""
+
+    [ -n "$PACKAGE_DESCRIPTION" ] && LABEL_ARGS+=(--label "org.opencontainers.image.description=$PACKAGE_DESCRIPTION")
+    [ -n "$PACKAGE_VERSION" ] && LABEL_ARGS+=(--label "org.opencontainers.image.version=$PACKAGE_VERSION")
+    [ -n "$PACKAGE_AUTHOR" ] && LABEL_ARGS+=(--label "org.opencontainers.image.vendor=$PACKAGE_AUTHOR")
+    [ -n "$PACKAGE_LICENSE" ] && LABEL_ARGS+=(--label "org.opencontainers.image.licenses=$PACKAGE_LICENSE")
+    [ -n "$PACKAGE_REPO_URL" ] && LABEL_ARGS+=(--label "org.opencontainers.image.source=$PACKAGE_REPO_URL")
+    [ -n "$GIT_REVISION" ] && LABEL_ARGS+=(--label "org.opencontainers.image.revision=$GIT_REVISION")
+
+    local_tag="${IMAGE}:latest"
+
+    run_step "Building local docker image for ${CYAN}$arch${NC}" \
+      docker buildx build \
+        . \
+        --tag "$local_tag" \
+        --platform "$arch" \
+        "${LABEL_ARGS[@]}" \
+        "${BASE_ARGS[@]}" \
+        --file Dockerfile \
+        --load \
+        --progress=plain \
+        --no-cache \
+        --network host \
+    || build_failed
+
+    run_step "Pruning dangling images" \
+      docker image prune -f \
+    || build_failed
+  done
+elif [[ "$DOCKER" == "true" ]]; then
   echo -e "${MAGENTA}✦${NC} Building Astro project (skipped)"
 
   if [ -z "$IMAGE_REGISTRY" ]; then
@@ -100,7 +181,7 @@ if [[ "$DOCKER" == "true" ]]; then
     build_failed
   fi
 
-  # Build docker image
+  # Build docker image (remote, pushed)
   IMAGE=$IMAGE_REGISTRY/bunapp-$PACKAGE_NAME
 
   for arch in "${IMAGE_ARCH_LIST[@]}"; do
@@ -131,6 +212,7 @@ if [[ "$DOCKER" == "true" ]]; then
         --tag "$arch_tag_latest" \
         --platform "$arch" \
         "${LABEL_ARGS[@]}" \
+        "${BASE_ARGS[@]}" \
         --file Dockerfile \
         --sbom="true" \
         --provenance="true" \
