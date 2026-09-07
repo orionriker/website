@@ -18,6 +18,7 @@ const isBuild = process.argv.includes('build')
 import bun from '@wyattjoh/astro-bun-adapter'
 import tailwindcss from '@tailwindcss/vite'
 import preact from '@astrojs/preact'
+import iconpruner from '@lib/vite-plugin-icon-pruner'
 
 // https://astro.build/config
 export default defineConfig({
@@ -34,8 +35,8 @@ export default defineConfig({
 
     integrations: [
         (await import('@playform/compress')).default({
-            CSS: false, // Let Astro handle CSS
-            HTML: false, // Let Astro handle HTML
+            CSS: false,
+            HTML: false,
             Image: true,
             JavaScript: true,
             JSON: true,
@@ -43,7 +44,6 @@ export default defineConfig({
         }),
         preact({
             compat: true,
-            // Devtools off in production for smaller bundle
             devtools: false,
         }),
     ],
@@ -59,7 +59,7 @@ export default defineConfig({
     },
 
     vite: {
-        plugins: [tailwindcss()],
+        plugins: [tailwindcss(), iconpruner()],
 
         build: {
             target: 'es2023',
@@ -74,9 +74,7 @@ export default defineConfig({
         },
 
         optimizeDeps: {
-            // Include heavy deps
             include: ['motion', 'preact', 'preact/compat'],
-            // Exclude server-only deps
             exclude: ['@astrojs/node', '@wyattjoh/astro-bun-adapter'],
         },
 
@@ -88,7 +86,6 @@ export default defineConfig({
         resolve: {
             tsconfigPaths: true,
 
-            // Forces Vite to use a single, shared instance of Preact/React
             dedupe: [
                 'preact',
                 'preact/hooks',
