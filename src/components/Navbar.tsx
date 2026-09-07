@@ -50,6 +50,7 @@ const Navbar = () => {
                                 alt="Orion C. Riker Avatar"
                                 class="mx-auto h-12 w-auto rounded-full object-cover"
                                 loading="eager"
+                                fetchpriority="high"
                             />
                         </a>
                     </div>

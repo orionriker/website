@@ -194,11 +194,10 @@ const { title, description, NoFooter, NoNavbar, AltFooter } = Astro.props
                                         © {new Date().getFullYear()} Orion C.
                                         Riker.
                                     </span>
-                                    <span>All rights reserved.</span>
                                 </div>
 
                                 <div class="leading-relaxed flex flex-wrap justify-center gap-x-1.5 gap-y-0.5 lg:justify-end">
-                                    <span class="text-text-primary">
+                                    <span class="text-text-primary mr-1">
                                         Built using
                                     </span>
                                     <a
@@ -256,10 +255,7 @@ const { title, description, NoFooter, NoNavbar, AltFooter } = Astro.props
                 (!NoFooter && !AltFooter ? null : (
                     <footer class="footer py-5 px-4 shadow bg-base-950 bottom-0 mt-auto shrink-0">
                         <div class="text-center text-gray-500">
-                            <p>
-                                © {new Date().getFullYear()} Orion C. Riker. All
-                                rights reserved.
-                            </p>
+                            <p>© {new Date().getFullYear()} Orion C. Riker.</p>
                         </div>
                     </footer>
                 ))
