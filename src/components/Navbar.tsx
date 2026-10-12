@@ -4,9 +4,9 @@ import ThemeBtn from '@components/ThemeBtn'
 import ImageAvatar from '@images/avatar.svg'
 
 const Pages = [
-    { num: '01', href: '/', label: 'Home' },
-    { num: '02', href: '/#about', label: 'About' },
-    { num: '03', href: '/projects', label: 'Projects' },
+    { href: '/', label: 'Home' },
+    { href: '/#about', label: 'About' },
+    { href: '/projects', label: 'Projects' },
 ]
 
 const Navbar = () => {
@@ -40,113 +40,31 @@ const Navbar = () => {
     return (
         <div class="sticky top-0 z-50">
             <div
-                class={`navbar border-base-800 h-20 border-b transition-[background,backdrop-filter,box-shadow] duration-300 ${scrolled ? 'bg-base-950/80 shadow-lg shadow-black/10 backdrop-blur-md' : 'bg-base-950/50 backdrop-blur-xl'}`}
+                class={`navbar h-20 transition-[background,backdrop-filter,box-shadow] duration-300 ${scrolled ? 'bg-base-950/85 shadow-elevation-1 backdrop-blur-frost' : 'bg-base-950/60 backdrop-blur-frost'}`}
             >
-                <div class="page-container flex justify-between">
-                    <div class="navbar-start sm:w-full lg:w-max">
-                        <a href="/" class="flex items-center">
-                            <img
-                                src={ImageAvatar.src}
-                                alt="Orion C. Riker Avatar"
-                                class="mx-auto h-12 w-auto rounded-full object-cover"
-                                loading="eager"
-                                fetchpriority="high"
-                            />
-                        </a>
-                    </div>
+                <div class="page-container flex items-center justify-between gap-3">
+                    <a
+                        href="/"
+                        class="flex min-w-0 items-center gap-3"
+                        aria-label="Orion C. Riker home"
+                    >
+                        <img
+                            src={ImageAvatar.src}
+                            alt="Orion C. Riker Avatar"
+                            class="h-10 w-10 shrink-0 rounded-full object-cover"
+                            loading="eager"
+                            fetchpriority="high"
+                        />
+                    </a>
                     <div class="navbar-end">
                         <ThemeBtn />
                         <button
-                            class="rounded-full p-2 outline-0 hover:cursor-pointer"
+                            type="button"
+                            class="text-base-950 ease-out-quint h-11 cursor-pointer rounded-full bg-gray-900 px-5 text-sm leading-none font-medium tracking-[-0.03em] transition-[color,background-color,transform] duration-200 hover:bg-gray-600 active:scale-[0.98] motion-reduce:transition-none dark:bg-gray-100 dark:hover:bg-gray-300"
+                            aria-expanded={isMenuOpen}
                             onClick={() => setMenuOpen((open) => !open)}
-                            aria-label="Toggle Menu"
                         >
-                            <motion.div
-                                animate={{ rotate: isMenuOpen ? 90 : 0 }}
-                                transition={{
-                                    duration: 0.3,
-                                    ease: [0.33, 1, 0.68, 1],
-                                }}
-                            >
-                                <AnimatePresence mode="wait" initial={false}>
-                                    {isMenuOpen ? (
-                                        <motion.svg
-                                            key="close"
-                                            viewBox="0 0 24 24"
-                                            class="h-10 w-10"
-                                            initial={{
-                                                opacity: 0,
-                                                scale: 0.8,
-                                            }}
-                                            animate={{
-                                                opacity: 1,
-                                                scale: 1,
-                                            }}
-                                            exit={{
-                                                opacity: 0,
-                                                scale: 0.8,
-                                            }}
-                                            transition={{ duration: 0.2 }}
-                                        >
-                                            <path
-                                                d="M19 5L5 19"
-                                                stroke="currentColor"
-                                                stroke-width="1.5"
-                                                stroke-linecap="round"
-                                                stroke-linejoin="round"
-                                            />
-                                            <path
-                                                d="M19 19L5 5"
-                                                stroke="currentColor"
-                                                stroke-width="1.5"
-                                                stroke-linecap="round"
-                                                stroke-linejoin="round"
-                                            />
-                                        </motion.svg>
-                                    ) : (
-                                        <motion.svg
-                                            key="menu"
-                                            viewBox="0 0 24 24"
-                                            class="h-10 w-10"
-                                            initial={{
-                                                opacity: 0,
-                                                scale: 0.8,
-                                            }}
-                                            animate={{
-                                                opacity: 1,
-                                                scale: 1,
-                                            }}
-                                            exit={{
-                                                opacity: 0,
-                                                scale: 0.8,
-                                            }}
-                                            transition={{ duration: 0.2 }}
-                                        >
-                                            <path
-                                                d="M4.5 12H19.5"
-                                                stroke="currentColor"
-                                                stroke-width="1.5"
-                                                stroke-miterlimit="10"
-                                                stroke-linecap="round"
-                                            />
-                                            <path
-                                                d="M4.5 17.7692H19.5"
-                                                stroke="currentColor"
-                                                stroke-width="1.5"
-                                                stroke-miterlimit="10"
-                                                stroke-linecap="round"
-                                            />
-                                            <path
-                                                d="M4.5 6.23077H19.5"
-                                                stroke="currentColor"
-                                                stroke-width="1.5"
-                                                stroke-miterlimit="10"
-                                                stroke-linecap="round"
-                                            />
-                                        </motion.svg>
-                                    )}
-                                </AnimatePresence>
-                            </motion.div>
+                            {isMenuOpen ? 'Close' : 'Menu'}
                         </button>
                     </div>
                 </div>
@@ -168,13 +86,13 @@ const Navbar = () => {
                         <div
                             class={
                                 scrolled
-                                    ? 'bg-base-950/80 backdrop-blur-md'
-                                    : 'bg-base-950/50 backdrop-blur-xl'
+                                    ? 'bg-base-950/85 backdrop-blur-frost'
+                                    : 'bg-base-950/60 backdrop-blur-frost'
                             }
                         >
                             <div class="page-container">
                                 <motion.ul
-                                    class="flex w-full flex-col gap-4 pt-2 pb-6"
+                                    class="flex w-full flex-col gap-2 pt-2 pb-6"
                                     variants={containerVariants}
                                     initial="closed"
                                     animate="open"
@@ -182,16 +100,12 @@ const Navbar = () => {
                                 >
                                     {Pages.map((page) => (
                                         <motion.li
-                                            key={page.num}
-                                            class="border-base-800 flex flex-row items-center gap-4 border-b pb-4"
+                                            key={page.href}
                                             variants={itemVariants}
                                         >
-                                            <span class="text-text-tertiary font-mono text-sm font-medium">
-                                                {page.num}
-                                            </span>
                                             <a
                                                 href={page.href}
-                                                class="text-5xl font-bold tracking-tighter text-balance transition-opacity duration-300 ease-in-out hover:opacity-55 sm:text-6xl"
+                                                class="font-display hover:text-accent-500 block py-2 text-4xl font-normal tracking-[-0.04em] text-balance transition-colors duration-200 ease-out sm:text-5xl"
                                                 onClick={() =>
                                                     setMenuOpen(false)
                                                 }
@@ -202,7 +116,6 @@ const Navbar = () => {
                                     ))}
                                 </motion.ul>
                             </div>
-                            <div class="border-base-800 border-b" />
                         </div>
                     </motion.div>
                 )}

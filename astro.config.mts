@@ -110,11 +110,20 @@ export default defineConfig({
                             './src/assets/fonts/Mona_Sans/MonaSans-VariableFont.woff2',
                         ],
                     },
+                ],
+            },
+        },
+        {
+            provider: fontProviders.local(),
+            name: 'Instrument Serif',
+            cssVariable: '--font-instrument',
+            options: {
+                variants: [
                     {
-                        weight: '100 900',
-                        style: 'italic',
+                        weight: '400',
+                        style: 'normal',
                         src: [
-                            './src/assets/fonts/Mona_Sans/MonaSans-Italic-VariableFont.woff2',
+                            './src/assets/fonts/Instrument_Serif/InstrumentSerif-Regular.woff2',
                         ],
                     },
                 ],
@@ -138,13 +147,6 @@ export default defineConfig({
                         style: 'normal',
                         src: [
                             './src/assets/fonts/Fira_Mono/FiraMono-Medium.woff2',
-                        ],
-                    },
-                    {
-                        weight: '700',
-                        style: 'normal',
-                        src: [
-                            './src/assets/fonts/Fira_Mono/FiraMono-Bold.woff2',
                         ],
                     },
                 ],

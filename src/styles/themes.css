@@ -1,43 +1,37 @@
+/*
+ * Palette derived from america.gov: one navy ink (#000c1f) drives text,
+ * borders and surfaces, with #004ac3 as the accent and #002664 for buttons.
+ * Ramps keep the site's existing convention: 50 = strongest contrast to the
+ * page, 950 = the page itself, then flip in dark mode.
+ */
 @theme {
-    --color-base-50: oklch(0.177 0.002 106.5);
-    --color-base-100: oklch(0.223 0.002 67.71);
-    --color-base-200: oklch(0.309 0.004 84.54);
-    --color-base-300: oklch(0.398 0.005 91.46);
-    --color-base-400: oklch(0.482 0.007 84.55);
-    --color-base-500: oklch(0.569 0.008 88.63);
-    --color-base-600: oklch(0.664 0.009 84.55);
-    --color-base-700: oklch(0.751 0.01 87.44);
-    --color-base-800: oklch(0.836 0.012 89.69);
-    --color-base-900: oklch(0.922 0.007 88.56);
-    --color-base-950: oklch(0.964 0.003 84.4);
+    --color-base-50: oklch(0.16 0.025 255);
+    --color-base-100: oklch(0.28 0.07 258);
+    --color-base-200: oklch(0.44 0.025 255);
+    --color-base-300: oklch(0.55 0.02 255);
+    --color-base-400: oklch(0.63 0.017 255);
+    --color-base-500: oklch(0.72 0.013 255);
+    --color-base-600: oklch(0.81 0.01 255);
+    --color-base-700: oklch(0.87 0.008 255);
+    --color-base-800: oklch(0.91 0.006 255);
+    --color-base-900: oklch(0.968 0.004 255);
+    --color-base-950: oklch(0.995 0.002 255);
 
-    --color-accent-50: oklch(0.956 0.022 250.2);
-    --color-accent-100: oklch(0.922 0.039 249.43);
-    --color-accent-200: oklch(0.833 0.088 244.44);
-    --color-accent-300: oklch(0.753 0.142 238.75);
-    --color-accent-400: oklch(0.666 0.143 237.02);
-    --color-accent-500: oklch(0.591 0.127 237.01);
-    --color-accent-600: oklch(0.497 0.107 236.92);
-    --color-accent-700: oklch(0.409 0.089 237.52);
-    --color-accent-800: oklch(0.316 0.069 237.35);
-    --color-accent-900: oklch(0.231 0.049 236.92);
-    --color-accent-950: oklch(0.176 0.038 235.69);
+    --color-accent-50: oklch(0.965 0.008 253);
+    --color-accent-100: oklch(0.93 0.018 253);
+    --color-accent-200: oklch(0.87 0.035 253);
+    --color-accent-300: oklch(0.75 0.075 253);
+    --color-accent-400: oklch(0.63 0.115 251);
+    --color-accent-500: oklch(0.53 0.145 258);
+    --color-accent-600: oklch(0.44 0.115 258);
+    --color-accent-700: oklch(0.29 0.075 258);
+    --color-accent-800: oklch(0.23 0.055 258);
+    --color-accent-900: oklch(0.2 0.048 258);
+    --color-accent-950: oklch(0.14 0.034 258);
 
-    --color-secondary-50: #e8e8e8;
-    --color-secondary-100: #ddddde;
-    --color-secondary-200: #c6c6c8;
-    --color-secondary-300: #afafb1;
-    --color-secondary-400: #9a9a9d;
-    --color-secondary-500: #838386;
-    --color-secondary-600: #6c6c6f;
-    --color-secondary-700: #58585b;
-    --color-secondary-800: #414143;
-    --color-secondary-900: #2b2b2c;
-    --color-secondary-950: #202021;
-
-    --color-text-primary: oklch(0.2101 0.0318 264.66);
-    --color-text-secondary: oklch(0.4585 0.0247 269.83);
-    --color-text-tertiary: oklch(0.5 0.01 271.25);
+    --color-text-primary: oklch(0.16 0.025 255);
+    --color-text-secondary: oklch(0.55 0.02 255);
+    --color-text-tertiary: oklch(0.6 0.017 255);
 
     --breakpoint-xs: 30rem;
     --breakpoint-2xl: 100rem;
@@ -49,24 +43,57 @@
     --font-mono:
         var(--font-fira), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
         monospace;
+    --font-display:
+        var(--font-instrument), 'Iowan Old Style', 'Palatino Linotype',
+        Palatino, Georgia, serif;
+
+    --container-site: 87rem;
+
+    --radius-40: 40px;
+    --radius-48: 48px;
+
+    --blur-frost: 25px;
+
+    --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 @layer base {
-    [data-theme='dark'] {
-        --color-base-50: #e5e5ea;
-        --color-base-100: #d1d1d6;
-        --color-base-200: #c7c7cc;
-        --color-base-300: #aeaeb2;
-        --color-base-400: #8e8e93;
-        --color-base-500: #636366;
-        --color-base-600: #48484a;
-        --color-base-700: #3a3a3c;
-        --color-base-800: #2c2c2e;
-        --color-base-900: #1c1c1e;
-        --color-base-950: #141416;
+    :root {
+        --text-heading-s: clamp(1.125rem, 0.99rem + 0.56vw, 1.5rem);
+        --text-section: clamp(3.5rem, 5.59vw, 4rem);
+        --text-label-s: 0.75rem;
+        --shadow-elevation-1: 0 10px 40px 0 rgb(1 14 36 / 0.08);
+    }
 
-        --color-text-primary: oklch(0.9846 0.0017 247.84);
-        --color-text-secondary: oklch(0.7572 0.001 247.72);
-        --color-text-tertiary: oklch(0.6731 0.002 247.7);
+    [data-theme='dark'] {
+        --color-base-50: oklch(0.97 0.005 255);
+        --color-base-100: oklch(0.9 0.007 255);
+        --color-base-200: oklch(0.82 0.009 255);
+        --color-base-300: oklch(0.72 0.011 255);
+        --color-base-400: oklch(0.62 0.013 255);
+        --color-base-500: oklch(0.52 0.014 255);
+        --color-base-600: oklch(0.42 0.014 255);
+        --color-base-700: oklch(0.34 0.013 255);
+        --color-base-800: oklch(0.28 0.012 255);
+        --color-base-900: oklch(0.225 0.012 255);
+        --color-base-950: oklch(0.16 0.012 255);
+
+        --color-accent-50: oklch(0.16 0.04 258);
+        --color-accent-100: oklch(0.24 0.055 258);
+        --color-accent-200: oklch(0.34 0.08 258);
+        --color-accent-300: oklch(0.55 0.13 254);
+        --color-accent-400: oklch(0.66 0.13 252);
+        --color-accent-500: oklch(0.74 0.12 250);
+        --color-accent-600: oklch(0.8 0.1 250);
+        --color-accent-700: oklch(0.86 0.08 251);
+        --color-accent-800: oklch(0.9 0.06 252);
+        --color-accent-900: oklch(0.94 0.04 253);
+        --color-accent-950: oklch(0.97 0.02 253);
+
+        --color-text-primary: oklch(0.97 0.005 255);
+        --color-text-secondary: oklch(0.74 0.012 255);
+        --color-text-tertiary: oklch(0.65 0.014 255);
+
+        --shadow-elevation-1: 0 10px 40px 0 rgb(0 0 0 / 0.45);
     }
 }

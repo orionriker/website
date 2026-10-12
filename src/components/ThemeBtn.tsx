@@ -17,7 +17,7 @@ const ThemeBtn = () => {
     return (
         <div>
             <button
-                class="rounded-full p-2 outline-0 hover:cursor-pointer"
+                class="hover:bg-base-900 flex h-11 w-11 cursor-pointer items-center justify-center rounded-full transition-colors duration-200"
                 aria-label="Switch Theme"
                 onClick={switchTheme}
             >

@@ -1,0 +1,205 @@
+---
+type SkillLevel = 'Proficient' | 'PreviouslyUsed' | 'Learning'
+
+interface Skill {
+    name: string
+    level: SkillLevel
+}
+
+const levelOrder: SkillLevel[] = ['Proficient', 'PreviouslyUsed', 'Learning']
+
+const levelLabels: Record<SkillLevel, string> = {
+    Proficient: 'Currently using',
+    PreviouslyUsed: 'Previously used',
+    Learning: 'Learning',
+}
+
+const categories: { id: string; label: string; skills: Skill[] }[] = [
+    {
+        id: 'languages',
+        label: 'Languages',
+        skills: [
+            { name: 'HTML5', level: 'Proficient' },
+            { name: 'CSS3', level: 'Proficient' },
+            { name: 'JavaScript', level: 'Proficient' },
+            { name: 'TypeScript', level: 'Proficient' },
+            { name: 'C', level: 'Proficient' },
+            { name: 'C++', level: 'Proficient' },
+            { name: 'C#', level: 'Proficient' },
+            { name: 'Python', level: 'Proficient' },
+            { name: 'SQL', level: 'Proficient' },
+            { name: 'Bun', level: 'Proficient' },
+            { name: 'Node.js', level: 'Proficient' },
+            { name: 'ASP.NET', level: 'PreviouslyUsed' },
+            { name: 'PHP', level: 'PreviouslyUsed' },
+            { name: 'GLSL', level: 'PreviouslyUsed' },
+            { name: 'OpenGL', level: 'PreviouslyUsed' },
+            { name: 'Ruby', level: 'PreviouslyUsed' },
+            { name: 'Java', level: 'PreviouslyUsed' },
+            { name: 'R', level: 'PreviouslyUsed' },
+            { name: 'Assembly', level: 'PreviouslyUsed' },
+        ],
+    },
+    {
+        id: 'frameworks',
+        label: 'Frameworks',
+        skills: [
+            { name: 'Astro', level: 'Proficient' },
+            { name: 'React.js', level: 'Proficient' },
+            { name: 'Sass', level: 'Proficient' },
+            { name: 'TailwindCSS', level: 'Proficient' },
+            { name: 'Bootstrap', level: 'PreviouslyUsed' },
+            { name: 'Flask', level: 'PreviouslyUsed' },
+            { name: 'Laravel', level: 'PreviouslyUsed' },
+            { name: 'Express.js', level: 'PreviouslyUsed' },
+            { name: 'Vue.js', level: 'PreviouslyUsed' },
+            { name: 'Angular.js', level: 'PreviouslyUsed' },
+        ],
+    },
+    {
+        id: 'ml-data-science',
+        label: 'ML and data science',
+        skills: [
+            { name: 'PyTorch', level: 'Proficient' },
+            { name: 'TensorFlow', level: 'Proficient' },
+            { name: 'Pandas', level: 'Proficient' },
+            { name: 'NumPy', level: 'Proficient' },
+            { name: 'Matplotlib', level: 'Proficient' },
+            { name: 'Hugging Face', level: 'Proficient' },
+        ],
+    },
+    {
+        id: 'databases',
+        label: 'Databases',
+        skills: [
+            { name: 'PostgreSQL', level: 'Proficient' },
+            { name: 'MySQL', level: 'Proficient' },
+            { name: 'MongoDB', level: 'Proficient' },
+            { name: 'Redis', level: 'Proficient' },
+            { name: 'SQLite', level: 'Proficient' },
+            { name: 'MariaDB', level: 'Proficient' },
+        ],
+    },
+    {
+        id: 'design',
+        label: 'Design',
+        skills: [
+            { name: 'Figma', level: 'Proficient' },
+            { name: 'Blender', level: 'Proficient' },
+            { name: 'Fusion 360', level: 'Proficient' },
+            { name: 'Onshape', level: 'PreviouslyUsed' },
+        ],
+    },
+    {
+        id: 'devops-ci',
+        label: 'DevOps and CI',
+        skills: [
+            { name: 'Docker', level: 'Proficient' },
+            { name: 'Kubernetes', level: 'Proficient' },
+            { name: 'Git', level: 'Proficient' },
+            { name: 'FluxCD', level: 'Proficient' },
+            { name: 'Dependabot', level: 'Proficient' },
+            { name: 'GitHub', level: 'Proficient' },
+            { name: 'GitHub Actions', level: 'Proficient' },
+            { name: 'GitLab', level: 'Proficient' },
+            { name: 'GitLab CI', level: 'Proficient' },
+            { name: 'Grafana', level: 'Proficient' },
+            { name: 'Prometheus', level: 'Proficient' },
+            { name: 'Jenkins', level: 'PreviouslyUsed' },
+        ],
+    },
+    {
+        id: 'tools',
+        label: 'Tools',
+        skills: [
+            { name: 'Linux', level: 'Proficient' },
+            { name: 'Visual Studio', level: 'Proficient' },
+            { name: 'VS Code', level: 'Proficient' },
+            { name: 'VSCodium', level: 'Proficient' },
+            { name: 'Vim', level: 'Proficient' },
+            { name: 'Neovim', level: 'Proficient' },
+            { name: 'Zen Browser', level: 'Proficient' },
+            { name: 'Tor', level: 'Proficient' },
+            { name: 'Arc', level: 'PreviouslyUsed' },
+            { name: 'Google Chrome', level: 'PreviouslyUsed' },
+            { name: 'Firefox', level: 'PreviouslyUsed' },
+        ],
+    },
+    {
+        id: 'web',
+        label: 'Web',
+        skills: [
+            { name: 'Caddy', level: 'Proficient' },
+            { name: 'Nginx', level: 'Proficient' },
+            { name: 'Vite', level: 'Proficient' },
+            { name: 'Cloudflare', level: 'Proficient' },
+            { name: 'Apache', level: 'PreviouslyUsed' },
+            { name: 'Webpack', level: 'PreviouslyUsed' },
+            { name: 'Vercel', level: 'PreviouslyUsed' },
+            { name: 'Netlify', level: 'PreviouslyUsed' },
+        ],
+    },
+    {
+        id: 'scripting',
+        label: 'Scripting',
+        skills: [
+            { name: 'Bash', level: 'Proficient' },
+            { name: 'Batch', level: 'Proficient' },
+            { name: 'PowerShell', level: 'Proficient' },
+            { name: 'VBScript', level: 'Proficient' },
+            { name: 'Scratch', level: 'Proficient' },
+        ],
+    },
+    {
+        id: 'game-dev',
+        label: 'Game development',
+        skills: [
+            { name: 'Unity', level: 'Proficient' },
+            { name: 'Unreal Engine', level: 'Proficient' },
+            { name: 'Godot', level: 'Proficient' },
+        ],
+    },
+    {
+        id: 'cloud',
+        label: 'Cloud services',
+        skills: [
+            { name: 'Hetzner', level: 'Proficient' },
+            { name: 'Oracle Cloud', level: 'Proficient' },
+            { name: 'Google Cloud', level: 'PreviouslyUsed' },
+            { name: 'AWS', level: 'PreviouslyUsed' },
+            { name: 'Microsoft Azure', level: 'PreviouslyUsed' },
+        ],
+    },
+]
+---
+
+<div class="manifest">
+    {
+        categories.map((category) => (
+            <div class="manifest__group">
+                <h3 class="manifest__name">{category.label}</h3>
+                {levelOrder.map((level) => {
+                    const skills = category.skills.filter(
+                        (s) => s.level === level
+                    )
+                    if (skills.length === 0) return null
+                    const isPast = level === 'PreviouslyUsed'
+                    return (
+                        <div>
+                            <span class="manifest__level">
+                                {levelLabels[level]}
+                            </span>
+                            <ul
+                                class={`manifest__items ${isPast ? 'manifest__items--past' : ''}`}
+                            >
+                                {skills.map((skill) => (
+                                    <li>{skill.name}</li>
+                                ))}
+                            </ul>
+                        </div>
+                    )
+                })}
+            </div>
+        ))
+    }
+</div>

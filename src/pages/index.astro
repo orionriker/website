@@ -17,17 +17,24 @@ const MyAge = Math.floor(
     description="Orion C. Riker's portfolio"
     page="home"
 >
-    <section
-        class="page-container h-[calc(100vh-60px)] flex flex-col justify-center"
-        id="hero"
-    >
-        <Hero client:load transition:persist />
+    <section class="page-container pt-6 pb-8" id="hero">
+        <div
+            class="relative isolate flex flex-col items-center justify-center overflow-hidden rounded-40 bg-base-900 px-4 py-12 sm:px-6 sm:py-16 min-h-[calc(100svh-12rem)] lg:px-10 lg:py-20"
+        >
+            <div
+                aria-hidden="true"
+                class="pointer-events-none absolute inset-0 -z-10 overflow-hidden rounded-40"
+            >
+                <div
+                    class="bg-accent-400/15 absolute -top-1/3 left-1/2 h-[70%] w-[80%] -translate-x-1/2 rounded-full blur-[120px]"
+                >
+                </div>
+            </div>
+            <Hero client:load transition:persist />
+        </div>
     </section>
-    <section class="page-container py-16" id="about">
-        <h2 class="page-home-section-heading">
-            <Icon client:visible name="mdi:account-circle-outline" size={38} />
-            About Me
-        </h2>
+    <section class="page-container site-section" id="about">
+        <h2 class="page-home-section-heading">About Me</h2>
         <div
             class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 xl:text-lg"
         >
@@ -118,11 +125,8 @@ const MyAge = Math.floor(
             </div>
         </div>
     </section>
-    <section class="page-container py-16" id="skills">
-        <h2 class="page-home-section-heading">
-            <Icon client:visible name="mdi:xml" size={38} />
-            Skills & Expertise
-        </h2>
+    <section class="page-container site-section" id="skills">
+        <h2 class="page-home-section-heading">Skills & Expertise</h2>
         <div class="image-wrapper loading mb-12">
             <Image
                 src={ImageTechStack}

@@ -239,7 +239,7 @@ export default function SkillsTabs() {
                             {activeTab === cat.id && (
                                 <motion.div
                                     layoutId="active-bg"
-                                    className="bg-base-100 absolute inset-0 rounded-2xl"
+                                    className="absolute inset-0 rounded-2xl bg-gray-900 dark:bg-gray-100"
                                     transition={{
                                         type: 'spring',
                                         stiffness: 400,
@@ -267,7 +267,7 @@ export default function SkillsTabs() {
             <div class="min-w-0 flex-1">
                 {groupedSkills.map((group) => (
                     <div key={group.level} class="mb-6 last:mb-0">
-                        <p class="text-base-400 mb-3 text-xs font-medium tracking-wider uppercase">
+                        <p class="text-text-secondary mb-3 text-xs font-medium tracking-wider uppercase">
                             {levelLabels[group.level]}
                         </p>
                         <div class="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
@@ -287,7 +287,7 @@ export default function SkillsTabs() {
                                             skill.level === 'Proficient'
                                                 ? 'bg-accent-400'
                                                 : skill.level === 'Learning'
-                                                  ? 'bg-amber-500'
+                                                  ? 'bg-accent-200'
                                                   : 'bg-base-500'
                                         }`}
                                     />
@@ -296,7 +296,7 @@ export default function SkillsTabs() {
                                             {skill.name}
                                         </p>
                                         {skill.level === 'Learning' && (
-                                            <p class="mt-0.5 text-xs text-amber-400">
+                                            <p class="text-text-secondary mt-0.5 text-xs">
                                                 Learning
                                             </p>
                                         )}

@@ -6,6 +6,14 @@
 /* Override the default dark mode to trigger on data-theme="dark" */
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
 
+/*
+ * Authored here so the dark theme can swap the shadow colour; Tailwind's own
+ * --shadow-* utilities inline the light value and ignore the override.
+ */
+@utility shadow-elevation-1 {
+    box-shadow: var(--shadow-elevation-1);
+}
+
 @media (prefers-color-scheme: dark) {
     :root {
         color-scheme: dark;
@@ -13,7 +21,7 @@
 }
 
 :root {
-    color: var(--color-dark-text);
+    color: var(--color-text-primary);
 
     color-scheme: light dark;
 
@@ -21,10 +29,19 @@
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+
+    --page-gutter: 1rem;
+}
+
+@media (width >= 768px) {
+    :root {
+        --page-gutter: 3rem;
+    }
 }
 
 html {
     @apply bg-base-950;
+    scroll-behavior: smooth;
 }
 
 body {
@@ -32,14 +49,24 @@ body {
 
     font-family: var(--font-sans);
     font-optical-sizing: auto;
-    line-height: 1.55;
-    letter-spacing: -0.01em;
+    line-height: 1.5;
+    letter-spacing: -0.02em;
 }
 
 .font-mono {
     font-family: var(--font-mono);
     line-height: 1.55;
     letter-spacing: normal;
+}
+
+/*
+ * Focus ring matches america.gov: paper-coloured inner ring, ink outer ring.
+ */
+:focus-visible {
+    outline: none;
+    box-shadow:
+        0 0 0 2px var(--color-base-950),
+        0 0 0 4px #0c0c0c;
 }
 
 .theme-sun {
@@ -53,6 +80,40 @@ body {
 }
 [data-theme='dark'] .theme-moon {
     display: block;
+}
+
+/*
+ * ------- Type scale ----------------------------------------------------------------------------
+ */
+
+.type-site-hero {
+    font-family: var(--font-display);
+    font-weight: 400;
+    line-height: 1;
+    letter-spacing: -0.06em;
+    font-size: clamp(3.5rem, 12vw + 18px, 8.5rem);
+    text-wrap: balance;
+}
+
+@media (width >= 768px) {
+    .type-site-hero {
+        letter-spacing: -0.05em;
+    }
+}
+
+.type-intro {
+    font-family: var(--font-sans);
+    font-size: clamp(1.3125rem, 1.15rem + 0.5vw, 2.5rem);
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+    text-wrap: pretty;
+}
+
+.type-label-s {
+    font-family: var(--font-mono);
+    font-size: var(--text-label-s, 0.75rem);
+    line-height: 1;
+    letter-spacing: -0.03em;
 }
 
 /*
@@ -72,34 +133,38 @@ body {
     @apply flex items-center justify-center gap-4;
 }
 .navbar-end {
-    @apply flex items-center justify-end gap-4;
+    @apply flex items-center justify-end gap-3;
 }
 
 /*
  * Footer
  */
 .footer {
-    @apply bg-base-900 bottom-0 mt-auto mb-5 shrink-0 rounded-4xl px-6 py-6 shadow sm:px-10 sm:py-10;
+    @apply bg-base-900 rounded-40 bottom-0 mt-auto mb-5 shrink-0 px-6 py-8 sm:px-10 sm:py-10;
 }
 
 /*
  * Cards
  */
 .card {
-    @apply border-base-100 bg-base-900 xs:p-6 flex flex-col gap-5 rounded-3xl border-2 p-5;
+    @apply border-base-800 bg-base-900 rounded-40 flex flex-col gap-5 border p-6;
 }
 .card-title {
-    @apply text-2xl leading-tight font-bold tracking-tight text-balance;
+    font-size: var(--text-heading-s);
+    font-weight: 500;
+    line-height: 1.2;
+    letter-spacing: -0.03em;
+    text-wrap: balance;
 }
 .card-content {
-    @apply flex flex-col gap-4 font-medium;
+    @apply flex flex-col gap-4;
 }
 
 /*
  * Chips
  */
 .chip {
-    @apply bg-base-800 inline-flex items-center justify-center rounded-full px-4 py-2 text-sm font-medium tracking-wide;
+    @apply border-base-800 bg-base-900 inline-flex items-center justify-center rounded-full border px-4 py-2 text-sm font-medium tracking-tight;
 }
 
 /*
@@ -107,21 +172,38 @@ body {
  */
 
 .page-heading {
-    @apply mb-16 flex flex-row items-center justify-start gap-3 text-5xl font-extrabold tracking-tighter text-balance lg:text-6xl;
+    font-family: var(--font-display);
+    font-weight: 400;
+    line-height: 1;
+    letter-spacing: -0.05em;
+    font-size: var(--text-section);
+    text-wrap: balance;
+    @apply mb-16 flex w-fit flex-row items-center justify-start gap-3;
 }
 .page-home-section-heading {
-    @apply bg-base-100 text-base-900 not-xs:gap-3 not-xs:px-3 mb-16 flex w-fit flex-row items-center justify-start gap-4 rounded-2xl px-4 py-2 text-3xl font-bold tracking-tighter text-balance;
+    font-family: var(--font-display);
+    font-weight: 400;
+    line-height: 1;
+    letter-spacing: -0.05em;
+    font-size: var(--text-section);
+    text-wrap: balance;
+    @apply mb-12 flex w-fit flex-row items-center justify-start;
 }
 .page-container {
-    @apply container mx-auto px-5;
+    @apply max-w-site mx-auto w-full;
+    padding-inline: var(--page-gutter);
+}
+
+.site-section {
+    @apply py-16 lg:py-24;
 }
 
 .hero-chip-container {
-    @apply bg-base-800 relative isolate rounded-full p-0.5 transition-colors duration-300;
+    @apply relative isolate rounded-full p-0.5 transition-colors duration-300;
 }
 .hero-chip-container::before {
     content: '';
-    @apply absolute inset-0 -z-10 rounded-full bg-linear-to-r from-indigo-500 via-purple-500 to-pink-500 opacity-0 transition-opacity duration-300;
+    @apply bg-accent-500 absolute inset-0 -z-10 rounded-full opacity-0 transition-opacity duration-300;
 }
 .hero-chip-container:hover::before {
     @apply opacity-100;
@@ -130,14 +212,35 @@ body {
     @apply bg-base-950 transition-colors duration-300;
 }
 .hero-chip-container:hover .hero-chip {
-    @apply bg-base-900;
+    @apply text-text-primary;
+}
+
+/*
+ * Motion renders the hero at opacity 0 until its own chunk arrives, so a slow
+ * connection would otherwise stare at an empty panel. Once `html.hero-slow`
+ * is set by the inline timer in Layout.astro, these rules paint the hero
+ * regardless of what motion is doing. They beat motion's inline styles
+ * because they are !important, which also means motion arriving late cannot
+ * snap the hero back to invisible.
+ */
+.hero-slow .hero-reveal {
+    opacity: 1 !important;
+    transform: none !important;
+}
+
+/* Same, when scripting is off and the timer that sets .hero-slow never runs. */
+@media (scripting: none) {
+    .hero-reveal {
+        opacity: 1 !important;
+        transform: none !important;
+    }
 }
 
 .project-card {
-    @apply rounded-4xl! border-none! p-0! shadow;
+    @apply rounded-40! border-none! p-0! shadow;
 }
 .project-figure {
-    @apply flex h-full min-h-45 items-center justify-center rounded-xl px-4 sm:min-h-87.5 lg:min-h-137.5 xl:min-h-112.5;
+    @apply flex h-full min-h-45 items-center justify-center rounded-3xl px-4 sm:min-h-87.5 lg:min-h-137.5 xl:min-h-112.5;
 }
 .project-figure .project-image {
     @apply w-105 transition-transform duration-300 ease-in-out group-hover:scale-105 group-hover:transform lg:w-142.5! xl:w-105!;
@@ -148,10 +251,10 @@ body {
 
 @media (prefers-color-scheme: light) {
     ::-webkit-scrollbar {
-        @apply bg-base-500!;
+        @apply bg-base-600!;
     }
     ::-webkit-scrollbar-track {
-        @apply bg-base-500!;
+        @apply bg-base-700!;
     }
     ::-webkit-scrollbar-thumb {
         @apply bg-base-400!;
@@ -191,7 +294,7 @@ body {
  * Skills Section
  */
 .skill-sidebar {
-    @apply bg-base-900 border-base-800 flex flex-row gap-2 overflow-x-auto rounded-3xl border-2 p-2 md:flex-col md:overflow-x-visible;
+    @apply border-base-800 bg-base-900 flex flex-row gap-2 overflow-x-auto rounded-3xl border p-2 md:flex-col md:overflow-x-visible;
     scrollbar-width: none;
 }
 .skill-sidebar::-webkit-scrollbar {
@@ -205,23 +308,23 @@ body {
 }
 
 .skill-card {
-    @apply flex items-center gap-3 rounded-2xl border-2 p-3;
+    @apply border-base-800 flex items-center gap-3 rounded-2xl border p-3;
 }
 .skill-card[data-level='Proficient'] {
-    @apply border-base-800 bg-base-900;
+    @apply bg-base-900;
 }
 .skill-card[data-level='PreviouslyUsed'] {
-    @apply border-base-800 bg-base-900/50 opacity-60;
+    @apply bg-base-900/50 opacity-70;
 }
 .skill-card[data-level='Learning'] {
-    @apply bg-base-900 border-dashed border-amber-600/50;
+    @apply border-base-600 bg-base-900 border-dashed;
 }
 
 /*
  * Misc
  */
 .link {
-    @apply text-accent-500 decoration-wavy decoration-1 hover:underline;
+    @apply text-accent-500 hover:text-text-primary decoration-wavy decoration-1 underline-offset-2 transition-colors duration-200 hover:underline;
 }
 
 /*
@@ -232,7 +335,12 @@ body {
     *::before,
     *::after {
         animation-duration: 0.01ms !important;
+        animation-delay: 0ms !important;
         animation-iteration-count: 1 !important;
         transition-duration: 0.01ms !important;
+        transition-delay: 0ms !important;
+    }
+    html {
+        scroll-behavior: auto;
     }
 }

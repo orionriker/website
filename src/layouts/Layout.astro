@@ -28,8 +28,21 @@ const { title, description, NoFooter, NoNavbar, AltFooter } = Astro.props
         <meta name="color-scheme" content="dark light" />
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
         <Font cssVariable="--font-mona" preload />
-        <Font cssVariable="--font-fira" preload />
+        {
+            /* The strip label sits above the fold; footer meta uses weight 500 and loads in the background. */
+        }
+        <Font cssVariable="--font-fira" preload={[{ weight: 400 }]} />
+        <Font cssVariable="--font-instrument" preload />
         <title>{title}</title>
+        <script is:inline>
+            // Caps how long the hero can stay invisible while the motion
+            // chunk arrives. Runs in head, before any island can hydrate, so
+            // the timer starts at first parse. See .hero-slow in global.css.
+            setTimeout(
+                () => document.documentElement.classList.add('hero-slow'),
+                3000
+            )
+        </script>
         <ClientRouter />
         <script is:inline async>
             const applyTheme = () => {
@@ -48,7 +61,21 @@ const { title, description, NoFooter, NoNavbar, AltFooter } = Astro.props
         </script>
     </head>
     <body class="min-h-screen">
-        {!NoNavbar && <Navbar client:load />}
+        {
+            !NoNavbar && (
+                <div class="bg-base-900" role="note">
+                    <div class="page-container flex min-h-10 items-center justify-center gap-1.5 py-2">
+                        <span class="type-label-s text-text-secondary text-wrap">
+                            Things are only impossible until they are not.{' '}
+                            <span class="not-sm:block text-center">
+                                — Jean-Luc Picard
+                            </span>
+                        </span>
+                    </div>
+                </div>
+            )
+        }
+        {!NoNavbar && <Navbar client:idle />}
 
         <div
             class={AltFooter && !NoFooter
@@ -64,7 +91,7 @@ const { title, description, NoFooter, NoNavbar, AltFooter } = Astro.props
                     <footer class="footer">
                         <div class="text-center pb-6">
                             <a
-                                class="text-4xl font-bold tracking-tight"
+                                class="font-display text-5xl font-normal tracking-[-0.04em]"
                                 href="/"
                             >
                                 Orion C. Riker
@@ -72,7 +99,7 @@ const { title, description, NoFooter, NoNavbar, AltFooter } = Astro.props
                             <ul class="flex justify-center gap-5 px-1 py-5 text-sm font-semibold">
                                 <li>
                                     <a
-                                        class="transition-colors duration-300 hover:text-base-500 hover:dark:text-base-400"
+                                        class="transition-colors duration-300 hover:text-text-primary"
                                         href="/"
                                     >
                                         Home
@@ -80,7 +107,7 @@ const { title, description, NoFooter, NoNavbar, AltFooter } = Astro.props
                                 </li>
                                 <li>
                                     <a
-                                        class="transition-colors duration-300 hover:text-base-500 hover:dark:text-base-400"
+                                        class="transition-colors duration-300 hover:text-text-primary"
                                         href="/projects"
                                     >
                                         Projects
@@ -88,7 +115,7 @@ const { title, description, NoFooter, NoNavbar, AltFooter } = Astro.props
                                 </li>
                                 <li>
                                     <a
-                                        class="transition-colors duration-300 hover:text-base-500 hover:dark:text-base-400"
+                                        class="transition-colors duration-300 hover:text-text-primary"
                                         href="/#about"
                                     >
                                         About
@@ -202,28 +229,28 @@ const { title, description, NoFooter, NoNavbar, AltFooter } = Astro.props
                                     </span>
                                     <a
                                         href="https://astro.build/"
-                                        class="link underline-offset-2 font-bold text-base-500! dark:text-base-400!"
+                                        class="link font-medium"
                                     >
                                         Astro
                                     </a>
                                     <span>+</span>
                                     <a
                                         href="https://preactjs.com/"
-                                        class="link underline-offset-2 font-bold text-base-500! dark:text-base-400!"
+                                        class="link font-medium"
                                     >
                                         Preact
                                     </a>
                                     <span>+</span>
                                     <a
                                         href="https://tailwindcss.com/"
-                                        class="link underline-offset-2 font-bold text-base-500! dark:text-base-400!"
+                                        class="link font-medium"
                                     >
                                         TailwindCSS
                                     </a>
                                     <span>+</span>
                                     <a
                                         href="https://motion.dev/"
-                                        class="link underline-offset-2 font-bold text-base-500! dark:text-base-400!"
+                                        class="link font-medium"
                                     >
                                         Framer Motion
                                     </a>
