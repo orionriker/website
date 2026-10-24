@@ -303,8 +303,16 @@ body {
 
 .skill-sidebar-btn {
     @apply relative flex items-center gap-2 rounded-2xl px-3 py-2 text-sm font-medium transition-colors duration-200;
-    @apply text-base-300 hover:bg-base-800;
+    @apply text-base-300 hover:bg-base-700 hover:text-text-primary;
     @apply whitespace-nowrap md:w-full;
+}
+
+/*
+ * Dark keeps its original hover fill and idle ink; the base-700 fill and
+ * primary ink in the light ramp would make the dark hover punchier.
+ */
+[data-theme='dark'] .skill-sidebar-btn:hover {
+    @apply bg-base-800 text-base-300;
 }
 
 .skill-card {
