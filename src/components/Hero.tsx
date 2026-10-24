@@ -1,4 +1,4 @@
-import { motion } from 'motion/react'
+import { LazyMotion, m } from 'motion/react'
 import Icon from './Icon'
 
 const socialLinks = [
@@ -38,44 +38,46 @@ const itemVariants = {
 
 export default function Hero() {
     return (
-        <motion.div
-            className="hero-reveal flex flex-col items-center gap-4 text-center sm:gap-7 md:gap-10"
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
-        >
-            <motion.h1
-                className="type-site-hero hero-reveal"
-                variants={itemVariants}
+        <LazyMotion features={() => import('@lib/motion-features')} strict>
+            <m.div
+                className="hero-reveal flex flex-col items-center gap-4 text-center sm:gap-7 md:gap-10"
+                variants={containerVariants}
+                initial="hidden"
+                animate="visible"
             >
-                Orion C. Riker.
-            </motion.h1>
+                <m.h1
+                    className="type-site-hero hero-reveal"
+                    variants={itemVariants}
+                >
+                    Orion C. Riker.
+                </m.h1>
 
-            <motion.p
-                className="type-intro text-text-primary hero-reveal max-w-2xl"
-                variants={itemVariants}
-            >
-                Full Stack Developer. Federationist. Designer. Maker.
-            </motion.p>
+                <m.p
+                    className="type-intro text-text-primary hero-reveal max-w-2xl"
+                    variants={itemVariants}
+                >
+                    Full Stack Developer. Federationist. Designer. Maker.
+                </m.p>
 
-            <motion.div
-                className="hero-reveal flex flex-wrap justify-center gap-2"
-                variants={itemVariants}
-            >
-                {socialLinks.map((link) => (
-                    <a
-                        key={link.label}
-                        aria-label={link.label}
-                        href={link.href}
-                        target="_blank"
-                        className="hero-chip-container group"
-                    >
-                        <span className="hero-chip chip p-2.5! sm:p-3!">
-                            <Icon name={link.icon} width="20" height="20" />
-                        </span>
-                    </a>
-                ))}
-            </motion.div>
-        </motion.div>
+                <m.div
+                    className="hero-reveal flex flex-wrap justify-center gap-2"
+                    variants={itemVariants}
+                >
+                    {socialLinks.map((link) => (
+                        <a
+                            key={link.label}
+                            aria-label={link.label}
+                            href={link.href}
+                            target="_blank"
+                            className="hero-chip-container group"
+                        >
+                            <span className="hero-chip chip p-2.5! sm:p-3!">
+                                <Icon name={link.icon} width="20" height="20" />
+                            </span>
+                        </a>
+                    ))}
+                </m.div>
+            </m.div>
+        </LazyMotion>
     )
 }

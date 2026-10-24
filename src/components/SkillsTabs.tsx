@@ -1,5 +1,5 @@
 import { useState } from 'preact/hooks'
-import { motion } from 'motion/react'
+import { LazyMotion, m } from 'motion/react'
 import Icon from '@components/Icon'
 
 type SkillLevel = 'Proficient' | 'PreviouslyUsed' | 'Learning'
@@ -210,103 +210,109 @@ export default function SkillsTabs() {
         : []
 
     return (
-        <div class="flex flex-col gap-6 md:flex-row">
-            <div class="relative md:w-50 md:shrink-0">
-                <div
-                    class="from-base-950 pointer-events-none absolute inset-y-0 left-0 z-12 w-20 rounded-l-3xl bg-linear-to-r to-transparent md:hidden"
-                    id="shadow-left"
-                    style="opacity:0"
-                />
-                <nav
-                    class="skill-sidebar"
-                    onScroll={(e) => {
-                        const el = e.currentTarget
-                        const left = document.getElementById('shadow-left')!
-                        const right = document.getElementById('shadow-right')!
-                        left.style.opacity = el.scrollLeft > 4 ? '1' : '0'
-                        right.style.opacity =
-                            el.scrollLeft < el.scrollWidth - el.clientWidth - 4
-                                ? '1'
-                                : '0'
-                    }}
-                >
-                    {skillCategories.map((cat) => (
-                        <button
-                            key={cat.id}
-                            onClick={() => setActiveTab(cat.id)}
-                            className="skill-sidebar-btn"
-                        >
-                            {activeTab === cat.id && (
-                                <motion.div
-                                    layoutId="active-bg"
-                                    className="absolute inset-0 rounded-2xl bg-gray-900 dark:bg-gray-100"
-                                    transition={{
-                                        type: 'spring',
-                                        stiffness: 400,
-                                        damping: 30,
-                                    }}
-                                />
-                            )}
-                            <span
-                                class={`relative z-10 flex items-center gap-2 transition-colors duration-300 ${
-                                    activeTab === cat.id ? 'text-base-950' : ''
-                                }`}
+        <LazyMotion features={() => import('@lib/motion-features')} strict>
+            <div class="flex flex-col gap-6 md:flex-row">
+                <div class="relative md:w-50 md:shrink-0">
+                    <div
+                        class="from-base-950 pointer-events-none absolute inset-y-0 left-0 z-12 w-20 rounded-l-3xl bg-linear-to-r to-transparent md:hidden"
+                        id="shadow-left"
+                        style="opacity:0"
+                    />
+                    <nav
+                        class="skill-sidebar"
+                        onScroll={(e) => {
+                            const el = e.currentTarget
+                            const left = document.getElementById('shadow-left')!
+                            const right =
+                                document.getElementById('shadow-right')!
+                            left.style.opacity = el.scrollLeft > 4 ? '1' : '0'
+                            right.style.opacity =
+                                el.scrollLeft <
+                                el.scrollWidth - el.clientWidth - 4
+                                    ? '1'
+                                    : '0'
+                        }}
+                    >
+                        {skillCategories.map((cat) => (
+                            <button
+                                key={cat.id}
+                                onClick={() => setActiveTab(cat.id)}
+                                className="skill-sidebar-btn"
                             >
-                                <Icon name={cat.icon} size={16} />
-                                <span class="truncate">{cat.label}</span>
-                            </span>
-                        </button>
-                    ))}
-                </nav>
-                <div
-                    class="from-base-950 pointer-events-none absolute inset-y-0 right-0 z-12 w-20 rounded-r-3xl bg-linear-to-l to-transparent md:hidden"
-                    id="shadow-right"
-                />
-            </div>
-
-            <div class="min-w-0 flex-1">
-                {groupedSkills.map((group) => (
-                    <div key={group.level} class="mb-6 last:mb-0">
-                        <p class="text-text-secondary mb-3 text-xs font-medium tracking-wider uppercase">
-                            {levelLabels[group.level]}
-                        </p>
-                        <div class="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
-                            {group.skills.map((skill) => (
-                                <motion.div
-                                    whileHover={{ scale: 1.04, y: -3 }}
-                                    transition={{
-                                        type: 'spring',
-                                        stiffness: 400,
-                                        damping: 17,
-                                    }}
-                                    className="skill-card"
-                                    data-level={skill.level}
-                                >
-                                    <span
-                                        className={`h-2.5 w-2.5 shrink-0 rounded-full ${
-                                            skill.level === 'Proficient'
-                                                ? 'bg-accent-400'
-                                                : skill.level === 'Learning'
-                                                  ? 'bg-accent-200'
-                                                  : 'bg-base-500'
-                                        }`}
+                                {activeTab === cat.id && (
+                                    <m.div
+                                        layoutId="active-bg"
+                                        className="absolute inset-0 rounded-2xl bg-gray-900 dark:bg-gray-100"
+                                        transition={{
+                                            type: 'spring',
+                                            stiffness: 400,
+                                            damping: 30,
+                                        }}
                                     />
-                                    <div class="min-w-0">
-                                        <p class="truncate leading-tight font-medium">
-                                            {skill.name}
-                                        </p>
-                                        {skill.level === 'Learning' && (
-                                            <p class="text-text-secondary mt-0.5 text-xs">
-                                                Learning
+                                )}
+                                <span
+                                    class={`relative z-10 flex items-center gap-2 transition-colors duration-300 ${
+                                        activeTab === cat.id
+                                            ? 'text-base-950'
+                                            : ''
+                                    }`}
+                                >
+                                    <Icon name={cat.icon} size={16} />
+                                    <span class="truncate">{cat.label}</span>
+                                </span>
+                            </button>
+                        ))}
+                    </nav>
+                    <div
+                        class="from-base-950 pointer-events-none absolute inset-y-0 right-0 z-12 w-20 rounded-r-3xl bg-linear-to-l to-transparent md:hidden"
+                        id="shadow-right"
+                    />
+                </div>
+
+                <div class="min-w-0 flex-1">
+                    {groupedSkills.map((group) => (
+                        <div key={group.level} class="mb-6 last:mb-0">
+                            <p class="text-text-secondary mb-3 text-xs font-medium tracking-wider uppercase">
+                                {levelLabels[group.level]}
+                            </p>
+                            <div class="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
+                                {group.skills.map((skill) => (
+                                    <m.div
+                                        whileHover={{ scale: 1.04, y: -3 }}
+                                        transition={{
+                                            type: 'spring',
+                                            stiffness: 400,
+                                            damping: 17,
+                                        }}
+                                        className="skill-card"
+                                        data-level={skill.level}
+                                    >
+                                        <span
+                                            className={`h-2.5 w-2.5 shrink-0 rounded-full ${
+                                                skill.level === 'Proficient'
+                                                    ? 'bg-accent-400'
+                                                    : skill.level === 'Learning'
+                                                      ? 'bg-accent-200'
+                                                      : 'bg-base-500'
+                                            }`}
+                                        />
+                                        <div class="min-w-0">
+                                            <p class="truncate leading-tight font-medium">
+                                                {skill.name}
                                             </p>
-                                        )}
-                                    </div>
-                                </motion.div>
-                            ))}
+                                            {skill.level === 'Learning' && (
+                                                <p class="text-text-secondary mt-0.5 text-xs">
+                                                    Learning
+                                                </p>
+                                            )}
+                                        </div>
+                                    </m.div>
+                                ))}
+                            </div>
                         </div>
-                    </div>
-                ))}
+                    ))}
+                </div>
             </div>
-        </div>
+        </LazyMotion>
     )
 }
