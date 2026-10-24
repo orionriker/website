@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'preact/hooks'
 import ThemeBtn from '@components/ThemeBtn'
-import ImageAvatar from '@images/avatar.svg'
+import ImageAvatar from '@images/avatar-96.webp'
 
 const Pages = [
     { href: '/', label: 'Home' },
