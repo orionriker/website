@@ -137,6 +137,52 @@ body {
 }
 
 /*
+ * Navbar dropdown: expansion via CSS grid rows, item slide via one keyframe.
+ */
+.nav-menu {
+    display: grid;
+    grid-template-rows: 0fr;
+    visibility: hidden;
+    transition:
+        grid-template-rows 0.45s cubic-bezier(0.33, 1, 0.68, 1),
+        visibility 0s 0.45s;
+}
+.nav-menu[aria-hidden='false'] {
+    grid-template-rows: 1fr;
+    visibility: visible;
+    transition:
+        grid-template-rows 0.45s cubic-bezier(0.33, 1, 0.68, 1),
+        visibility 0s 0s;
+}
+.nav-menu-clip {
+    @apply min-h-0 overflow-hidden;
+}
+.nav-menu li {
+    transition:
+        opacity 0.3s cubic-bezier(0.32, 0, 0.67, 0),
+        transform 0.3s cubic-bezier(0.32, 0, 0.67, 0);
+}
+.nav-menu[aria-hidden='false'] li {
+    animation: nav-item-in 0.5s cubic-bezier(0.33, 1, 0.68, 1) both;
+}
+.nav-menu[aria-hidden='false'] li:nth-child(2) {
+    animation-delay: 0.1s;
+}
+.nav-menu[aria-hidden='false'] li:nth-child(3) {
+    animation-delay: 0.2s;
+}
+@keyframes nav-item-in {
+    from {
+        opacity: 0;
+        transform: translateX(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/*
  * Footer
  */
 .footer {

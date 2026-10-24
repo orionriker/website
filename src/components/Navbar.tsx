@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'preact/hooks'
-import { motion, AnimatePresence } from 'motion/react'
 import ThemeBtn from '@components/ThemeBtn'
 import ImageAvatar from '@images/avatar.svg'
 
@@ -12,24 +11,6 @@ const Pages = [
 const Navbar = () => {
     const [isMenuOpen, setMenuOpen] = useState(false)
     const [scrolled, setScrolled] = useState(false)
-
-    const itemVariants = {
-        closed: {
-            x: -50,
-            opacity: 0,
-            transition: { duration: 0.3, ease: [0.32, 0, 0.67, 0] },
-        },
-        open: {
-            x: 0,
-            opacity: 1,
-            transition: { duration: 0.5, ease: [0.33, 1, 0.68, 1] },
-        },
-    }
-
-    const containerVariants = {
-        open: { transition: { staggerChildren: 0.1 } },
-        closed: { transition: { staggerChildren: 0.05, staggerDirection: -1 } },
-    }
 
     useEffect(() => {
         const onScroll = () => setScrolled(window.scrollY > 10)
@@ -70,56 +51,41 @@ const Navbar = () => {
                 </div>
             </div>
 
-            <AnimatePresence>
-                {isMenuOpen && (
-                    <motion.div
-                        class={`absolute right-0 left-0 ${scrolled ? 'shadow-lg shadow-black/10' : ''}`}
-                        style={{ top: 'calc(100% - 1px)' }}
-                        initial={{ height: 0 }}
-                        animate={{ height: 'auto' }}
-                        exit={{ height: 0 }}
-                        transition={{
-                            duration: 0.45,
-                            ease: [0.33, 1, 0.68, 1],
-                        }}
+            <div
+                class={`nav-menu absolute right-0 left-0 ${
+                    scrolled ? 'shadow-lg shadow-black/10' : ''
+                }`}
+                style={{ top: 'calc(100% - 1px)' }}
+                aria-hidden={!isMenuOpen}
+            >
+                <div class="nav-menu-clip">
+                    <div
+                        class={
+                            scrolled
+                                ? 'bg-base-950/85 backdrop-blur-frost'
+                                : 'bg-base-950/60 backdrop-blur-frost'
+                        }
                     >
-                        <div
-                            class={
-                                scrolled
-                                    ? 'bg-base-950/85 backdrop-blur-frost'
-                                    : 'bg-base-950/60 backdrop-blur-frost'
-                            }
-                        >
-                            <div class="page-container">
-                                <motion.ul
-                                    class="flex w-full flex-col gap-2 pt-2 pb-6"
-                                    variants={containerVariants}
-                                    initial="closed"
-                                    animate="open"
-                                    exit="closed"
-                                >
-                                    {Pages.map((page) => (
-                                        <motion.li
-                                            key={page.href}
-                                            variants={itemVariants}
+                        <div class="page-container">
+                            <ul class="flex w-full flex-col gap-2 pt-2 pb-6">
+                                {Pages.map((page) => (
+                                    <li key={page.href}>
+                                        <a
+                                            href={page.href}
+                                            class="font-display hover:text-accent-500 block py-2 text-4xl font-normal tracking-[-0.04em] text-balance transition-colors duration-200 ease-out sm:text-5xl"
+                                            onClick={() =>
+                                                setMenuOpen(false)
+                                            }
                                         >
-                                            <a
-                                                href={page.href}
-                                                class="font-display hover:text-accent-500 block py-2 text-4xl font-normal tracking-[-0.04em] text-balance transition-colors duration-200 ease-out sm:text-5xl"
-                                                onClick={() =>
-                                                    setMenuOpen(false)
-                                                }
-                                            >
-                                                {page.label}
-                                            </a>
-                                        </motion.li>
-                                    ))}
-                                </motion.ul>
-                            </div>
+                                            {page.label}
+                                        </a>
+                                    </li>
+                                ))}
+                            </ul>
                         </div>
-                    </motion.div>
-                )}
-            </AnimatePresence>
+                    </div>
+                </div>
+            </div>
         </div>
     )
 }
