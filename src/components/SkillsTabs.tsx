@@ -210,7 +210,12 @@ export default function SkillsTabs() {
         : []
 
     return (
-        <LazyMotion features={() => import('@lib/motion-features')} strict>
+        <LazyMotion
+            features={() =>
+                import('@lib/motion-features').then((m) => m.default)
+            }
+            strict
+        >
             <div class="flex flex-col gap-6 md:flex-row">
                 <div class="relative md:w-50 md:shrink-0">
                     <div

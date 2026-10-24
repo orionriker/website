@@ -38,7 +38,12 @@ const itemVariants = {
 
 export default function Hero() {
     return (
-        <LazyMotion features={() => import('@lib/motion-features')} strict>
+        <LazyMotion
+            features={() =>
+                import('@lib/motion-features').then((m) => m.default)
+            }
+            strict
+        >
             <m.div
                 className="hero-reveal flex flex-col items-center gap-4 text-center sm:gap-7 md:gap-10"
                 variants={containerVariants}
