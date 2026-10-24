@@ -27,11 +27,11 @@ const { title, description, NoFooter, NoNavbar, AltFooter } = Astro.props
         <meta name="viewport" content="width=device-width" />
         <meta name="color-scheme" content="dark light" />
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-        <Font cssVariable="--font-mona" preload />
+        <Font cssVariable="--font-mona" preload={[{ weight: 400, subset: 'latin' }]} />
         {
             /* The strip label sits above the fold; footer meta uses weight 500 and loads in the background. */
         }
-        <Font cssVariable="--font-fira" preload={[{ weight: 400 }]} />
+        <Font cssVariable="--font-fira" preload={[{ weight: 400, subset: 'latin' }]} />
         <Font cssVariable="--font-instrument" preload />
         <title>{title}</title>
         <script is:inline>
