@@ -1,7 +1,7 @@
 {
     "name": "orionriker",
     "description": "Orion C. Riker's Portfolio",
-    "version": "0.3.0",
+    "version": "0.3.1",
     "type": "module",
     "private": true,
     "license": "GPL-3.0-only",
@@ -70,9 +70,9 @@
         "release:major": "bun version:major && bun publish"
     },
     "dependencies": {
-        "@astrojs/preact": "6.1.1",
+        "@astrojs/preact": "6.1.6",
         "@wyattjoh/astro-bun-adapter": "^2.1.1",
-        "motion": "^14.6.0",
+        "motion": "^14.14.0",
         "preact": "^10.29.8"
     },
     "devDependencies": {
@@ -81,22 +81,22 @@
         "@iconify-json/mdi": "^1.2.3",
         "@playform/compress": "^0.2.5",
         "@tailwindcss/typography": "^0.5.20",
-        "@tailwindcss/vite": "^4.3.3",
-        "@types/bun": "^1.4.4",
-        "@types/node": "^26.6.5",
+        "@tailwindcss/vite": "^4.3.5",
+        "@types/bun": "^1.4.5",
+        "@types/node": "^26.6.6",
         "@types/react": "^19.3.0",
         "@types/react-dom": "^19.3.0",
-        "@typescript-eslint/parser": "^8.72.0",
-        "astro": "7.4.2",
-        "eslint": "^10.13.0",
+        "@typescript-eslint/parser": "^8.74.0",
+        "astro": "7.4.13",
+        "eslint": "^10.15.0",
         "eslint-config-prettier": "^10.1.8",
         "eslint-plugin-astro": "^3.2.1",
-        "prettier": "^3.9.10",
+        "prettier": "^3.10.1",
         "prettier-plugin-astro": "^0.14.1",
         "prettier-plugin-tailwindcss": "^0.8.1",
-        "tailwindcss": "^4.3.3",
+        "tailwindcss": "^4.3.5",
         "typescript": "7.1.0-beta",
-        "typescript-eslint": "^8.72.0"
+        "typescript-eslint": "^8.74.0"
     },
     "overrides": {
         "react": "npm:@preact/compat@latest",

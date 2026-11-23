@@ -70,16 +70,16 @@ body {
 }
 
 .theme-sun {
-    display: block;
+    display: none;
 }
 .theme-moon {
-    display: none;
+    display: block;
 }
 [data-theme='dark'] .theme-sun {
-    display: none;
+    display: block;
 }
 [data-theme='dark'] .theme-moon {
-    display: block;
+    display: none;
 }
 
 /*
